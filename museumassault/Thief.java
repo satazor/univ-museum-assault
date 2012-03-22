@@ -10,15 +10,16 @@ package museumassault;
 public class Thief extends Thread
 {
     public static final int ARRIVED_ACTION = 1;
-    protected ExteriorSite exterior;
+    protected SharedSite exterior;
     protected int id;
+    protected int teamId;
 
     /**
      *
      * @param id
      * @param exterior
      */
-    public Thief(int id, ExteriorSite exterior)
+    public Thief(int id, SharedSite exterior)
     {
         this.id = id;
         this.exterior = exterior;
@@ -30,6 +31,24 @@ public class Thief extends Thread
     @Override
     public void run()
     {
-        this.exterior.handACanvas(this.id);
+        while (true) {
+
+            try {
+                // Check if the thief is still needed
+                if (!this.exterior.amINeeded(this.id)) {
+                    break;
+                }
+
+                // Prepare for excursion
+                this.teamId = this.exterior.prepareExcursion();
+
+                // Simulate crawling
+                sleep((long) (1 + 100 * Math.random()));
+
+                // Hand the canvas
+                this.exterior.handACanvas(this.id, this.teamId, true);
+
+            } catch (InterruptedException ex) {}
+        }
     }
 }

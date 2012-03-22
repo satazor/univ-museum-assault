@@ -6,12 +6,6 @@ package museumassault;
  */
 public interface MessageBroker
 {
-    /**
-     *
-     * @param originType
-     * @return
-     */
-    public Message readMessage(int originType);
 
     /**
      *
@@ -19,12 +13,12 @@ public interface MessageBroker
      * @param action
      * @return
      */
-    public Message readMessage(int originType, int action);
+    public Message readMessage(int action);
 
     /**
      *
      * @param originType
      * @param message
      */
-    public void writeMessage(int originType, Message message);
+    public void writeMessage(Message message);
 }

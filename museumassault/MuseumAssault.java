@@ -12,12 +12,9 @@ public class MuseumAssault
      */
     public static void main(String[] args)
     {
+        SharedSite exterior = new SharedSite(4);
 
-        IndexedMessageBroker broker = new IndexedMessageBroker();
-
-        ExteriorSite exterior = new ExteriorSite(broker);
-
-        Chief chief = new Chief(exterior, 4);
+        Chief chief = new Chief(exterior);
         chief.start();
 
         Thief[] thiefs = new Thief[10];

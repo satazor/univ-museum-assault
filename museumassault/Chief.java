@@ -1,5 +1,6 @@
 package museumassault;
 
+import java.util.HashMap;
 
 /**
  *
@@ -9,44 +10,59 @@ public class Chief extends Thread
 {
     static final int CHIEF_ID = -1;
 
-    ExteriorSite exterior;
-    int nrStolenCanvas = 0;
-    int nrRooms;
-    int stolenRooms = 0;
+    SharedSite exterior;
+    HashMap roomsStatus = new HashMap();
 
-    public Chief(ExteriorSite exterior, int nrRooms)
+    /**
+     *
+     * @param exterior
+     * @param nrRooms
+     * @param nrTeams
+     */
+    public Chief (SharedSite exterior)
     {
         this.exterior = exterior;
-        this.nrRooms = nrRooms;
     }
 
+    /**
+     *
+     */
+    @Override
+    public void run()
+    {
+        while (true) {
 
-   @Override
-   public void run ()
-   {
-      while (true)
-      {
-           System.out.println("[Chief] takeARest()");
+            if (this.exterior.getNrRoomsToBeRobed() > 0) {
 
-          Integer thiefId = this.exterior.takeARest();
-          if (thiefId == null) {
-              return;
-          }
+                System.out.println("[Chief] There is still rooms to rob..");
 
-          // collect canvas
-          System.out.println("[Chief] collectCanvas() on " + thiefId);
-          return;
+                if (false) {
+                    System.out.println("[Chief] There is at least one free team, assembling group..");
+                    this.exterior.preparseAssaultParty();
+                } else {
+                    System.out.println("[Chief] No free team available, taking a rest..");
+                    this.waitForArrival();
+                }
+            } else {
+                System.out.println("[Chief] All rooms robbed, waiting for remaining thiefs arrival..");
+                this.waitForArrival();
+            }
+        }
+    }
 
-          // ler mensagem
-          // se mensagem for de thief chegou..
-          // se ainda houver salas..
-            // se temos equipas livres
-            // se nao temos, dormir
-      }
-   }
+    /**
+     *
+     */
+    protected void waitForArrival()
+    {
+        int nrArrived = this.exterior.takeARest();
 
-   /**
-    *
-    */
-
+        for (int x = 0; x < nrArrived; x++) {
+            if (this.exterior.collectCanvas()) {
+                System.out.println("[Chief] Collected canvas..");
+            } else {
+                System.out.println("[Chief] Thief didn't robed any canvas..");
+            }
+        }
+    }
 }
