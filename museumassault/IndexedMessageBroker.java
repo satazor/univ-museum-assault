@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 /**
  *
- * @author André
+ * @author AndrÃ©
  * @TODO: Make a clean function that clears empty linked lists
  */
 public class IndexedMessageBroker implements MessageBroker

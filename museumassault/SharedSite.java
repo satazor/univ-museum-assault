@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author André
+ * @author AndrÃ©
  */
 public class SharedSite
 {
@@ -15,7 +15,7 @@ public class SharedSite
     public static final int THIEF_HANDED_A_CANVAS_ACTION = 2;
     public static final int THIEF_NOT_HANDED_A_CANVAS_ACTION = 3;
 
-    public static final int PREPARE_ASSAULT_ACTION = 2;
+    public static final int PREPARE_ASSAULT_ACTION = 4;
 
     protected final MessageBroker chiefBroker = new IndexedMessageBroker();
     protected final MessageBroker thiefsBroker = new IndexedMessageBroker();
@@ -23,21 +23,80 @@ public class SharedSite
     protected HashMap roomsStatus = new HashMap();
     protected HashMap groupStatus = new HashMap();
 
+    protected Team[] teams;
+    protected HashMap teamsHash = new HashMap();
+    protected HashMap teamsBroker = new HashMap();
+
     protected int nrRoomsToBeRobed;
 
     /**
      *
      */
-    public SharedSite (int nrRooms)
+    public SharedSite(int nrRooms, Team[] teams)
     {
         this.nrRoomsToBeRobed = nrRooms;
+        this.teams = teams;
+
+        int nrTeams = teams.length;
+        for (int x = 0; x < nrTeams; x++) {
+            this.teamsHash.put(teams[x].getId(), teams[x]);
+            this.teamsBroker.put(teams[x].getId(), new IndexedMessageBroker());
+        }
     }
 
     /**
      *
      */
-    public void preparseAssaultParty() {
+    public Integer prepareAssaultParty()
+    {
+        synchronized (this.chiefBroker) {
+            int nrTeams = this.teams.length;
 
+            for (int x = 0; x < nrTeams; x++) {
+
+                if (!this.teams[x].isBusy() && !this.teams[x].isPrepared()) {
+
+                    this.teams[x].isPrepared(true);
+
+                    MessageBroker broker = (MessageBroker) this.teamsBroker.get(this.teams[x].getId());
+                    int nrThiefs = this.teams[x].getNrThiefs();
+
+                    for (int y = 0; y < nrThiefs; y++) {
+                        broker.writeMessage(new Message(PREPARE_ASSAULT_ACTION));
+                        synchronized (broker) {
+                            broker.notify();
+                        }
+                    }
+
+                    return this.teams[x].getId();
+                }
+            }
+
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    public void sendAssaultParty(int id)
+    {
+        synchronized (this.chiefBroker) {
+            Team team = (Team) this.teamsHash.get(id);
+            if (team == null) {
+                throw new RuntimeException("Unknown team with id #" + id);
+            }
+
+            if (!team.isPrepared()) {
+                throw new RuntimeException("Team with id #" + id + " is not prepared yet.");
+            }
+
+            if (team.isBusy()) {
+                throw new RuntimeException("Team with id #" + id + " is busy.");
+            }
+
+            team.isBusy(true);
+        }
     }
 
     /**
@@ -51,7 +110,7 @@ public class SharedSite
             synchronized (this.chiefBroker) {
                 try {
                     this.chiefBroker.wait();
-                } catch (InterruptedException ex) { return 0; }
+                } catch (InterruptedException ex) {}
             }
 
             int nrArrived = 0;
@@ -112,28 +171,23 @@ public class SharedSite
     /**
      *
      */
-    public boolean amINeeded(int thiefId)
+    public boolean amINeeded(int thiefId, int teamId)
     {
-        synchronized (this.chiefBroker) {
+        while (true) {
 
-            this.chiefBroker.notify();
+            MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
+            if (broker == null) {
+                throw new RuntimeException("Unknown team with id #" + teamId);
+            }
 
-            while (true) {
+            synchronized (broker) {
 
-                synchronized (this.thiefsBroker) {
+                System.out.println("[Thief #" + thiefId + "] Waiting for orders..");
+                try {
+                    broker.wait();
+                } catch (InterruptedException ex) {}
 
-                    System.out.println("[Thief #" + thiefId + "] Waiting for orders..");
-                    try {
-                        this.thiefsBroker.wait();
-                    } catch (InterruptedException ex) {
-                        return false;
-                    }
-
-                    Message message = this.thiefsBroker.readMessage(PREPARE_ASSAULT_ACTION);
-                    if (message != null) {
-                        return true;
-                    }
-                }
+                System.out.println("[Thief #" + thiefId + "] I am needed..");
             }
         }
     }

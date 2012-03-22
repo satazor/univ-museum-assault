@@ -3,9 +3,9 @@ package museumassault;
 /**
  * Message class.
  *
- * @author André
+ * @author AndrÃ©
  */
-public class Message{
+public class Message {
 
     protected int action;
     protected int originId;

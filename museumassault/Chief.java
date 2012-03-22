@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author André
+ * @author AndrÃ©
  */
 public class Chief extends Thread
 {
@@ -16,8 +16,6 @@ public class Chief extends Thread
     /**
      *
      * @param exterior
-     * @param nrRooms
-     * @param nrTeams
      */
     public Chief (SharedSite exterior)
     {
@@ -36,11 +34,13 @@ public class Chief extends Thread
 
                 System.out.println("[Chief] There is still rooms to rob..");
 
-                if (false) {
-                    System.out.println("[Chief] There is at least one free team, assembling group..");
-                    this.exterior.preparseAssaultParty();
+                Integer teamId = this.exterior.prepareAssaultParty();
+
+                if (teamId != null) {
+                    System.out.println("[Chief] There is at least one free team, assembling party #" + teamId + "..");
+                    this.exterior.sendAssaultParty(teamId);
                 } else {
-                    System.out.println("[Chief] No free team available, taking a rest..");
+                    System.out.println("[Chief] No free party available, taking a rest..");
                     this.waitForArrival();
                 }
             } else {

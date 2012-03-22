@@ -3,13 +3,14 @@ package museumassault;
 /**
  * Message class.
  *
- * @author André
+ * @author AndrÃ©
  */
-public class HandCanvasMessage extends Message {
+public class HandCanvasMessage extends Message
+{
 
     protected boolean rolledCanvas;
     protected int roomId;
-    
+
     /**
      *
      * @param action

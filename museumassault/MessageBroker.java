@@ -2,11 +2,10 @@ package museumassault;
 
 /**
  *
- * @author André
+ * @author AndrÃ©
  */
 public interface MessageBroker
 {
-
     /**
      *
      * @param originType

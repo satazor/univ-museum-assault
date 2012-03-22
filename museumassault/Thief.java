@@ -2,7 +2,7 @@ package museumassault;
 
 /**
  *
- * @author André
+ * @author AndrÃ©
  *
  * @TODO: There should be two exterior interfaces.. one for the
  * chief and one for the thiefs that only exposes their meaningfull members..
@@ -19,9 +19,10 @@ public class Thief extends Thread
      * @param id
      * @param exterior
      */
-    public Thief(int id, SharedSite exterior)
+    public Thief(int id, int teamId, SharedSite exterior)
     {
         this.id = id;
+        this.teamId = teamId;
         this.exterior = exterior;
     }
 
@@ -35,12 +36,14 @@ public class Thief extends Thread
 
             try {
                 // Check if the thief is still needed
-                if (!this.exterior.amINeeded(this.id)) {
+                if (!this.exterior.amINeeded(this.id, this.teamId)) {
                     break;
                 }
 
                 // Prepare for excursion
-                this.teamId = this.exterior.prepareExcursion();
+                this.exterior.prepareExcursion();
+
+                sleep(20000);
 
                 // Simulate crawling
                 sleep((long) (1 + 100 * Math.random()));
