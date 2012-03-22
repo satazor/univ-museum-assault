@@ -1,19 +1,20 @@
 package museumassault;
 
+
 /**
  *
- * @author AndrÃ©
+ * @author André
  */
 public class Chief extends Thread {
 
     static final int CHIEF_ID = -1;
-    
-    Exterior exterior;
+
+    ExteriorSite exterior;
     int nrStolenCanvas = 0;
     int nrRooms;
     int stolenRooms = 0;
-    
-    public Chief(Exterior exterior, int nrRooms) {
+
+    public Chief(ExteriorSite exterior, int nrRooms) {
         this.exterior = exterior;
         this.nrRooms = nrRooms;
     }
@@ -24,17 +25,17 @@ public class Chief extends Thread {
    {
       while (true)
       {
-          Message message = this.exterior.readMessage(Chief.CHIEF_ID);
-          if (message != null) {
-              
-              if (message.getAction() == Thief.ARRIVED_ACTION) {
-                  //if (message.gotCanvas()) {
-                      this.nrStolenCanvas++;
-                      this.stolenRooms++;
-                  //}
-              }
+           System.out.println("[Chief] takeARest()");
+
+          Integer thiefId = this.exterior.takeARest();
+          if (thiefId == null) {
+              return;
           }
-     
+
+          // collect canvas
+          System.out.println("[Chief] collectCanvas() on " + thiefId);
+          return;
+
           // ler mensagem
           // se mensagem for de thief chegou..
           // se ainda houver salas..
@@ -42,9 +43,9 @@ public class Chief extends Thread {
             // se nao temos, dormir
       }
    }
-   
+
    /**
-    * 
+    *
     */
-   
+
 }

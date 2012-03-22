@@ -2,30 +2,29 @@ package museumassault;
 
 /**
  *
- * @author AndrÃ©
+ * @author André
+ *
+ * @TODO: There should be two exterior interfaces.. one for the
+ * chief and one for the thiefs that only exposes their meaningfull members..
  */
 public class Thief extends Thread {
 
     public static final int ARRIVED_ACTION = 1;
-    
-    public Thief(Exterior exterior) {
+    protected ExteriorSite exterior;
+    protected int id;
 
+    public Thief(int id, ExteriorSite exterior)
+    {
+        this.id = id;
+        this.exterior = exterior;
     }
 
-
-   @Override
-   public void run ()
-   {
-
-      while (true)
-      {
-          exterior.getMessage();
-
-          // ler mensagem
-          // se mensagem for de thief chegou..
-          // se ainda houver salas..
-            // se temos equipas livres
-            // se nao temos, dormir
-      }
-   }
+    /**
+     *
+     */
+    @Override
+    public void run()
+    {
+        this.exterior.handACanvas(this.id);
+    }
 }

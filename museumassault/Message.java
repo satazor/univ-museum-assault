@@ -3,28 +3,47 @@ package museumassault;
 /**
  * Message class.
  *
- * @author AndrÃ©
+ * @author André
  */
 public class Message {
 
     protected int action;
     protected int originId;
-    protected int destinationId;
-    public Thief thief;
 
-    public Message(int action, int originId, int destinationId)
+    /**
+     *
+     * @param action
+     */
+    public Message(int action)
     {
+        this.action = action;
+    }
+
+    /**
+     *
+     * @param action
+     */
+    public Message(int originId, int action)
+    {
+        this.action = action;
         this.originId = originId;
-        this.destinationId = destinationId;
-        this.thief = thief;
     }
 
-    public int getDestinationId()
+    /**
+     *
+     * @return
+     */
+    public int getAction()
     {
-        return this.destinationId;
-    }
-    
-    public int getAction() {
         return this.action;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getOriginId()
+    {
+        return this.originId;
     }
 }
