@@ -4,8 +4,8 @@ package museumassault;
  *
  * @author André
  */
-public interface MessageBroker {
-
+public interface MessageBroker
+{
     /**
      *
      * @param originType
@@ -22,7 +22,7 @@ public interface MessageBroker {
     public Message readMessage(int originType, int action);
 
     /**
-     * 
+     *
      * @param originType
      * @param message
      */

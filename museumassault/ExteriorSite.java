@@ -18,7 +18,8 @@ public class ExteriorSite
     /**
      *
      */
-    public ExteriorSite(MessageBroker broker) {
+    public ExteriorSite(MessageBroker broker)
+    {
         this.broker = broker;
     }
 
@@ -48,8 +49,8 @@ public class ExteriorSite
     /**
      *
      */
-    public void handACanvas(int thiefId) {
-
+    public void handACanvas(int thiefId)
+    {
         this.broker.writeMessage(THIEF_ORIGIN_TYPE, new Message(thiefId, THIEF_ARRIVED_ACTION));
 
         synchronized(this.chiefMonitor) {
