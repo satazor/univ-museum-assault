@@ -14,6 +14,8 @@ class Team {
     protected boolean busy = false;
     protected int id;
     protected int nrThiefs;
+    protected int nrBusyThiefs = 0;
+    protected Room room;
 
     /**
      *
@@ -43,6 +45,49 @@ class Team {
 
     /**
      *
+     */
+    public int getNrBusyThiefs()
+    {
+        return this.nrBusyThiefs;
+    }
+
+    /**
+     *
+     */
+    public void incrementNrBusyThiefs()
+    {
+        this.nrBusyThiefs++;
+    }
+
+    /**
+     *
+     */
+    public void decrementNrBusyThiefs()
+    {
+        if (this.nrBusyThiefs == 1) {
+            this.isBusy(false);
+        } else if (this.nrBusyThiefs > 1) {
+            this.nrBusyThiefs--;
+        }
+    }
+
+    /**
+     *
+     */
+    public Room getAssignedRoom()
+    {
+        return this.room;
+    }
+
+    /**
+     *
+     */
+    public void setAssignedRoom(Room room)
+    {
+        this.room = room;
+    }
+    /**
+     *
      * @return
      */
     public boolean isPrepared(boolean prepared)
@@ -65,6 +110,11 @@ class Team {
      */
     public boolean isBusy(boolean busy)
     {
+        if (!busy) {
+            this.prepared = false;
+            this.nrBusyThiefs = 0;
+        }
+
         return this.busy = busy;
     }
 

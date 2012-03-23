@@ -72,6 +72,11 @@ public class SharedSite
      */
     public Integer prepareAssaultParty(int roomId)
     {
+        Room room = (Room) this.roomsHash.get(roomId);
+        if (room == null) {
+            throw new RuntimeException("Unknown room with id #" + roomId);
+        }
+
         synchronized (this.chiefBroker) {
 
             int nrTeams = this.teams.length;
@@ -81,6 +86,7 @@ public class SharedSite
                 if (!this.teams[x].isBusy() && !this.teams[x].isPrepared()) {
 
                     this.teams[x].isPrepared(true);
+                    this.teams[x].setAssignedRoom(room);
                     int nrThiefs = this.teams[x].getNrThiefs();
                     for (int y = 0; y < nrThiefs; y++) {
                         this.thiefsBroker.writeMessage(new PrepareAssaultMessage(PREPARE_ASSAULT_ACTION, this.teams[x].getId(), roomId));
@@ -102,12 +108,12 @@ public class SharedSite
      */
     public void sendAssaultParty(int teamId)
     {
-        synchronized (this.chiefBroker) {
+        Team team = (Team) this.teamsHash.get(teamId);
+        if (team == null) {
+            throw new RuntimeException("Unknown team with id #" + teamId);
+        }
 
-            Team team = (Team) this.teamsHash.get(teamId);
-            if (team == null) {
-                throw new RuntimeException("Unknown team with id #" + teamId);
-            }
+        synchronized (this.chiefBroker) {
 
             if (!team.isPrepared()) {
                 throw new RuntimeException("Team with id #" + teamId + " is not prepared yet.");
@@ -140,22 +146,59 @@ public class SharedSite
      *
      * @return
      */
-    public void takeARest()
+    public boolean takeARest()
     {
         while (true) {
 
             synchronized (this.chiefBroker) {
+
+                int nrTeams = this.teams.length;
+                boolean assaultRunning = false;
+                for (int x = 0; x < nrTeams; x++) {
+                    if (this.teams[x].isBusy()) {
+                        assaultRunning = true;
+                        break;
+                    }
+                }
+
+                if (!assaultRunning) {
+                    return false;
+                }
+
                 try {
                     this.chiefBroker.wait();
                 } catch (InterruptedException ex) {}
             }
 
             ArriveMessage message = (ArriveMessage) this.chiefBroker.readMessage(THIEF_ARRIVE_ACTION);
-            while (message != null) {
-                if (message.rolledCanvas()) this.nrCanvasCollected++;
-                message = (ArriveMessage) this.chiefBroker.readMessage(THIEF_ARRIVE_ACTION);
+            if (message != null) {
+
+                while (message != null) {
+
+                    if (message.rolledCanvas()) this.nrCanvasCollected++;
+
+                    Team team = (Team) this.teamsHash.get(message.getTeamId());
+                    if (team == null) {
+                        throw new RuntimeException("Unknown team with id #" + message.getTeamId());
+                    }
+
+                    Room room = team.getAssignedRoom();
+
+                    synchronized (this.chiefBroker) {
+                        if (room.stillHasCanvas() && !message.rolledCanvas()) {
+                            room.stillHasCanvas(false);
+                            this.nrRoomsToBeRobed--;
+                        }
+                    }
+
+                    message = (ArriveMessage) this.chiefBroker.readMessage(THIEF_ARRIVE_ACTION);
+                }
+
+                break;
             }
         }
+
+        return true;
     }
 
     /**
@@ -171,7 +214,6 @@ public class SharedSite
                 try {
                     this.thiefsBroker.wait();
                 } catch (InterruptedException ex) {}
-
             }
 
             PrepareAssaultMessage message = (PrepareAssaultMessage) this.thiefsBroker.readMessage(PREPARE_ASSAULT_ACTION);
@@ -198,6 +240,10 @@ public class SharedSite
         while (true) {
 
             synchronized (broker) {
+
+                Team team = (Team) this.teamsHash.get(teamId);
+                team.incrementNrBusyThiefs();
+
                 try {
                     broker.wait();
                 } catch (InterruptedException ex) {}
@@ -213,22 +259,22 @@ public class SharedSite
     /**
      *
      */
-    public void handACanvas(int thiefId, int roomId, boolean rolledCanvas)
+    public void handACanvas(int teamId, boolean rolledCanvas)
     {
-        synchronized (this.thiefsBroker) {
-
-            System.out.println("[Thief #" + thiefId + "] " + (rolledCanvas ? "" : "NOT ") + "Handing canvas..");
-            Room room = (Room) this.roomsHash.get(roomId);
-            if (room == null) {
-                throw new RuntimeException("Unknown room with id #" + roomId);
-            }
-
-            if (room.stillHasCanvas() && !rolledCanvas) {
-                room.stillHasCanvas(false);
-                this.nrRoomsToBeRobed--;
-            }
+        Team team = (Team) this.teamsHash.get(teamId);
+        if (team == null) {
+            throw new RuntimeException("Unknown team with id #" + teamId);
         }
 
-        this.chiefBroker.writeMessage(new ArriveMessage(THIEF_ARRIVE_ACTION, roomId, rolledCanvas));
+        MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
+
+        synchronized (broker) {
+            team.decrementNrBusyThiefs();
+        }
+
+        this.chiefBroker.writeMessage(new ArriveMessage(THIEF_ARRIVE_ACTION, team.getId(), rolledCanvas));
+        synchronized (this.chiefBroker) {
+            this.chiefBroker.notify();
+        }
     }
 }

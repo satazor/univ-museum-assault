@@ -4,8 +4,10 @@ package museumassault;
  *
  * @author André
  *
- * @TODO: There should be two exterior interfaces.. one for the
- * chief and one for the thiefs that only exposes their meaningfull members..
+ * @TODO: There should be two Site interfaces.. one for the
+ *        chief and one for the thiefs that only exposes their meaningfull members..
+ *
+ * @TODO: There should be two Team Interfaces, one for the Chief and one for the Thiefs
  */
 public class Thief extends Thread
 {
@@ -40,13 +42,17 @@ public class Thief extends Thread
                 this.exterior.prepareExcursion(this.teamId);
 
                 System.out.println("[Thief #" + this.id + "] Started craling in..");
-                sleep(20000);
 
                 // Simulate crawling
-                sleep((long) (1 + 100 * Math.random()));
+                sleep((long) (1 + 1000 * Math.random()));
+
+                System.out.println("[Thief #" + this.id + "] Started craling out..");
+
+                sleep((long) (1 + 1000 * Math.random()));
 
                 // Hand the canvas
-                this.exterior.handACanvas(this.id, this.teamId, true);
+                System.out.println("[Thief #" + this.id + "] Handing canvas..");
+                this.exterior.handACanvas(this.teamId, true);
 
             } catch (InterruptedException ex) {}
         }

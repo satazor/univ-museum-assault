@@ -39,10 +39,7 @@ public class MuseumAssault
             chief.join();
         } catch (InterruptedException e) {}
 
-        for (int x = 0; x < 10; x++) {
-            thiefs[x].interrupt();
-        }
-
         System.out.println("End");
+        System.exit(0);
     }
 }

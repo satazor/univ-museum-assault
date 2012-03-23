@@ -7,32 +7,32 @@ package museumassault;
  */
 public class ArriveMessage extends Message
 {
-    protected boolean rolledCanvas;
-    protected int roomId;
+    protected boolean gotCanvas;
+    protected int teamId;
 
     /**
      *
      * @param action
      */
-    public ArriveMessage(int action, int roomId, boolean rolledCanvas)
+    public ArriveMessage(int action, int teamId, boolean gotCanvas)
     {
         super(action);
 
-        this.rolledCanvas = rolledCanvas;
-        this.roomId = roomId;
+        this.gotCanvas = gotCanvas;
+        this.teamId = teamId;
     }
 
     /**
      *
      */
-    public int getRoomId() {
-        return this.roomId;
+    public int getTeamId() {
+        return this.teamId;
     }
 
     /**
      *
      */
     public boolean rolledCanvas() {
-        return this.rolledCanvas;
+        return this.gotCanvas;
     }
 }
