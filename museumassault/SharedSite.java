@@ -100,6 +100,8 @@ public class SharedSite
                 }
             }
 
+            room.isBeingRobed(false);
+
             return null;
         }
     }
@@ -133,7 +135,7 @@ public class SharedSite
                 broker.writeMessage(new Message(SEND_ASSAULT_PARTY_ACTION));
             }
 
-            System.out.println("[Chief] Notifying all thiefs of the party to start crawling..");
+            System.out.println("[Chief] Notifying all thiefs of the party to start crawling to room #" + team.getAssignedRoom().getId() + "..");
 
             synchronized (broker) {
                 broker.notifyAll();

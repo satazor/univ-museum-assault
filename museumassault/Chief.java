@@ -42,10 +42,7 @@ public class Chief extends Thread
                     this.exterior.sendAssaultParty(teamId);
                     System.out.println("[Chief] Party #" + teamId + " sent..");
                     continue;
-                } else {
-                    System.out.println("[Chief] No more rooms to rob..");
                 }
-
             }
 
             System.out.println("[Chief] Taking a rest waiting for thiefs..");
