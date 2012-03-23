@@ -5,7 +5,6 @@ import museumassault.Room;
 import museumassault.Team;
 import museumassault.custom_message.HandCanvasMessage;
 import museumassault.custom_message.PrepareAssaultMessage;
-import museumassault.message_broker.IndexedMessageBroker;
 import museumassault.message_broker.Message;
 import museumassault.message_broker.MessageBroker;
 
@@ -21,8 +20,8 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     public static final int THIEF_ARRIVE_ACTION = 4;
     public static final int THIEF_READY_FOR_DEPARTURE_ACTION = 5;
 
-    protected final MessageBroker chiefBroker = new IndexedMessageBroker();
-    protected final MessageBroker thievesBroker = new IndexedMessageBroker();
+    protected final MessageBroker chiefBroker = new MessageBroker();
+    protected final MessageBroker thievesBroker = new MessageBroker();
 
     protected Room[] rooms;
     protected HashMap roomsHash = new HashMap();
@@ -61,7 +60,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
         int nrTeams = teams.length;
         for (int x = 0; x < nrTeams; x++) {
             this.teamsHash.put(teams[x].getId(), teams[x]);
-            this.teamsBroker.put(teams[x].getId(), new IndexedMessageBroker());
+            this.teamsBroker.put(teams[x].getId(), new MessageBroker());
         }
 
         this.rooms = rooms;

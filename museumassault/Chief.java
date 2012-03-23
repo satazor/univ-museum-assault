@@ -18,7 +18,7 @@ public class Chief extends Thread
      *
      * @param site
      */
-    public Chief (int id, ChiefControlSite site)
+    public Chief(int id, ChiefControlSite site)
     {
         this.id = id;
         this.site = site;
