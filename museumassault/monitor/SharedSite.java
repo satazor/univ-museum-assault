@@ -290,7 +290,6 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
         }
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
-
         synchronized (broker) {
             team.decrementNrBusythieves();
         }

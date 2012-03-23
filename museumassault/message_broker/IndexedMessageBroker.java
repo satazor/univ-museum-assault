@@ -29,6 +29,7 @@ public class IndexedMessageBroker implements MessageBroker
             for (int x = 0; x < length; x++) {
                 Message message = (Message) messagesList.get(x);
                 if (message.getOriginId() == originId) {
+                    messagesList.remove(x);
                     return message;
                 }
             }
