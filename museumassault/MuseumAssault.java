@@ -14,7 +14,8 @@ public class MuseumAssault
      */
     public static void main(String[] args)
     {
-        int nrTeams = 1;
+        int nrChiefs = 1;
+        int nrTeams = 2;
         int nrThievesPerTeam = 5;
         int nrRooms = 4;
         int totalThieves = nrTeams * nrThievesPerTeam;
@@ -29,7 +30,7 @@ public class MuseumAssault
             rooms[x] = new Room(x + 1);
         }
 
-        SharedSite site = new SharedSite(rooms, teams);
+        SharedSite site = new SharedSite(rooms, teams, (nrChiefs > 0));
 
         Thief[] thieves = new Thief[totalThieves];
         for (int x = 0; x < totalThieves; x++) {
@@ -38,12 +39,18 @@ public class MuseumAssault
             thief.start();
         }
 
-        Chief chief = new Chief(site);
-        chief.start();
+        Chief[] chiefs = new Chief[nrChiefs];
+        for (int x = 0; x < nrChiefs; x++) {
+            Chief chief = new Chief(x + 1, site);
+            chiefs[x] = chief;
+            chief.start();
+        }
 
-        try {
-            chief.join();
-        } catch (InterruptedException e) {}
+        for (int x = 0; x < nrChiefs; x++) {
+            try {
+                chiefs[x].join();
+            } catch (InterruptedException e) {}
+        }
 
         System.out.println("End");
         System.exit(0);

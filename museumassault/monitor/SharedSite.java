@@ -33,11 +33,29 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
     protected int nrRoomsToBeRobed;
     protected int nrCanvasCollected = 0;
+    protected boolean multipleMasters = false;
 
     /**
      *
      */
     public SharedSite(Room[] rooms, Team[] teams)
+    {
+        this.initialize(rooms, teams);
+    }
+
+    /**
+     *
+     */
+    public SharedSite(Room[] rooms, Team[] teams, boolean multipleMasters)
+    {
+        this.initialize(rooms, teams);
+        this.multipleMasters = multipleMasters;
+    }
+
+    /**
+     *
+     */
+    protected final void initialize(Room[] rooms, Team[] teams)
     {
         this.teams = teams;
         int nrTeams = teams.length;
@@ -297,7 +315,11 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
         this.chiefBroker.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId));
         this.chiefBroker.writeMessage(new HandCanvasMessage(THIEF_HAND_CANVAS_ACTION, thiefId, team.getId(), rolledCanvas));
         synchronized (this.chiefBroker) {
-            this.chiefBroker.notify();
+            if (multipleMasters) {
+                this.chiefBroker.notifyAll();
+            } else {
+                this.chiefBroker.notify();
+            }
         }
     }
 }

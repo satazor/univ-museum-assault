@@ -12,13 +12,15 @@ public class Chief extends Thread
 
     ChiefControlSite site;
     HashMap roomsStatus = new HashMap();
+    protected int id;
 
     /**
      *
      * @param site
      */
-    public Chief (ChiefControlSite site)
+    public Chief (int id, ChiefControlSite site)
     {
+        this.id = id;
         this.site = site;
     }
 
@@ -42,6 +44,8 @@ public class Chief extends Thread
                     this.site.sendAssaultParty(teamId);
                     System.out.println("[Chief] Party #" + teamId + " sent..");
                     continue;
+                } else {
+                    System.out.println("[Chief] Preparation of assault to #" + roomId + " aborted, no teams available..");
                 }
             }
 
