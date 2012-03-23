@@ -8,15 +8,20 @@ public interface MessageBroker
 {
     /**
      *
-     * @param originType
      * @param action
      * @return
      */
     public Message readMessage(int action);
 
     /**
+     * @param action
+     * @param id
+     * @return
+     */
+    public Message readMessage(int action, int id);
+
+    /**
      *
-     * @param originType
      * @param message
      */
     public void writeMessage(Message message);

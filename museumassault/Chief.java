@@ -30,29 +30,33 @@ public class Chief extends Thread
     {
         while (true) {
 
+            System.out.println("[Chief] Aprraising sit..");
             Integer roomId = this.exterior.appraiseSit();
             if (roomId != null) {
 
                 System.out.println("[Chief] There is still rooms to rob, preparing assault to room #" + roomId + "..");
 
-                Integer teamId;
-                do {
-                    teamId = this.exterior.prepareAssaultParty(roomId);
-                    if (teamId != null) {
-                        System.out.println("[Chief] Sending party #" + teamId + "..");
-                        this.exterior.sendAssaultParty(teamId);
-                    } else {
-                        System.out.println("[Chief] No free party available, taking a rest..");
-                        this.exterior.takeARest();
-                    }
-                } while (teamId == null);
-
-            } else {
-                System.out.println("[Chief] All rooms robbed, waiting for remaining thiefs arrival..");
-                if (!this.exterior.takeARest()) {
-                    break;
+                Integer teamId = this.exterior.prepareAssaultParty(roomId);
+                if (teamId != null) {
+                    System.out.println("[Chief] Sending party #" + teamId + "..");
+                    this.exterior.sendAssaultParty(teamId);
+                    System.out.println("[Chief] Party #" + teamId + " sent..");
+                    continue;
+                } else {
+                    System.out.println("[Chief] No more rooms to rob..");
                 }
+
             }
+
+            System.out.println("[Chief] Taking a rest waiting for thiefs..");
+            Integer thiefId = this.exterior.takeARest();
+            if (thiefId == null) {
+                break;
+            }
+
+            System.out.println("[Chief] Arrived thief #" + thiefId + "..");
+            System.out.println("[Chief] Collecting canvas of thief #" + thiefId + "..");
+            this.exterior.collectCanvas(thiefId);
         }
     }
 }

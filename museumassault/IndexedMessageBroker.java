@@ -14,7 +14,33 @@ public class IndexedMessageBroker implements MessageBroker
 
     /**
      *
+     * @param action
+     * @param id
+     * @return
      */
+    @Override
+    public Message readMessage(int action, int originId)
+    {
+        LinkedList messagesList = (LinkedList) this.messages.get(action);
+
+        if (messagesList != null) {
+            int length = messagesList.size();
+
+            for (int x = 0; x < length; x++) {
+                Message message = (Message) messagesList.get(x);
+                if (message.getOriginId() == originId) {
+                    return message;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     */
+    @Override
     public synchronized Message readMessage(int action)
     {
         LinkedList messagesList = (LinkedList) this.messages.get(action);
@@ -31,6 +57,7 @@ public class IndexedMessageBroker implements MessageBroker
     /**
      *
      */
+    @Override
     public synchronized void writeMessage(Message message)
     {
         LinkedList messagesList = (LinkedList) this.messages.get(message.getAction());

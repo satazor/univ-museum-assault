@@ -52,7 +52,7 @@ public class Thief extends Thread
 
                 // Hand the canvas
                 System.out.println("[Thief #" + this.id + "] Handing canvas..");
-                this.exterior.handACanvas(this.teamId, true);
+                this.exterior.handACanvas(this.id, this.teamId, Math.random() < 0.9);
 
             } catch (InterruptedException ex) {}
         }

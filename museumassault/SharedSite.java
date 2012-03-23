@@ -10,8 +10,9 @@ public class SharedSite
 {
     public static final int PREPARE_ASSAULT_ACTION = 1;
     public static final int SEND_ASSAULT_PARTY_ACTION = 2;
-    public static final int THIEF_ARRIVE_ACTION = 3;
-    public static final int THIEF_READY_FOR_DEPARTURE_ACTION = 4;
+    public static final int THIEF_HAND_CANVAS_ACTION = 3;
+    public static final int THIEF_ARRIVE_ACTION = 4;
+    public static final int THIEF_READY_FOR_DEPARTURE_ACTION = 5;
 
     protected final MessageBroker chiefBroker = new IndexedMessageBroker();
     protected final MessageBroker thiefsBroker = new IndexedMessageBroker();
@@ -56,7 +57,7 @@ public class SharedSite
 
                 int nrRooms = this.rooms.length;
                 for (int x = 0; x < nrRooms; x++) {
-                    if (!this.rooms[x].isBeingRobed()) {
+                    if (this.rooms[x].stillHasCanvas() && !this.rooms[x].isBeingRobed()) {
                         this.rooms[x].isBeingRobed(true);
                         return this.rooms[x].getId();
                     }
@@ -119,10 +120,6 @@ public class SharedSite
                 throw new RuntimeException("Team with id #" + teamId + " is not prepared yet.");
             }
 
-            if (team.isBusy()) {
-                throw new RuntimeException("Team with id #" + teamId + " is busy.");
-            }
-
             team.isBusy(true);
 
             MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
@@ -136,6 +133,8 @@ public class SharedSite
                 broker.writeMessage(new Message(SEND_ASSAULT_PARTY_ACTION));
             }
 
+            System.out.println("[Chief] Notifying all thiefs of the party to start crawling..");
+
             synchronized (broker) {
                 broker.notifyAll();
             }
@@ -146,11 +145,16 @@ public class SharedSite
      *
      * @return
      */
-    public boolean takeARest()
+    public Integer takeARest()
     {
         while (true) {
 
             synchronized (this.chiefBroker) {
+
+                Message message = this.chiefBroker.readMessage(THIEF_ARRIVE_ACTION);
+                if (message != null) {
+                    return message.getOriginId();
+                }
 
                 int nrTeams = this.teams.length;
                 boolean assaultRunning = false;
@@ -162,43 +166,45 @@ public class SharedSite
                 }
 
                 if (!assaultRunning) {
-                    return false;
+                    return null;
                 }
 
                 try {
                     this.chiefBroker.wait();
                 } catch (InterruptedException ex) {}
             }
+        }
+    }
 
-            ArriveMessage message = (ArriveMessage) this.chiefBroker.readMessage(THIEF_ARRIVE_ACTION);
+    /**
+     *
+     */
+    public void collectCanvas(int thiefId)
+    {
+        while (true) {
+
+            HandCanvasMessage message = (HandCanvasMessage) this.chiefBroker.readMessage(THIEF_HAND_CANVAS_ACTION, thiefId);
             if (message != null) {
 
-                while (message != null) {
+                Team team = (Team) this.teamsHash.get(message.getTeamId());
+                if (team == null) {
+                    throw new RuntimeException("Unknown team with id #" + message.getTeamId());
+                }
+
+                synchronized (this.chiefBroker) {
 
                     if (message.rolledCanvas()) this.nrCanvasCollected++;
 
-                    Team team = (Team) this.teamsHash.get(message.getTeamId());
-                    if (team == null) {
-                        throw new RuntimeException("Unknown team with id #" + message.getTeamId());
-                    }
-
                     Room room = team.getAssignedRoom();
-
-                    synchronized (this.chiefBroker) {
-                        if (room.stillHasCanvas() && !message.rolledCanvas()) {
-                            room.stillHasCanvas(false);
-                            this.nrRoomsToBeRobed--;
-                        }
+                    if (room.stillHasCanvas() && !message.rolledCanvas()) {
+                        room.stillHasCanvas(false);
+                        this.nrRoomsToBeRobed--;
                     }
-
-                    message = (ArriveMessage) this.chiefBroker.readMessage(THIEF_ARRIVE_ACTION);
                 }
 
                 break;
             }
         }
-
-        return true;
     }
 
     /**
@@ -259,7 +265,7 @@ public class SharedSite
     /**
      *
      */
-    public void handACanvas(int teamId, boolean rolledCanvas)
+    public void handACanvas(int thiefId, int teamId, boolean rolledCanvas)
     {
         Team team = (Team) this.teamsHash.get(teamId);
         if (team == null) {
@@ -272,7 +278,8 @@ public class SharedSite
             team.decrementNrBusyThiefs();
         }
 
-        this.chiefBroker.writeMessage(new ArriveMessage(THIEF_ARRIVE_ACTION, team.getId(), rolledCanvas));
+        this.chiefBroker.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId));
+        this.chiefBroker.writeMessage(new HandCanvasMessage(THIEF_HAND_CANVAS_ACTION, thiefId, team.getId(), rolledCanvas));
         synchronized (this.chiefBroker) {
             this.chiefBroker.notify();
         }

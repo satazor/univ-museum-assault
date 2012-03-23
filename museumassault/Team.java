@@ -56,7 +56,12 @@ class Team {
      */
     public void incrementNrBusyThiefs()
     {
-        this.nrBusyThiefs++;
+        if (this.nrBusyThiefs == 0) {
+            this.isBusy(true);
+            this.nrBusyThiefs = 1;
+        } else {
+            this.nrBusyThiefs++;
+        }
     }
 
     /**
@@ -66,6 +71,7 @@ class Team {
     {
         if (this.nrBusyThiefs == 1) {
             this.isBusy(false);
+            this.nrBusyThiefs = 0;
         } else if (this.nrBusyThiefs > 1) {
             this.nrBusyThiefs--;
         }
@@ -110,9 +116,12 @@ class Team {
      */
     public boolean isBusy(boolean busy)
     {
-        if (!busy) {
-            this.prepared = false;
-            this.nrBusyThiefs = 0;
+        this.prepared = busy;
+
+        if (!busy) this.nrBusyThiefs = 0;
+
+        if (this.room != null) {
+            this.room.isBeingRobed(busy);
         }
 
         return this.busy = busy;
