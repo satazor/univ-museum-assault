@@ -1,12 +1,19 @@
-package museumassault;
+package museumassault.monitor;
 
 import java.util.HashMap;
+import museumassault.Room;
+import museumassault.Team;
+import museumassault.custom_message.HandCanvasMessage;
+import museumassault.custom_message.PrepareAssaultMessage;
+import museumassault.message_broker.IndexedMessageBroker;
+import museumassault.message_broker.Message;
+import museumassault.message_broker.MessageBroker;
 
 /**
  *
  * @author André
  */
-public class SharedSite
+public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 {
     public static final int PREPARE_ASSAULT_ACTION = 1;
     public static final int SEND_ASSAULT_PARTY_ACTION = 2;
@@ -15,7 +22,7 @@ public class SharedSite
     public static final int THIEF_READY_FOR_DEPARTURE_ACTION = 5;
 
     protected final MessageBroker chiefBroker = new IndexedMessageBroker();
-    protected final MessageBroker thiefsBroker = new IndexedMessageBroker();
+    protected final MessageBroker thievesBroker = new IndexedMessageBroker();
 
     protected Room[] rooms;
     protected HashMap roomsHash = new HashMap();
@@ -49,6 +56,7 @@ public class SharedSite
     /**
      *
      */
+    @Override
     public Integer appraiseSit()
     {
         synchronized (this.chiefBroker) {
@@ -71,6 +79,7 @@ public class SharedSite
     /**
      *
      */
+    @Override
     public Integer prepareAssaultParty(int roomId)
     {
         Room room = (Room) this.roomsHash.get(roomId);
@@ -88,11 +97,11 @@ public class SharedSite
 
                     this.teams[x].isPrepared(true);
                     this.teams[x].setAssignedRoom(room);
-                    int nrThiefs = this.teams[x].getNrThiefs();
-                    for (int y = 0; y < nrThiefs; y++) {
-                        this.thiefsBroker.writeMessage(new PrepareAssaultMessage(PREPARE_ASSAULT_ACTION, this.teams[x].getId(), roomId));
-                        synchronized (this.thiefsBroker) {
-                            this.thiefsBroker.notify();
+                    int nrthieves = this.teams[x].getNrthieves();
+                    for (int y = 0; y < nrthieves; y++) {
+                        this.thievesBroker.writeMessage(new PrepareAssaultMessage(PREPARE_ASSAULT_ACTION, this.teams[x].getId(), roomId));
+                        synchronized (this.thievesBroker) {
+                            this.thievesBroker.notify();
                         }
                     }
 
@@ -109,6 +118,7 @@ public class SharedSite
     /**
      *
      */
+    @Override
     public void sendAssaultParty(int teamId)
     {
         Team team = (Team) this.teamsHash.get(teamId);
@@ -125,8 +135,8 @@ public class SharedSite
             team.isBusy(true);
 
             MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
-            int nrThiefs = team.getNrThiefs();
-            for (int x = 0; x < nrThiefs; x++) {
+            int nrthieves = team.getNrthieves();
+            for (int x = 0; x < nrthieves; x++) {
 
                 while (broker.readMessage(THIEF_READY_FOR_DEPARTURE_ACTION) == null) {
                     Thread.yield();
@@ -135,7 +145,7 @@ public class SharedSite
                 broker.writeMessage(new Message(SEND_ASSAULT_PARTY_ACTION));
             }
 
-            System.out.println("[Chief] Notifying all thiefs of the party to start crawling to room #" + team.getAssignedRoom().getId() + "..");
+            System.out.println("[Chief] Notifying all thieves of the party to start crawling to room #" + team.getAssignedRoom().getId() + "..");
 
             synchronized (broker) {
                 broker.notifyAll();
@@ -147,6 +157,7 @@ public class SharedSite
      *
      * @return
      */
+    @Override
     public Integer takeARest()
     {
         while (true) {
@@ -181,6 +192,7 @@ public class SharedSite
     /**
      *
      */
+    @Override
     public void collectCanvas(int thiefId)
     {
         while (true) {
@@ -212,19 +224,20 @@ public class SharedSite
     /**
      *
      */
+    @Override
     public Integer amINeeded(int thiefId)
     {
         while (true) {
 
-            synchronized (this.thiefsBroker) {
+            synchronized (this.thievesBroker) {
 
                 System.out.println("[Thief #" + thiefId + "] Waiting for orders..");
                 try {
-                    this.thiefsBroker.wait();
+                    this.thievesBroker.wait();
                 } catch (InterruptedException ex) {}
             }
 
-            PrepareAssaultMessage message = (PrepareAssaultMessage) this.thiefsBroker.readMessage(PREPARE_ASSAULT_ACTION);
+            PrepareAssaultMessage message = (PrepareAssaultMessage) this.thievesBroker.readMessage(PREPARE_ASSAULT_ACTION);
             if (message != null) {
                 System.out.println("[Thief #" + thiefId + "] I am needed on team " + message.getTeamId() + "..");
                 return message.getTeamId();
@@ -236,6 +249,7 @@ public class SharedSite
     /**
      *
      */
+    @Override
     public void prepareExcursion(int teamId) {
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
@@ -250,7 +264,7 @@ public class SharedSite
             synchronized (broker) {
 
                 Team team = (Team) this.teamsHash.get(teamId);
-                team.incrementNrBusyThiefs();
+                team.incrementNrBusythieves();
 
                 try {
                     broker.wait();
@@ -267,6 +281,7 @@ public class SharedSite
     /**
      *
      */
+    @Override
     public void handACanvas(int thiefId, int teamId, boolean rolledCanvas)
     {
         Team team = (Team) this.teamsHash.get(teamId);
@@ -277,7 +292,7 @@ public class SharedSite
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
 
         synchronized (broker) {
-            team.decrementNrBusyThiefs();
+            team.decrementNrBusythieves();
         }
 
         this.chiefBroker.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId));

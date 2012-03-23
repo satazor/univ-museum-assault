@@ -1,30 +1,28 @@
 package museumassault;
 
+import museumassault.monitor.ThievesConcentrationSite;
+
 /**
  *
  * @author André
  *
- * @TODO: There should be two Site interfaces.. one for the
- *        chief and one for the thiefs that only exposes their meaningfull members..
- *
- * @TODO: There should be two Team Interfaces, one for the Chief and one for the Thiefs
+ * @TODO: There should be two Team Interfaces, one for the Chief and one for the thieves
  */
 public class Thief extends Thread
 {
-    public static final int ARRIVED_ACTION = 1;
-    protected SharedSite exterior;
+    protected ThievesConcentrationSite site;
     protected int id;
     protected int teamId;
 
     /**
      *
      * @param id
-     * @param exterior
+     * @param site
      */
-    public Thief(int id, SharedSite exterior)
+    public Thief(int id, ThievesConcentrationSite site)
     {
         this.id = id;
-        this.exterior = exterior;
+        this.site = site;
     }
 
     /**
@@ -36,10 +34,10 @@ public class Thief extends Thread
         while (true) {
 
             try {
-                this.teamId = this.exterior.amINeeded(this.id);
+                this.teamId = this.site.amINeeded(this.id);
 
                 // Prepare for excursion
-                this.exterior.prepareExcursion(this.teamId);
+                this.site.prepareExcursion(this.teamId);
 
                 System.out.println("[Thief #" + this.id + "] Started craling in..");
 
@@ -52,7 +50,7 @@ public class Thief extends Thread
 
                 // Hand the canvas
                 System.out.println("[Thief #" + this.id + "] Handing canvas..");
-                this.exterior.handACanvas(this.id, this.teamId, Math.random() < 0.9);
+                this.site.handACanvas(this.id, this.teamId, Math.random() < 0.9);
 
             } catch (InterruptedException ex) {}
         }

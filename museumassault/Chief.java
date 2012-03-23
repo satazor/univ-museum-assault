@@ -1,6 +1,7 @@
 package museumassault;
 
 import java.util.HashMap;
+import museumassault.monitor.ChiefControlSite;
 
 /**
  *
@@ -8,18 +9,17 @@ import java.util.HashMap;
  */
 public class Chief extends Thread
 {
-    static final int CHIEF_ID = -1;
 
-    SharedSite exterior;
+    ChiefControlSite site;
     HashMap roomsStatus = new HashMap();
 
     /**
      *
-     * @param exterior
+     * @param site
      */
-    public Chief (SharedSite exterior)
+    public Chief (ChiefControlSite site)
     {
-        this.exterior = exterior;
+        this.site = site;
     }
 
     /**
@@ -31,29 +31,29 @@ public class Chief extends Thread
         while (true) {
 
             System.out.println("[Chief] Aprraising sit..");
-            Integer roomId = this.exterior.appraiseSit();
+            Integer roomId = this.site.appraiseSit();
             if (roomId != null) {
 
                 System.out.println("[Chief] There is still rooms to rob, preparing assault to room #" + roomId + "..");
 
-                Integer teamId = this.exterior.prepareAssaultParty(roomId);
+                Integer teamId = this.site.prepareAssaultParty(roomId);
                 if (teamId != null) {
                     System.out.println("[Chief] Sending party #" + teamId + "..");
-                    this.exterior.sendAssaultParty(teamId);
+                    this.site.sendAssaultParty(teamId);
                     System.out.println("[Chief] Party #" + teamId + " sent..");
                     continue;
                 }
             }
 
-            System.out.println("[Chief] Taking a rest waiting for thiefs..");
-            Integer thiefId = this.exterior.takeARest();
+            System.out.println("[Chief] Taking a rest waiting for thieves..");
+            Integer thiefId = this.site.takeARest();
             if (thiefId == null) {
                 break;
             }
 
             System.out.println("[Chief] Arrived thief #" + thiefId + "..");
             System.out.println("[Chief] Collecting canvas of thief #" + thiefId + "..");
-            this.exterior.collectCanvas(thiefId);
+            this.site.collectCanvas(thiefId);
         }
     }
 }

@@ -1,30 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package museumassault;
 
 /**
  *
  * @author André
  */
-class Team {
+public class Team {
 
     protected boolean prepared = false;
     protected boolean busy = false;
     protected int id;
-    protected int nrThiefs;
-    protected int nrBusyThiefs = 0;
+    protected int nrthieves;
+    protected int nrBusythieves = 0;
     protected Room room;
 
     /**
      *
      * @param id
      */
-    public Team(int id, int nrThiefs)
+    public Team(int id, int nrthieves)
     {
         this.id = id;
-        this.nrThiefs = nrThiefs;
+        this.nrthieves = nrthieves;
     }
 
     /**
@@ -38,42 +34,42 @@ class Team {
     /**
      *
      */
-    public int getNrThiefs()
+    public int getNrthieves()
     {
-        return this.nrThiefs;
+        return this.nrthieves;
     }
 
     /**
      *
      */
-    public int getNrBusyThiefs()
+    public int getNrBusythieves()
     {
-        return this.nrBusyThiefs;
+        return this.nrBusythieves;
     }
 
     /**
      *
      */
-    public void incrementNrBusyThiefs()
+    public void incrementNrBusythieves()
     {
-        if (this.nrBusyThiefs == 0) {
+        if (this.nrBusythieves == 0) {
             this.isBusy(true);
-            this.nrBusyThiefs = 1;
+            this.nrBusythieves = 1;
         } else {
-            this.nrBusyThiefs++;
+            this.nrBusythieves++;
         }
     }
 
     /**
      *
      */
-    public void decrementNrBusyThiefs()
+    public void decrementNrBusythieves()
     {
-        if (this.nrBusyThiefs == 1) {
+        if (this.nrBusythieves == 1) {
             this.isBusy(false);
-            this.nrBusyThiefs = 0;
-        } else if (this.nrBusyThiefs > 1) {
-            this.nrBusyThiefs--;
+            this.nrBusythieves = 0;
+        } else if (this.nrBusythieves > 1) {
+            this.nrBusythieves--;
         }
     }
 
@@ -118,7 +114,7 @@ class Team {
     {
         this.prepared = busy;
 
-        if (!busy) this.nrBusyThiefs = 0;
+        if (!busy) this.nrBusythieves = 0;
 
         if (this.room != null) {
             this.room.isBeingRobed(busy);

@@ -1,4 +1,6 @@
-package museumassault;
+package museumassault.custom_message;
+
+import museumassault.message_broker.Message;
 
 /**
  * Message class.

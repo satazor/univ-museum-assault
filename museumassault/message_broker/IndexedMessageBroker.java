@@ -1,4 +1,4 @@
-package museumassault;
+package museumassault.message_broker;
 
 import java.util.HashMap;
 import java.util.LinkedList;

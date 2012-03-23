@@ -1,4 +1,4 @@
-package museumassault;
+package museumassault.message_broker;
 
 /**
  * Message class.

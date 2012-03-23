@@ -1,5 +1,7 @@
 package museumassault;
 
+import museumassault.monitor.SharedSite;
+
 /**
  *
  * @author André
@@ -12,27 +14,31 @@ public class MuseumAssault
      */
     public static void main(String[] args)
     {
-        Team[] teams = new Team[1];
-        for (int x = 0; x < 1; x++) {
-            teams[x] = new Team(x + 1, 10);
+        int nrTeams = 1;
+        int nrThievesPerTeam = 5;
+        int nrRooms = 4;
+        int totalThieves = nrTeams * nrThievesPerTeam;
+
+        Team[] teams = new Team[nrTeams];
+        for (int x = 0; x < nrTeams; x++) {
+            teams[x] = new Team(x + 1, nrThievesPerTeam);
         }
 
-        Room[] rooms = new Room[4];
-        for (int x = 0; x < 4; x++) {
+        Room[] rooms = new Room[nrRooms];
+        for (int x = 0; x < nrRooms; x++) {
             rooms[x] = new Room(x + 1);
         }
 
-        SharedSite exterior = new SharedSite(rooms, teams);
+        SharedSite site = new SharedSite(rooms, teams);
 
-
-        Thief[] thiefs = new Thief[10];
-        for (int x = 0; x < 10; x++) {
-            Thief thief = new Thief(x + 1, exterior);
-            thiefs[x] = thief;
+        Thief[] thieves = new Thief[totalThieves];
+        for (int x = 0; x < totalThieves; x++) {
+            Thief thief = new Thief(x + 1, site);
+            thieves[x] = thief;
             thief.start();
         }
 
-        Chief chief = new Chief(exterior);
+        Chief chief = new Chief(site);
         chief.start();
 
         try {
