@@ -20,7 +20,9 @@ public class IndexedMessageBroker implements MessageBroker
         LinkedList messagesList = (LinkedList) this.messages.get(action);
 
         if (messagesList != null) {
-            return (Message) messagesList.pop();
+            if (messagesList.size() > 0) {
+                return (Message) messagesList.pop();
+            }
         }
 
         return null;

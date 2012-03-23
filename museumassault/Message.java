@@ -5,10 +5,9 @@ package museumassault;
  *
  * @author André
  */
-public class Message {
-
+public class Message
+{
     protected int action;
-    protected int originId;
 
     /**
      *
@@ -21,29 +20,10 @@ public class Message {
 
     /**
      *
-     * @param action
-     */
-    public Message(int originId, int action)
-    {
-        this.action = action;
-        this.originId = originId;
-    }
-
-    /**
-     *
      * @return
      */
     public int getAction()
     {
         return this.action;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getOriginId()
-    {
-        return this.originId;
     }
 }

@@ -19,10 +19,9 @@ public class Thief extends Thread
      * @param id
      * @param exterior
      */
-    public Thief(int id, int teamId, SharedSite exterior)
+    public Thief(int id, SharedSite exterior)
     {
         this.id = id;
-        this.teamId = teamId;
         this.exterior = exterior;
     }
 
@@ -35,14 +34,12 @@ public class Thief extends Thread
         while (true) {
 
             try {
-                // Check if the thief is still needed
-                if (!this.exterior.amINeeded(this.id, this.teamId)) {
-                    break;
-                }
+                this.teamId = this.exterior.amINeeded(this.id);
 
                 // Prepare for excursion
-                this.exterior.prepareExcursion();
+                this.exterior.prepareExcursion(this.teamId);
 
+                System.out.println("[Thief #" + this.id + "] Started craling in..");
                 sleep(20000);
 
                 // Simulate crawling

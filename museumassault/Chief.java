@@ -30,38 +30,22 @@ public class Chief extends Thread
     {
         while (true) {
 
-            if (this.exterior.getNrRoomsToBeRobed() > 0) {
+            Integer roomId = this.exterior.appraiseSit();
+            if (roomId != null) {
 
-                System.out.println("[Chief] There is still rooms to rob..");
+                System.out.println("[Chief] There is still rooms to rob, preparing assault to room #" + roomId + "..");
 
-                Integer teamId = this.exterior.prepareAssaultParty();
-
+                Integer teamId = this.exterior.prepareAssaultParty(roomId);
                 if (teamId != null) {
-                    System.out.println("[Chief] There is at least one free team, assembling party #" + teamId + "..");
+                    System.out.println("[Chief] Sending party #" + teamId + "..");
                     this.exterior.sendAssaultParty(teamId);
                 } else {
                     System.out.println("[Chief] No free party available, taking a rest..");
-                    this.waitForArrival();
+                    this.exterior.takeARest();
                 }
             } else {
                 System.out.println("[Chief] All rooms robbed, waiting for remaining thiefs arrival..");
-                this.waitForArrival();
-            }
-        }
-    }
-
-    /**
-     *
-     */
-    protected void waitForArrival()
-    {
-        int nrArrived = this.exterior.takeARest();
-
-        for (int x = 0; x < nrArrived; x++) {
-            if (this.exterior.collectCanvas()) {
-                System.out.println("[Chief] Collected canvas..");
-            } else {
-                System.out.println("[Chief] Thief didn't robed any canvas..");
+                this.exterior.takeARest();
             }
         }
     }

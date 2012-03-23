@@ -5,9 +5,8 @@ package museumassault;
  *
  * @author André
  */
-public class HandCanvasMessage extends Message
+public class ArriveMessage extends Message
 {
-
     protected boolean rolledCanvas;
     protected int roomId;
 
@@ -15,9 +14,9 @@ public class HandCanvasMessage extends Message
      *
      * @param action
      */
-    public HandCanvasMessage(int originId, int action, int roomId, boolean rolledCanvas)
+    public ArriveMessage(int action, int roomId, boolean rolledCanvas)
     {
-        super(originId, action);
+        super(action);
 
         this.rolledCanvas = rolledCanvas;
         this.roomId = roomId;

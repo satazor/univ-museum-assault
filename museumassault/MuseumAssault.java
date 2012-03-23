@@ -17,17 +17,23 @@ public class MuseumAssault
             teams[x] = new Team(x + 1, 10);
         }
 
-        SharedSite exterior = new SharedSite(4, teams);
+        Room[] rooms = new Room[4];
+        for (int x = 0; x < 4; x++) {
+            rooms[x] = new Room(x + 1);
+        }
 
-        Chief chief = new Chief(exterior);
-        chief.start();
+        SharedSite exterior = new SharedSite(rooms, teams);
+
 
         Thief[] thiefs = new Thief[10];
         for (int x = 0; x < 10; x++) {
-            Thief thief = new Thief(x + 1, 1, exterior);
+            Thief thief = new Thief(x + 1, exterior);
             thiefs[x] = thief;
             thief.start();
         }
+
+        Chief chief = new Chief(exterior);
+        chief.start();
 
         try {
             chief.join();
