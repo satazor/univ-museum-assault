@@ -32,7 +32,7 @@ public class Chief extends Thread
     {
         while (true) {
 
-            System.out.println("[Chief] Aprraising sit..");
+            System.out.println("[Chief] Appraising sit..");
             Integer roomId = this.site.appraiseSit();
             if (roomId != null) {
 

@@ -9,18 +9,18 @@ public class Team {
     protected boolean prepared = false;
     protected boolean busy = false;
     protected int id;
-    protected int nrthieves;
-    protected int nrBusythieves = 0;
+    protected int nrThieves;
+    protected int nrBusyThieves = 0;
     protected Room room;
 
     /**
      *
      * @param id
      */
-    public Team(int id, int nrthieves)
+    public Team(int id, int nrThieves)
     {
         this.id = id;
-        this.nrthieves = nrthieves;
+        this.nrThieves = nrThieves;
     }
 
     /**
@@ -34,42 +34,42 @@ public class Team {
     /**
      *
      */
-    public int getNrthieves()
+    public int getNrThieves()
     {
-        return this.nrthieves;
+        return this.nrThieves;
     }
 
     /**
      *
      */
-    public int getNrBusythieves()
+    public int getNrBusyThieves()
     {
-        return this.nrBusythieves;
+        return this.nrBusyThieves;
     }
 
     /**
      *
      */
-    public void incrementNrBusythieves()
+    public void incrementNrBusyThieves()
     {
-        if (this.nrBusythieves == 0) {
+        if (this.nrBusyThieves == 0) {
             this.isBusy(true);
-            this.nrBusythieves = 1;
+            this.nrBusyThieves = 1;
         } else {
-            this.nrBusythieves++;
+            this.nrBusyThieves++;
         }
     }
 
     /**
      *
      */
-    public void decrementNrBusythieves()
+    public void decrementNrBusyThieves()
     {
-        if (this.nrBusythieves == 1) {
+        if (this.nrBusyThieves == 1) {
             this.isBusy(false);
-            this.nrBusythieves = 0;
-        } else if (this.nrBusythieves > 1) {
-            this.nrBusythieves--;
+            this.nrBusyThieves = 0;
+        } else if (this.nrBusyThieves > 1) {
+            this.nrBusyThieves--;
         }
     }
 
@@ -114,7 +114,7 @@ public class Team {
     {
         this.prepared = busy;
 
-        if (!busy) this.nrBusythieves = 0;
+        if (!busy) this.nrBusyThieves = 0;
 
         if (this.room != null) {
             this.room.isBeingRobed(busy);

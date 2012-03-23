@@ -114,8 +114,8 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
                     this.teams[x].isPrepared(true);
                     this.teams[x].setAssignedRoom(room);
-                    int nrthieves = this.teams[x].getNrthieves();
-                    for (int y = 0; y < nrthieves; y++) {
+                    int nrThieves = this.teams[x].getNrThieves();
+                    for (int y = 0; y < nrThieves; y++) {
                         this.thievesBroker.writeMessage(new PrepareAssaultMessage(PREPARE_ASSAULT_ACTION, this.teams[x].getId(), roomId));
                         synchronized (this.thievesBroker) {
                             this.thievesBroker.notify();
@@ -152,8 +152,8 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
             team.isBusy(true);
 
             MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
-            int nrthieves = team.getNrthieves();
-            for (int x = 0; x < nrthieves; x++) {
+            int nrThieves = team.getNrThieves();
+            for (int x = 0; x < nrThieves; x++) {
 
                 while (broker.readMessage(THIEF_READY_FOR_DEPARTURE_ACTION) == null) {
                     Thread.yield();
@@ -281,7 +281,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
             synchronized (broker) {
 
                 Team team = (Team) this.teamsHash.get(teamId);
-                team.incrementNrBusythieves();
+                team.incrementNrBusyThieves();
 
                 try {
                     broker.wait();
@@ -308,7 +308,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
         synchronized (broker) {
-            team.decrementNrBusythieves();
+            team.decrementNrBusyThieves();
         }
 
         this.chiefBroker.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId));
