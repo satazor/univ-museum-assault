@@ -9,14 +9,16 @@ public class Room
     protected boolean beingRobed = false;
     protected boolean hasCanvas = true;
     protected int id;
+    protected Corridor corridor;
 
     /**
      *
      * @param id
      */
-    public Room(int id)
+    public Room(int id, Corridor corridor)
     {
         this.id = id;
+        this.corridor = corridor;
     }
 
     /**
@@ -26,6 +28,15 @@ public class Room
     public int getId()
     {
         return this.id;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Corridor getCorridor()
+    {
+        return this.corridor;
     }
 
     /**

@@ -37,14 +37,15 @@ public class Thief extends Thread
                 this.teamId = this.site.amINeeded(this.id);
 
                 // Prepare for excursion
-                this.site.prepareExcursion(this.teamId);
+                Room room = this.site.prepareExcursion(this.teamId);
 
-                System.out.println("[Thief #" + this.id + "] Started craling in..");
+                System.out.println("[Thief #" + this.id + "] Started crawling in..");
 
                 // Simulate crawling
+                //room.getCorridor().crallIn(this.id, 1);
                 sleep((long) (1 + 1000 * Math.random()));
 
-                System.out.println("[Thief #" + this.id + "] Started craling out..");
+                System.out.println("[Thief #" + this.id + "] Started crawling out..");
 
                 sleep((long) (1 + 1000 * Math.random()));
 

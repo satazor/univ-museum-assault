@@ -27,10 +27,10 @@ public class MuseumAssault
 
         Room[] rooms = new Room[nrRooms];
         for (int x = 0; x < nrRooms; x++) {
-            rooms[x] = new Room(x + 1);
+            rooms[x] = new Room(x + 1, new Corridor(5));
         }
 
-        SharedSite site = new SharedSite(rooms, teams, (nrChiefs > 0));
+        SharedSite site = new SharedSite(rooms, teams, (nrChiefs > 1));
 
         Thief[] thieves = new Thief[totalThieves];
         for (int x = 0; x < totalThieves; x++) {

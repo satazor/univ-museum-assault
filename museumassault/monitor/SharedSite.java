@@ -267,7 +267,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
      *
      */
     @Override
-    public void prepareExcursion(int teamId) {
+    public Room prepareExcursion(int teamId) {
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
         if (broker == null) {
@@ -278,9 +278,10 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
         while (true) {
 
+            Team team;
             synchronized (broker) {
 
-                Team team = (Team) this.teamsHash.get(teamId);
+                team = (Team) this.teamsHash.get(teamId);
                 team.incrementNrBusyThieves();
 
                 try {
@@ -290,7 +291,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
             Message message = broker.readMessage(SEND_ASSAULT_PARTY_ACTION);
             if (message != null) {
-                break;
+                return team.getAssignedRoom();
             }
         }
     }
@@ -314,7 +315,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
         this.chiefBroker.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId));
         this.chiefBroker.writeMessage(new HandCanvasMessage(THIEF_HAND_CANVAS_ACTION, thiefId, team.getId(), rolledCanvas));
         synchronized (this.chiefBroker) {
-            if (multipleMasters) {
+            if (this.multipleMasters) {
                 this.chiefBroker.notifyAll();
             } else {
                 this.chiefBroker.notify();
