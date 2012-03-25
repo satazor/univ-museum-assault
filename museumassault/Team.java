@@ -1,5 +1,6 @@
 package museumassault;
 
+import java.util.LinkedList;
 import museumassault.monitor.Room;
 
 /**
@@ -14,11 +15,12 @@ public class Team {
     protected int nrThieves;
     protected int nrBusyThieves = 0;
     protected Room room;
+    protected LinkedList<Integer> thiefIds = new LinkedList();
 
     /**
      * Constructor of a Team
      * @param id - the id of the team
-     * @param nrThieves - the number of thieves in the team 
+     * @param nrThieves - the number of thieves in the team
      */
     public Team(int id, int nrThieves)
     {
@@ -39,7 +41,7 @@ public class Team {
      * Method that returns the number of thieves in this team
      * @return Integer - the number of thieves in the team
      */
-    public int getNrThieves()
+    public int getCapacity()
     {
         return this.nrThieves;
     }
@@ -56,27 +58,51 @@ public class Team {
     /**
      * Method that increments the number of busy thieves
      */
-    public void incrementNrBusyThieves()
+    public void addThief(int thiefId)
     {
-        if (this.nrBusyThieves == 0) {
-            this.isBusy(true);
-            this.nrBusyThieves = 1;
-        } else {
-            this.nrBusyThieves++;
+        if (!this.thiefIds.contains(thiefId)) {
+            this.thiefIds.push(thiefId);
+
+            if (this.nrBusyThieves == 0) {
+                this.isBusy(true);
+                this.nrBusyThieves = 1;
+            } else {
+                this.nrBusyThieves++;
+            }
         }
     }
 
     /**
      * Method that decrements the number of busy thieves
      */
-    public void decrementNrBusyThieves()
+    public void removeThief(int thiefId)
     {
-        if (this.nrBusyThieves == 1) {
-            this.isBusy(false);
-            this.nrBusyThieves = 0;
-        } else if (this.nrBusyThieves > 1) {
-            this.nrBusyThieves--;
+        int index = this.thiefIds.indexOf(thiefId);
+        if (index != -1) {
+
+            this.thiefIds.remove(index);
+
+            if (this.nrBusyThieves == 1) {
+                this.isBusy(false);
+                this.nrBusyThieves = 0;
+            } else if (this.nrBusyThieves > 1) {
+                this.nrBusyThieves--;
+            }
         }
+    }
+
+    /**
+     *
+     */
+    public int[] getThiefs()
+    {
+        int length = this.thiefIds.size();
+        int[] newArray = new int[length];
+        for (int x = 0; x < length; x++) {
+            newArray[x] = thiefIds.get(x);
+        }
+        
+        return newArray;
     }
 
     /**

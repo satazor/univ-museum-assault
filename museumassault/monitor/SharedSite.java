@@ -87,7 +87,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
     /**
      * Method that decides if there are still rooms to rob
-     * @param chiefID - the id of the chief
+     * @param chiefId - the id of the chief
      * @return Integer - Returns the id of the room that is being robbed
      */
     @Override
@@ -139,7 +139,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
                     this.teams[x].isPrepared(true);
                     this.teams[x].setAssignedRoom(room);
-                    int nrThieves = this.teams[x].getNrThieves();
+                    int nrThieves = this.teams[x].getCapacity();
                     for (int y = 0; y < nrThieves; y++) {
                         this.thievesBroker.writeMessage(new PrepareAssaultMessage(PREPARE_ASSAULT_ACTION, this.teams[x].getId(), roomId));
                         synchronized (this.thievesBroker) {
@@ -181,7 +181,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
             team.isBusy(true);
 
             MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
-            int nrThieves = team.getNrThieves();
+            int nrThieves = team.getCapacity();
             for (int x = 0; x < nrThieves; x++) {
 
                 while (broker.readMessage(THIEF_READY_FOR_DEPARTURE_ACTION) == null) {
@@ -337,7 +337,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
             synchronized (broker) {
 
                 team = (Team) this.teamsHash.get(teamId);
-                team.incrementNrBusyThieves();
+                team.addThief(thiefId);
 
                 try {
                     broker.wait();
@@ -370,7 +370,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
             synchronized (broker) {
                 this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.OUTSIDE);
-                team.decrementNrBusyThieves();
+                team.removeThief(thiefId);
             }
 
             this.chiefBroker.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId));

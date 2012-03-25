@@ -11,7 +11,7 @@ public class Corridor implements TargetCorridor
     protected Integer[] inwards;
     protected Integer[] outwards;
 
-    protected HashMap thievesPositions = new HashMap();
+    protected HashMap<Integer, Integer> thievesPositions = new HashMap();
     protected int maxDistanceBetweenThieves;
     protected int atTheRoom = 0;
 
@@ -21,7 +21,7 @@ public class Corridor implements TargetCorridor
      * Constructor of a Corridor
      * @param nrPositions - the length of the corridor
      * @param maxDistanceBetweenThieves - the maximum distance between thieves
-     * @param logger - the logger used to store the process 
+     * @param logger - the logger used to store the process
      */
     public Corridor(int nrPositions, int maxDistanceBetweenThieves, Logger logger)
     {
@@ -35,11 +35,26 @@ public class Corridor implements TargetCorridor
     }
 
     /**
-     * Method that clears the positions of the corridor
+     *
      */
     public int getTotalPositions()
     {
         return this.inwards.length + this.outwards.length;
+    }
+
+    /**
+     *
+     */
+    public Integer getThiefPosition(int thiefId)
+    {
+        assert(this.thievesPositions.containsKey(thiefId));
+
+        Integer pos = this.thievesPositions.get(thiefId);
+        if (pos == null || pos == -1 || pos > this.getTotalPositions()) {
+            return null;
+        }
+
+        return pos;
     }
 
     /**
@@ -241,7 +256,7 @@ public class Corridor implements TargetCorridor
             if (moved) {
                 if (newPosition >= this.inwards.length) {
                     ret = true;
-                    this.thievesPositions.put(thiefId, this.inwards.length + this.outwards.length);
+                    this.thievesPositions.put(thiefId, this.getTotalPositions());
                     System.out.println("[Thief #" + thiefId +"] Moved successfully outside the inwards corridor");
                 } else {
                     this.thievesPositions.put(thiefId, newPosition + this.outwards.length);

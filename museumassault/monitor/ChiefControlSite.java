@@ -8,7 +8,7 @@ public interface ChiefControlSite
 {
 	/**
      * Method that decides if there are still rooms to rob
-     * @param chiefID - the id of the chief
+     * @param chiefId - the id of the chief
      * @return Integer - Returns the id of the room that is being robbed
      */
     public Integer appraiseSit(int chiefId);

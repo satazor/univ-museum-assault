@@ -106,11 +106,10 @@ public class Logger
     /**
      *
      */
-    protected void printHeader()
+    protected synchronized void printHeader()
     {
         if (this.writeBuff != null) {
             try {
-
                 this.writeBuff.write("Assault to the museum");
                 this.writeBuff.newLine();
                 this.writeBuff.newLine();
@@ -140,7 +139,7 @@ public class Logger
 
                 length = this.teams.length;
                 for (int x = 0; x < length; x++) {
-                    int nrColumns = 12 + this.teams[x].getNrThieves()*6;
+                    int nrColumns = 12 + this.teams[x].getCapacity()*6;
                     this.writeBuff.write(String.format("%-" + nrColumns + "s", "PARTY_" + x));
                 }
 
@@ -149,7 +148,7 @@ public class Logger
                 for (int x = 0; x < length; x++) {
                     this.writeBuff.write(String.format("%-4s", "RId"));
                     this.writeBuff.write(String.format("%-6s", "RTPos"));
-                    int nrMembers = this.teams[x].getNrThieves();
+                    int nrMembers = this.teams[x].getCapacity();
                     for (int y = 0; y < nrMembers; y++) {
                         this.writeBuff.write(String.format("%-6s", "Mem_" + y));
                     }
@@ -166,7 +165,7 @@ public class Logger
     /**
      *
      */
-    protected void writeToLog()
+    protected synchronized void writeToLog()
     {
         if (this.writeBuff != null) {
             try {
@@ -187,11 +186,19 @@ public class Logger
                 for (int x = 0; x < length; x++) {
                     Room room = this.teams[x].getAssignedRoom();
                     this.writeBuff.write(String.format("%-4s", room != null ? this.teams[x].getAssignedRoom().getId() : "-"));
-                    this.writeBuff.write(String.format("%-6s", room != null ? room.getCorridor().getTotalPositions() : "-" ));
-                    int nrMembers = this.teams[x].getNrThieves();
-                    for (int y = 0; y < nrMembers; y++) {
-                        this.writeBuff.write(String.format("%-3s", "-"));
-                        this.writeBuff.write(String.format("%-3s", "-"));
+                    this.writeBuff.write(String.format("%-6s", room != null ? room.getCorridor().getTotalPositions() : "-"));
+                    int[] thievesIds = this.teams[x].getThiefs();
+                    int nrMembers = thievesIds.length;
+                    int capacity = this.teams[x].getCapacity();
+                    for (int y = 0; y < capacity; y++) {
+                        if (y >= nrMembers) {
+                            this.writeBuff.write(String.format("%-3s", "-"));
+                            this.writeBuff.write(String.format("%-3s", "-"));
+                        } else {
+                            this.writeBuff.write(String.format("%-3s", thievesIds[y]));
+                            Integer position = room != null ? room.getCorridor().getThiefPosition(y) : null;
+                            this.writeBuff.write(String.format("%-3s", position != null ? position : "-" ));
+                        }
                     }
                     this.writeBuff.write("  ");
                 }
