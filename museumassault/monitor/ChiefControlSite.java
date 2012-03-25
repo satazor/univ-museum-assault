@@ -31,4 +31,9 @@ public interface ChiefControlSite
      *
      */
     public void collectCanvas(int thiefId);
+
+    /**
+     *
+     */
+    public int sumUpResults();
 }

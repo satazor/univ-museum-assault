@@ -59,5 +59,7 @@ public class Chief extends Thread
             System.out.println("[Chief] Collecting canvas of thief #" + thiefId + "..");
             this.site.collectCanvas(thiefId);
         }
+
+        System.out.println("[Chief] Total canvas collected: " + this.site.sumUpResults());
     }
 }

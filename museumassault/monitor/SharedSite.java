@@ -324,4 +324,16 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
             }
         }
     }
+
+    /**
+     * 
+     * @return
+     */
+    @Override
+    public int sumUpResults() {
+
+        synchronized (this.chiefBroker) {
+            return this.nrCanvasCollected;
+        }
+    }
 }
