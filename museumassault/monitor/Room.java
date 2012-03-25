@@ -1,23 +1,24 @@
-package museumassault;
+package museumassault.monitor;
 
 /**
  *
  * @author André
  */
-public class Room
+public class Room implements TargetRoom
 {
     protected boolean beingRobed = false;
-    protected boolean hasCanvas = true;
     protected int id;
+    protected int nrCanvas;
     protected Corridor corridor;
 
     /**
      *
      * @param id
      */
-    public Room(int id, Corridor corridor)
+    public Room(int id, int nrCanvas, Corridor corridor)
     {
         this.id = id;
+        this.nrCanvas = nrCanvas;
         this.corridor = corridor;
     }
 
@@ -37,6 +38,15 @@ public class Room
     public Corridor getCorridor()
     {
         return this.corridor;
+    }
+    /**
+     *
+     * @return
+     */
+    @Override
+    public TargetCorridor getTargetCorridor()
+    {
+        return (TargetCorridor) this.corridor;
     }
 
     /**
@@ -61,17 +71,13 @@ public class Room
      *
      * @return
      */
-    public boolean stillHasCanvas()
+    @Override
+    public synchronized boolean rollACanvas()
     {
-        return this.hasCanvas;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean stillHasCanvas(boolean hasCanvas)
-    {
-        return this.hasCanvas = hasCanvas;
+        if (this.nrCanvas > 0) {
+            this.nrCanvas--;
+            return true;
+        }
+        return false;
     }
 }

@@ -1,5 +1,7 @@
 package museumassault;
 
+import museumassault.monitor.Corridor;
+import museumassault.monitor.Room;
 import museumassault.monitor.SharedSite;
 
 /**
@@ -15,7 +17,7 @@ public class MuseumAssault
     public static void main(String[] args)
     {
         int nrChiefs = 1;
-        int nrTeams = 2;
+        int nrTeams = 1;
         int nrThievesPerTeam = 5;
         int nrRooms = 4;
         int totalThieves = nrTeams * nrThievesPerTeam;
@@ -27,7 +29,7 @@ public class MuseumAssault
 
         Room[] rooms = new Room[nrRooms];
         for (int x = 0; x < nrRooms; x++) {
-            rooms[x] = new Room(x + 1, new Corridor(5));
+            rooms[x] = new Room(x + 1, 5, new Corridor(6, 1));
         }
 
         SharedSite site = new SharedSite(rooms, teams, (nrChiefs > 1));

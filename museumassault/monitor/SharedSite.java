@@ -1,7 +1,6 @@
 package museumassault.monitor;
 
 import java.util.HashMap;
-import museumassault.Room;
 import museumassault.Team;
 import museumassault.custom_message.HandCanvasMessage;
 import museumassault.custom_message.PrepareAssaultMessage;
@@ -25,6 +24,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
     protected Room[] rooms;
     protected HashMap roomsHash = new HashMap();
+    protected HashMap roomsStatus = new HashMap();
 
     protected Team[] teams;
     protected HashMap teamsHash = new HashMap();
@@ -67,6 +67,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
         this.nrRoomsToBeRobed = rooms.length;
         for (int x = 0; x < this.nrRoomsToBeRobed; x++) {
             this.roomsHash.put(rooms[x].getId(), rooms[x]);
+            this.roomsStatus.put(rooms[x].getId(), true);
         }
     }
 
@@ -82,7 +83,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
                 int nrRooms = this.rooms.length;
                 for (int x = 0; x < nrRooms; x++) {
-                    if (this.rooms[x].stillHasCanvas() && !this.rooms[x].isBeingRobed()) {
+                    if ((boolean) this.roomsStatus.get(this.rooms[x].getId()) && !this.rooms[x].isBeingRobed()) {
                         this.rooms[x].isBeingRobed(true);
                         return this.rooms[x].getId();
                     }
@@ -122,6 +123,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
                         }
                     }
 
+                    room.getCorridor().clearPositions();
                     return this.teams[x].getId();
                 }
             }
@@ -227,8 +229,8 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
                     if (message.rolledCanvas()) this.nrCanvasCollected++;
 
                     Room room = team.getAssignedRoom();
-                    if (room.stillHasCanvas() && !message.rolledCanvas()) {
-                        room.stillHasCanvas(false);
+                    if ((boolean) this.roomsStatus.get(room.getId()) && !message.rolledCanvas()) {
+                        this.roomsStatus.put(room.getId(), false);
                         this.nrRoomsToBeRobed--;
                     }
                 }
@@ -267,7 +269,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
      *
      */
     @Override
-    public Room prepareExcursion(int teamId) {
+    public TargetRoom prepareExcursion(int teamId) {
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
         if (broker == null) {

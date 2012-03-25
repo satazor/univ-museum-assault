@@ -1,5 +1,6 @@
 package museumassault;
 
+import museumassault.monitor.TargetRoom;
 import museumassault.monitor.ThievesConcentrationSite;
 
 /**
@@ -33,27 +34,27 @@ public class Thief extends Thread
     {
         while (true) {
 
-            try {
-                this.teamId = this.site.amINeeded(this.id);
+            this.teamId = this.site.amINeeded(this.id);
 
-                // Prepare for excursion
-                Room room = this.site.prepareExcursion(this.teamId);
+            // Prepare for excursion
+            TargetRoom room = this.site.prepareExcursion(this.teamId);
 
-                System.out.println("[Thief #" + this.id + "] Started crawling in..");
+            System.out.println("[Thief #" + this.id + "] Started crawling in..");
 
-                // Simulate crawling
-                //room.getCorridor().crallIn(this.id, 1);
-                sleep((long) (1 + 1000 * Math.random()));
+            // Crall in
+            while (!room.getTargetCorridor().crallIn(this.id, 1)) {}
 
-                System.out.println("[Thief #" + this.id + "] Started crawling out..");
+            System.out.println("[Thief #" + this.id + "] Rolling canvas..");
+            boolean rolledCanvas = room.rollACanvas();
 
-                sleep((long) (1 + 1000 * Math.random()));
+            System.out.println("[Thief #" + this.id + "] Started crawling out..");
 
-                // Hand the canvas
-                System.out.println("[Thief #" + this.id + "] Handing canvas..");
-                this.site.handACanvas(this.id, this.teamId, Math.random() < 0.9);
+            // Crall out
+            while (!room.getTargetCorridor().crallOut(this.id, 1)) {}
 
-            } catch (InterruptedException ex) {}
+            // Hand the canvas
+            System.out.println("[Thief #" + this.id + "] Handing canvas..");
+            this.site.handACanvas(this.id, this.teamId, rolledCanvas);
         }
     }
 }

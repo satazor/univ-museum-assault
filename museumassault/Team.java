@@ -1,5 +1,7 @@
 package museumassault;
 
+import museumassault.monitor.Room;
+
 /**
  *
  * @author André

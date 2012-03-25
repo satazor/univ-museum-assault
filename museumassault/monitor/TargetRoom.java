@@ -4,17 +4,16 @@ package museumassault.monitor;
  *
  * @author André
  */
-public interface ThiefCorridor
+public interface TargetRoom
 {
     /**
      *
      * @return
      */
-    public boolean crallIn();
-
+    public TargetCorridor getTargetCorridor();
     /**
-     * 
+     *
      * @return
      */
-    public boolean crallOut();
+    public boolean rollACanvas();
 }

@@ -1,7 +1,5 @@
 package museumassault.monitor;
 
-import museumassault.Room;
-
 /**
  *
  * @author André
@@ -16,7 +14,7 @@ public interface ThievesConcentrationSite
     /**
      *
      */
-    public Room prepareExcursion(int teamId);
+    public TargetRoom prepareExcursion(int teamId);
 
     /**
      *
