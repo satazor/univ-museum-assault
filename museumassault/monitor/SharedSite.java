@@ -9,7 +9,7 @@ import museumassault.message_broker.MessageBroker;
 
 /**
  *
- * @author André
+ * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 {

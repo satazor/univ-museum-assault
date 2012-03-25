@@ -5,7 +5,7 @@ import museumassault.monitor.ChiefControlSite;
 
 /**
  *
- * @author André
+ * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class Chief extends Thread
 {

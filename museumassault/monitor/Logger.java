@@ -9,7 +9,7 @@ import museumassault.Thief;
 
 /**
  *
- * @author André
+ * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class Logger
 {
@@ -106,7 +106,6 @@ public class Logger
     {
         if (this.writeBuff != null) {
             try {
-                // Write threads status header
                 int length = this.chiefs.length;
                 for (int x = 0; x < length; x++) {
                     this.writeBuff.write(String.format("%10s", "CHIEF_" + x));
@@ -115,6 +114,19 @@ public class Logger
                 for (int x = 0; x < length; x++) {
                     this.writeBuff.write(String.format("%10s", "THIEF_" + x));
                 }
+
+                this.writeBuff.newLine();
+
+                length = this.chiefs.length;
+                for (int x = 0; x < length; x++) {
+                    this.writeBuff.write(String.format("%10s", "Stat"));
+                }
+                length = this.thieves.length;
+                for (int x = 0; x < length; x++) {
+                    this.writeBuff.write(String.format("%6s", "Stat"));
+                    this.writeBuff.write(String.format("%4s", "Str"));
+                }
+
                 this.writeBuff.newLine();
             } catch (IOException e) {
                 System.err.println("Unable to write to log file " + this.fileName);

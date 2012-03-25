@@ -8,7 +8,7 @@ import museumassault.monitor.SharedSite;
 
 /**
  *
- * @author André
+ * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class MuseumAssault
 {

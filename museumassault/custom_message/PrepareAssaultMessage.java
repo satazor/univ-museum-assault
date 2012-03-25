@@ -5,7 +5,7 @@ import museumassault.message_broker.Message;
 /**
  * Message class.
  *
- * @author André
+ * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class PrepareAssaultMessage extends Message
 {

@@ -4,7 +4,7 @@ import museumassault.monitor.Room;
 
 /**
  *
- * @author André
+ * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class Team {
 

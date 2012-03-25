@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 /**
  *
- * @author André
+ * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class MessageBroker
 {

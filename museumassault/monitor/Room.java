@@ -2,7 +2,7 @@ package museumassault.monitor;
 
 /**
  *
- * @author André
+ * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class Room implements TargetRoom
 {

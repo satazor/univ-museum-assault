@@ -5,7 +5,7 @@ import museumassault.monitor.ThievesConcentrationSite;
 
 /**
  *
- * @author André
+ * @author Andre Cruz <andremiguelcruz@ua.pt>
  *
  * @TODO: There should be two Team Interfaces, one for the Chief and one for the thieves
  */

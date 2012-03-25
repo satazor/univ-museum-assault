@@ -3,7 +3,7 @@ package museumassault.message_broker;
 /**
  * Message class.
  *
- * @author André
+ * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class Message
 {
