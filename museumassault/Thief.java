@@ -67,21 +67,21 @@ public class Thief extends Thread
             // Prepare for excursion
             TargetRoom room = this.site.prepareExcursion(this.id, this.teamId);
 
-            System.out.println("[Thief #" + this.id + "] Started crawling in..");
+            //System.out.println("[Thief #" + this.id + "] Started crawling in..");
 
             // Crawl in
             while (!room.getTargetCorridor().crawlOut(this.id, this.power)) {}
 
-            System.out.println("[Thief #" + this.id + "] Rolling canvas..");
+            //System.out.println("[Thief #" + this.id + "] Rolling canvas..");
             boolean rolledCanvas = room.rollACanvas(this.id);
 
-            System.out.println("[Thief #" + this.id + "] Started crawling out..");
+            //System.out.println("[Thief #" + this.id + "] Started crawling out..");
 
             // Crawl out
             while (!room.getTargetCorridor().crawlIn(this.id, this.power)) {}
 
             // Hand the canvas
-            System.out.println("[Thief #" + this.id + "] Handing canvas..");
+            //System.out.println("[Thief #" + this.id + "] Handing canvas..");
             this.site.handACanvas(this.id, this.teamId, rolledCanvas);
         }
     }

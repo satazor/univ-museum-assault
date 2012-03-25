@@ -212,7 +212,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
                 broker.writeMessage(new Message(SEND_ASSAULT_PARTY_ACTION));
             }
 
-            System.out.println("[Chief] Notifying all thieves of the party to start crawling to room #" + team.getAssignedRoom().getId() + "..");
+            //System.out.println("[Chief] Notifying all thieves of the party to start crawling to room #" + team.getAssignedRoom().getId() + "..");
 
             synchronized (broker) {
                 broker.notifyAll();
@@ -327,7 +327,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
             synchronized (this.thievesBroker) {
 
-                System.out.println("[Thief #" + thiefId + "] Waiting for orders..");
+                //System.out.println("[Thief #" + thiefId + "] Waiting for orders..");
                 try {
                     this.thievesBroker.wait();
                 } catch (InterruptedException ex) {}
@@ -335,7 +335,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
             PrepareAssaultMessage message = (PrepareAssaultMessage) this.thievesBroker.readMessage(PREPARE_ASSAULT_ACTION);
             if (message != null) {
-                System.out.println("[Thief #" + thiefId + "] I am needed on team " + message.getTeamId() + "..");
+                //System.out.println("[Thief #" + thiefId + "] I am needed on team " + message.getTeamId() + "..");
                 return message.getTeamId();
             }
         }

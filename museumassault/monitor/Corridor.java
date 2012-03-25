@@ -100,7 +100,7 @@ public class Corridor implements TargetCorridor
         this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.CRAWLING_OUTWARDS);
 
         int newPosition = -1;
-        System.out.println("[Thief #" + thiefId +"] Crawl out from " + currentPosition + " with increment " + increment);
+        //System.out.println("[Thief #" + thiefId +"] Crawl out from " + currentPosition + " with increment " + increment);
 
         int offset;
         boolean foundSlot;
@@ -129,18 +129,18 @@ public class Corridor implements TargetCorridor
                     }
                     if (newPosition < this.outwards.length) {
                         this.outwards[newPosition] = thiefId;
-                        System.out.println("[Thief #" + thiefId +"] Found free slot in position #" + newPosition);
+                        //System.out.println("[Thief #" + thiefId +"] Found free slot in position #" + newPosition);
                     } else {
                         this.atTheRoom++;
-                        System.out.println("[Thief #" + thiefId +"] Lefting inwards corridor..");
+                        //System.out.println("[Thief #" + thiefId +"] Lefting inwards corridor..");
                     }
 
                     if (this.checkGaps()) {
-                        System.out.println("[Thief #" + thiefId +"] New position is OK");
+                        //System.out.println("[Thief #" + thiefId +"] New position is OK");
                         moved = true;
                         break;
                     } else {
-                        System.out.println("[Thief #" + thiefId +"] New position is not OK");
+                        //System.out.println("[Thief #" + thiefId +"] New position is not OK");
                         if (currentPosition != -1) {
                             this.outwards[currentPosition] = thiefId;
                         }
@@ -151,7 +151,7 @@ public class Corridor implements TargetCorridor
                         }
                     }
                 } else {
-                    System.out.println("[Thief #" + thiefId +"] No free slot in position #" + newPosition);
+                    //System.out.println("[Thief #" + thiefId +"] No free slot in position #" + newPosition);
                 }
             }
 
@@ -159,10 +159,10 @@ public class Corridor implements TargetCorridor
                 if (newPosition >= this.outwards.length) {
                     ret = true;
                     this.thievesPositions.put(thiefId, -1);
-                    System.out.println("[Thief #" + thiefId +"] Moved successfully outside the outwards corridor");
+                    //System.out.println("[Thief #" + thiefId +"] Moved successfully outside the outwards corridor");
                 } else {
                     this.thievesPositions.put(thiefId, newPosition);
-                    System.out.println("[Thief #" + thiefId +"] Moved successfully to position #" + newPosition);
+                    //System.out.println("[Thief #" + thiefId +"] Moved successfully to position #" + newPosition);
                 }
 
                 this.notifyAll();
@@ -174,7 +174,7 @@ public class Corridor implements TargetCorridor
             }
 
             try {
-                System.out.println("[Thief #" + thiefId +"] Could not find a position.. waiting..");
+                //System.out.println("[Thief #" + thiefId +"] Could not find a position.. waiting..");
                 this.notifyAll();
                 this.wait();
             } catch(InterruptedException e) {}
@@ -209,7 +209,7 @@ public class Corridor implements TargetCorridor
         this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.CRAWLING_INWARDS);
 
         int newPosition = -1;
-        System.out.println("[Thief #" + thiefId +"] Crawl in from " + currentPosition + " with increment " + increment);
+        //System.out.println("[Thief #" + thiefId +"] Crawl in from " + currentPosition + " with increment " + increment);
 
         int offset;
         boolean foundSlot;
@@ -240,17 +240,17 @@ public class Corridor implements TargetCorridor
                     }
                     if (newPosition < this.inwards.length) {
                         this.inwards[newPosition] = thiefId;
-                        System.out.println("[Thief #" + thiefId +"] Found free slot in position #" + newPosition);
+                        //System.out.println("[Thief #" + thiefId +"] Found free slot in position #" + newPosition);
                     } else {
-                        System.out.println("[Thief #" + thiefId +"] Lefting inwards corridor..");
+                        //System.out.println("[Thief #" + thiefId +"] Lefting inwards corridor..");
                     }
 
                     if (this.checkGaps()) {
-                        System.out.println("[Thief #" + thiefId +"] New position is OK");
+                        //System.out.println("[Thief #" + thiefId +"] New position is OK");
                         moved = true;
                         break;
                     } else {
-                        System.out.println("[Thief #" + thiefId +"] New position is not OK");
+                        //System.out.println("[Thief #" + thiefId +"] New position is not OK");
                         if (currentPosition != -1) {
                             this.inwards[currentPosition] = thiefId;
                         } else {
@@ -261,7 +261,7 @@ public class Corridor implements TargetCorridor
                         }
                     }
                 } else {
-                    System.out.println("[Thief #" + thiefId +"] No free slot in position #" + newPosition);
+                    //System.out.println("[Thief #" + thiefId +"] No free slot in position #" + newPosition);
                 }
             }
 
@@ -269,10 +269,10 @@ public class Corridor implements TargetCorridor
                 if (newPosition >= this.inwards.length) {
                     ret = true;
                     this.thievesPositions.put(thiefId, this.getTotalPositions());
-                    System.out.println("[Thief #" + thiefId +"] Moved successfully outside the inwards corridor");
+                    //System.out.println("[Thief #" + thiefId +"] Moved successfully outside the inwards corridor");
                 } else {
                     this.thievesPositions.put(thiefId, newPosition + this.outwards.length);
-                    System.out.println("[Thief #" + thiefId +"] Moved successfully to position #" + newPosition);
+                    //System.out.println("[Thief #" + thiefId +"] Moved successfully to position #" + newPosition);
                 }
 
                 this.notifyAll();
@@ -284,7 +284,7 @@ public class Corridor implements TargetCorridor
             }
 
             try {
-                System.out.println("[Thief #" + thiefId +"] Could not find a position.. waiting..");
+                //System.out.println("[Thief #" + thiefId +"] Could not find a position.. waiting..");
                 this.notifyAll();
                 this.wait();
             } catch(InterruptedException e) {}
@@ -303,11 +303,12 @@ public class Corridor implements TargetCorridor
 
         int length = this.outwards.length;
 
-        System.out.print("OUTWARDS: ");
-        for (int x = 0; x < length; x++) {
-            System.out.print("#" + x + " - " + this.outwards[x] + "  ");
-        }
-        System.out.println();
+        //System.out.print("OUTWARDS: ");
+        //for (int x = 0; x < length; x++) {
+        //    System.out.print("#" + x + " - " + this.outwards[x] + "  ");
+        //}
+        //System.out.println();
+
         int nrGaps = 0;
         boolean first = true;
         for (int x = 0; x < length; x++) {
@@ -333,11 +334,12 @@ public class Corridor implements TargetCorridor
         } else {
             nrGaps++;
         }
-                System.out.print("INWARDS: ");
-        for (int x = 0; x < length; x++) {
-            System.out.print("#" + x + " - " + this.inwards[x] + "  ");
-        }
-        System.out.println();
+
+        //System.out.print("INWARDS: ");
+        //for (int x = 0; x < length; x++) {
+        //    System.out.print("#" + x + " - " + this.inwards[x] + "  ");
+        //}
+        //System.out.println();
 
         for (int x = 0; x < length; x++) {
             if (this.inwards[x] != null) {
