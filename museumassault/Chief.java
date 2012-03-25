@@ -1,6 +1,5 @@
 package museumassault;
 
-import java.util.HashMap;
 import museumassault.monitor.ChiefControlSite;
 
 /**
@@ -14,7 +13,6 @@ import museumassault.monitor.ChiefControlSite;
 public class Chief extends Thread
 {
     protected ChiefControlSite site;
-    protected HashMap roomsStatus = new HashMap();
     protected int id;
 
     /**
@@ -40,7 +38,7 @@ public class Chief extends Thread
     }
 
     /**
-     * Runs the chief lifecycle.
+     * Runs the chief life cycle.
      */
     @Override
     public void run()

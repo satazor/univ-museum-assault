@@ -14,7 +14,7 @@ public class Corridor implements TargetCorridor
     protected Integer[] inwards;
     protected Integer[] outwards;
 
-    protected HashMap<Integer, Integer> thievesPositions = new HashMap();
+    protected HashMap<Integer, Integer> thievesPositions = new HashMap<>();
     protected int maxDistanceBetweenThieves;
     protected int atTheRoom = 0;
 
@@ -24,7 +24,7 @@ public class Corridor implements TargetCorridor
      * Class constructor.
      *
      * @param nrPositions               the number of positions of the corridor
-     * @param maxDistanceBetweenThieves max allowed distance betwen positions
+     * @param maxDistanceBetweenThieves max allowed distance between positions
      * @param logger                    the logger to log the program state
      */
     public Corridor(int nrPositions, int maxDistanceBetweenThieves, Logger logger)

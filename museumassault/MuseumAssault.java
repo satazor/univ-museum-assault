@@ -20,6 +20,7 @@ public class MuseumAssault
      */
     public static void main(String[] args)
     {
+    	// Configurable params
         int nrChiefs = 1;
         int nrTeams = 2;
         int nrThievesPerTeam = 5;
@@ -27,10 +28,12 @@ public class MuseumAssault
         int maxDistanceBetweenThieves = 1;
         int totalThieves = nrTeams * nrThievesPerTeam;
         String logFileName = "log.txt";
+        
+        
         Random random = new Random();
         Logger logger = new Logger(logFileName);
 
-        // Initing the necessary entities
+        // Initializing the necessary entities
         Team[] teams = new Team[nrTeams];
         for (int x = 0; x < nrTeams; x++) {
             teams[x] = new Team(x + 1, nrThievesPerTeam);

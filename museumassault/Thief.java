@@ -55,7 +55,7 @@ public class Thief extends Thread
     }
 
     /**
-     * Runs the thief lifecycle.
+     * Runs the thief life cycle.
      */
     @Override
     public void run()

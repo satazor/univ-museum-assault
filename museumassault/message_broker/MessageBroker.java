@@ -15,11 +15,11 @@ import java.util.LinkedList;
  */
 public class MessageBroker
 {
-    HashMap messages = new HashMap();
+    HashMap<Integer, LinkedList<Message>> messages = new HashMap<>();
 
     /**
      * Reads a message from the broker.
-     * If muliple messages with the same action exists, the first is returned.
+     * If multiple messages with the same action exists, the first is returned.
      *
      * @param action the action of the message that is expected to be read
      *
@@ -27,7 +27,7 @@ public class MessageBroker
      */
     public synchronized Message readMessage(int action)
     {
-        LinkedList messagesList = (LinkedList) this.messages.get(action);
+    	LinkedList<Message> messagesList = this.messages.get(action);
 
         if (messagesList != null) {
             if (messagesList.size() > 0) {
@@ -49,7 +49,7 @@ public class MessageBroker
      */
     public Message readMessage(int action, int originId)
     {
-        LinkedList messagesList = (LinkedList) this.messages.get(action);
+    	LinkedList<Message> messagesList = this.messages.get(action);
 
         if (messagesList != null) {
             int length = messagesList.size();
@@ -73,10 +73,10 @@ public class MessageBroker
      */
     public synchronized void writeMessage(Message message)
     {
-        LinkedList messagesList = (LinkedList) this.messages.get(message.getAction());
+    	LinkedList<Message> messagesList = this.messages.get(message.getAction());
 
         if (messagesList == null) {
-            messagesList = new LinkedList();
+            messagesList = new LinkedList<>();
             this.messages.put(message.getAction(), messagesList);
         }
 

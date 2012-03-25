@@ -29,12 +29,12 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     protected final MessageBroker thievesBroker = new MessageBroker();
 
     protected Room[] rooms;
-    protected HashMap roomsHash = new HashMap();
-    protected HashMap roomsStatus = new HashMap();
+    protected HashMap<Integer, Room> roomsHash = new HashMap<>();
+    protected HashMap<Integer, Boolean> roomsStatus = new HashMap<>();
 
     protected Team[] teams;
-    protected HashMap teamsHash = new HashMap();
-    protected HashMap teamsBroker = new HashMap();
+    protected HashMap<Integer, Team> teamsHash = new HashMap<>();
+    protected HashMap<Integer, MessageBroker> teamsBroker = new HashMap<>();
 
     protected int nrRoomsToBeRobed;
     protected int nrCollectedCanvas = 0;

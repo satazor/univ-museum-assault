@@ -11,7 +11,7 @@ import museumassault.Thief;
 /**
  * Logger class.
  *
- * This class is reponsible for producing the log file.
+ * This class is responsible for producing the log file.
  * There is a internal buffer in which the contents are written.
  * When the buffer reaches a certain threshold or when terminateLog() is called,
  * the contents are really written to the file, avoiding heavy I/O.
@@ -35,8 +35,8 @@ public class Logger
         CRAWLING_OUTWARDS
     };
 
-    protected HashMap chiefsStatus = new HashMap();
-    protected HashMap thievesStatus = new HashMap();
+    protected HashMap<Integer, String> chiefsStatus = new HashMap<>();
+    protected HashMap<Integer, String> thievesStatus = new HashMap<>();
     protected Chief[] chiefs;
     protected Thief[] thieves;
     protected Team[] teams;
@@ -68,7 +68,7 @@ public class Logger
      *
      * @param chiefs  the chiefs instances
      * @param thieves the thieves instances
-     * @param teams   the teams intances
+     * @param teams   the teams instances
      */
     public void initialize(Chief[] chiefs, Thief[] thieves, Team[] teams)
     {
@@ -247,9 +247,11 @@ public class Logger
     }
 
     /**
-     * Method that returns the tag associated with the given chief's status
-     * @param status - the chief's status
-     * @return String - Returns the tag associated with the status
+     * Converts from the status from the chief enum type to string.
+     *
+     * @param status the thief's status
+     *
+     * @return String the converted status
      */
     protected String statusToStr(CHIEF_STATUS status) {
 
@@ -270,9 +272,11 @@ public class Logger
     }
 
     /**
-     * Method that returns the tag associated with the given thief's status
-     * @param status - the thief's status
-     * @return String - Returns the tag associated with the status
+     * Converts from the status from the thief enum type to string.
+     *
+     * @param status the thief's status
+     *
+     * @return String the converted status
      */
     protected String statusToStr(THIEF_STATUS status) {
 

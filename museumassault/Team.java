@@ -18,7 +18,7 @@ public class Team
     protected int nrThieves;
     protected int nrBusyThieves = 0;
     protected Room room;
-    protected LinkedList<Integer> thiefIds = new LinkedList();
+    protected LinkedList<Integer> thiefIds = new LinkedList<>();
 
     /**
      * Class constructor.
@@ -64,7 +64,7 @@ public class Team
 
     /**
      * Adds a thief to the team.
-     * The team status will be set to busy automatically upon adition.
+     * The team status will be set to busy automatically upon addition.
      *
      * @param thiefId the id of the thief to be added
      */
@@ -105,7 +105,7 @@ public class Team
     }
 
     /**
-     * Get the thiefs currently in the team.
+     * Get the thieves currently in the team.
      *
      * @return the array of ids of the thieves currently present
      */

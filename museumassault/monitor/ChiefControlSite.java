@@ -4,7 +4,7 @@ package museumassault.monitor;
  * ChiefControlSite interface.
  *
  * This interfaces exposes all the methods that a chief should be aware off to
- * complete its lifecycle.
+ * complete its life cycle.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
