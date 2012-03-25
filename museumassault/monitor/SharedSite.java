@@ -161,6 +161,8 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
                     this.teams[x].isBeingPrepared(true);
                     this.teams[x].setAssignedRoom(room);
+                    room.getCorridor().clearPositions();
+
                     int nrThieves = this.teams[x].getCapacity();
                     for (int y = 0; y < nrThieves; y++) {
                         this.thievesBroker.writeMessage(new PrepareAssaultMessage(PREPARE_ASSAULT_ACTION, this.teams[x].getId(), roomId));
@@ -169,7 +171,6 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
                         }
                     }
 
-                    room.getCorridor().clearPositions();
                     return this.teams[x].getId();
                 }
             }

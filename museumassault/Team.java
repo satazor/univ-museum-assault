@@ -176,6 +176,7 @@ public class Team
             this.room.isBeingRobed(busy);
         }
 
+        this.beingPrepared = busy;
         this.busy = busy;
     }
 

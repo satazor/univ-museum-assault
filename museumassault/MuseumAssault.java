@@ -22,14 +22,14 @@ public class MuseumAssault
     {
     	// Configurable params
         int nrChiefs = 1;
-        int nrTeams = 2;
+        int nrTeams = 1;
         int nrThievesPerTeam = 5;
         int nrRooms = 4;
         int maxDistanceBetweenThieves = 1;
         int totalThieves = nrTeams * nrThievesPerTeam;
         String logFileName = "log.txt";
-        
-        
+
+
         Random random = new Random();
         Logger logger = new Logger(logFileName);
 
@@ -79,6 +79,7 @@ public class MuseumAssault
 
         logger.terminateLog(site.getNrCollectedCanvas());
 
+        System.out.println("Program terminated successfully, please check the log file.");
         System.exit(0);
     }
 }
