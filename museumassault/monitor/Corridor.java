@@ -3,6 +3,9 @@ package museumassault.monitor;
 import java.util.HashMap;
 
 /**
+ * Corridor class.
+ *
+ * This class represents the corridor between a room and the outside.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -18,10 +21,11 @@ public class Corridor implements TargetCorridor
     protected Logger logger;
 
     /**
-     * Constructor of a Corridor
-     * @param nrPositions - the length of the corridor
-     * @param maxDistanceBetweenThieves - the maximum distance between thieves
-     * @param logger - the logger used to store the process
+     * Class constructor.
+     *
+     * @param nrPositions               the number of positions of the corridor
+     * @param maxDistanceBetweenThieves max allowed distance betwen positions
+     * @param logger                    the logger to log the program state
      */
     public Corridor(int nrPositions, int maxDistanceBetweenThieves, Logger logger)
     {
@@ -35,7 +39,9 @@ public class Corridor implements TargetCorridor
     }
 
     /**
+     * Get the total number of positions.
      *
+     * @return the number of positions
      */
     public int getTotalPositions()
     {
@@ -43,12 +49,13 @@ public class Corridor implements TargetCorridor
     }
 
     /**
+     * Get the position of a thief.
      *
+     * @param thiefId the thief id
+     * @return the thief position within the corridor
      */
     public Integer getThiefPosition(int thiefId)
     {
-        assert(this.thievesPositions.containsKey(thiefId));
-
         Integer pos = this.thievesPositions.get(thiefId);
         if (pos == null || pos == -1 || pos > this.getTotalPositions()) {
             return null;
@@ -58,9 +65,10 @@ public class Corridor implements TargetCorridor
     }
 
     /**
-     *
+     * Clears all the positions of the thieves (cached ones).
      */
-    public void clearPositions() {
+    public void clearPositions()
+    {
 
         int length = this.inwards.length;
         for (int x = 0; x < length; x++) {
@@ -71,10 +79,12 @@ public class Corridor implements TargetCorridor
     }
 
     /**
-     * Method that moves the thief towards the room
-     * @param thiefId - the id of the thief that is moving
-     * @param increment - the number of steps that thief is trying to move
-     * @return boolean - Returns true if the thief managed to move to the wanted position
+     * Moves the thief towards the room.
+     *
+     * @param thiefId   the id of the thief that is moving
+     * @param increment the number of positions the thief is attempting to crawl
+     *
+     * @return True if the thief arrived the room entrance, false otherwise
      */
     @Override
     public synchronized boolean crawlOut(int thiefId, int increment)
@@ -174,10 +184,12 @@ public class Corridor implements TargetCorridor
     }
 
     /**
-     * Method that moves the thief from the room to the outside
-     * @param thiefId - the id of the thief that is moving
-     * @param increment - the number of steps that thief is trying to move
-     * @return boolean - Returns true if the thief managed to move to the wanted position
+     * Moves the thief towards the outside.
+     *
+     * @param thiefId   the id of the thief that is moving
+     * @param increment the number of positions the thief is attempting to crawl
+     *
+     * @return True if the thief arrived the outside entrance, false otherwise
      */
     @Override
     public synchronized boolean crawlIn(int thiefId, int increment)
@@ -282,10 +294,12 @@ public class Corridor implements TargetCorridor
     }
 
     /**
-     * Method that checks if the maximum distance between thieves is being passed or not
-     * @return boolean - Returns true if the maximum distance has been passed
+     * Checks if the currently displacement of thieves obey the maximum distance constraint.
+     *
+     * @return true if the constraint passed, false otherwise
      */
-    protected synchronized boolean checkGaps() {
+    protected synchronized boolean checkGaps()
+    {
 
         int length = this.outwards.length;
 

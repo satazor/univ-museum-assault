@@ -9,6 +9,12 @@ import museumassault.Team;
 import museumassault.Thief;
 
 /**
+ * Logger class.
+ *
+ * This class is reponsible for producing the log file.
+ * There is a internal buffer in which the contents are written.
+ * When the buffer reaches a certain threshold or when terminateLog() is called,
+ * the contents are really written to the file, avoiding heavy I/O.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -38,15 +44,17 @@ public class Logger
     FileWriter fileWriter;
     BufferedWriter writeBuff;
     String fileName;
-    protected boolean configured = false;
+    protected boolean initialized = false;
 
     /**
-     * Constructor of a Logger
-     * @param fileName - the name of the file to be written
+     * Class constructor
+     *
+     * @param fileName the path of the file in which the log will be saved
      */
     public Logger(String fileName)
     {
         this.fileName = fileName;
+
         try {
             this.fileWriter = new FileWriter(fileName);
             this.writeBuff = new BufferedWriter(fileWriter);
@@ -56,16 +64,18 @@ public class Logger
     }
 
     /**
-     * Method that initializes the status of the chiefs and thieves
-     * @param chiefs - the different chiefs that control the assault
-     * @param thieves - the different thieves that rob the paintings
+     * Initializes the logger with some necessary dependencies.
+     *
+     * @param chiefs  the chiefs instances
+     * @param thieves the thieves instances
+     * @param teams   the teams intances
      */
-    public void configure(Chief[] chiefs, Thief[] thieves, Team[] teams)
+    public void initialize(Chief[] chiefs, Thief[] thieves, Team[] teams)
     {
         this.thieves = thieves;
         this.chiefs = chiefs;
         this.teams = teams;
-        this.configured = true;
+        this.initialized = true;
 
         int length = chiefs.length;
         for (int x = 0; x < length; x++) {
@@ -77,38 +87,42 @@ public class Logger
             this.thievesStatus.put(thieves[x].getThiefId(), this.statusToStr(THIEF_STATUS.OUTSIDE));
         }
 
-        this.printHeader();
+        this.writeHeader();
         this.writeToLog();
     }
 
     /**
-     * Method that changes the chief's status
-     * @param status - the new status of the given chief
-     * @param chiefId - the id of the chief changing status
+     * Logs a change of a chief status.
+     *
+     * @param chiefId the id of the chief
+     * @param status  the status to be logged
      */
     public synchronized void setChiefStatus(int chiefId, CHIEF_STATUS status)
     {
-        assert(this.configured);
+        assert(this.initialized);
         this.chiefsStatus.put(chiefId, this.statusToStr(status));
 
         this.writeToLog();
     }
 
     /**
-     * Method that changes the thief's status
-     * @param status - the new status of the given thief
-     * @param thiefId - the id of the thief changing status
+     * Logs a change of a thief status.
+     *
+     * @param thiefId the id of the chief
+     * @param status  the status to be logged
      */
     public synchronized void setThiefStatus(int thiefId, THIEF_STATUS status)
     {
-        assert(this.configured);
+        assert(this.initialized);
         this.thievesStatus.put(thiefId, this.statusToStr(status));
 
         this.writeToLog();
     }
 
     /**
+     * Terminates the log file, flushing all the pending logs and writing the final result.
      *
+     * @param totalCanvas The total number of robed canvas
      */
     public synchronized void terminateLog(int totalCanvas)
     {
@@ -125,9 +139,9 @@ public class Logger
     }
 
     /**
-     * Method that prints the header of the log
+     * Write the log header to the buffer.
      */
-    protected synchronized void printHeader()
+    protected synchronized void writeHeader()
     {
         if (this.writeBuff != null) {
             try {
@@ -184,7 +198,7 @@ public class Logger
     }
 
     /**
-     * Method that writes on the file the contents of the buffer
+     * Writes the current state to the buffer.
      */
     protected synchronized void writeToLog()
     {

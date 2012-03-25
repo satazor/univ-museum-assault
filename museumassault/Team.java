@@ -134,7 +134,7 @@ public class Team
     /**
      * Set the assigned room for the team.
      *
-     * @param the room to be assigned
+     * @param room the room to be assigned
      */
     public void setAssignedRoom(Room room)
     {
@@ -184,7 +184,7 @@ public class Team
      *
      * A team is busy if it has thieves that are robbing a room.
      *
-     * @param busy true to set the team as busy, false otherwise
+     * @return true to set the team as busy, false otherwise
      */
     public boolean isBusy()
     {

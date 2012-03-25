@@ -10,6 +10,7 @@ import java.util.LinkedList;
  * It decouples a recipient from the sender with an indirect communication (with messages)
  * All the messages are indexed by action and stored in a first in first out policy.
  *
+ * @see Message
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class MessageBroker

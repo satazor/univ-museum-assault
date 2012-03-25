@@ -55,8 +55,8 @@ public class MuseumAssault
             chiefs[x] = chief;
         }
 
-        // Configure the logger
-        logger.configure(chiefs, thieves, teams);
+        // Initialize the logger
+        logger.initialize(chiefs, thieves, teams);
 
         // Start the threads
         for (int x = 0; x < totalThieves; x++) {

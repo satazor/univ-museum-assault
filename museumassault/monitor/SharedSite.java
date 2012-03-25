@@ -8,7 +8,13 @@ import museumassault.message_broker.Message;
 import museumassault.message_broker.MessageBroker;
 
 /**
+ * SharedSite class.
  *
+ * This class implements the chief control site and the thieves concentration site
+ * interfaces.
+ *
+ * @see ChiefControlSite
+ * @see ThievesConcentrationSite
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
@@ -37,10 +43,11 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     protected Logger logger;
 
     /**
-     * Constructor of the SharedSite for a single chief
-     * @param rooms - the number of rooms in the museum
-     * @param teams - the number of teams that are going to rob
-     * @param logger - the logger used to store the process
+     * Class constructor.
+     *
+     * @param rooms  the museum rooms
+     * @param teams  the teams
+     * @param logger the logger to log the program state
      */
     public SharedSite(Room[] rooms, Team[] teams, Logger logger)
     {
@@ -48,11 +55,12 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     * Constructor of the SharedSite for multiple chiefs
-     * @param rooms - the number of rooms in the museum
-     * @param teams - the number of teams that are going to rob
-     * @param logger - the logger used to store the process
-     * @param multipleMasters  - true if we want multiple chiefs to control the operation
+     * Class constructor.
+     *
+     * @param rooms           the museum rooms
+     * @param teams           the teams
+     * @param logger          the logger to log the program state
+     * @param multipleMasters true if muliple chiefs (masters) coexist, false otherwise
      */
     public SharedSite(Room[] rooms, Team[] teams, Logger logger, boolean multipleMasters)
     {
@@ -61,10 +69,11 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     * Method that initializes the SharedSite, starting the rooms and teams
-     * @param rooms - the number of rooms in the museum
-     * @param teams - the number of teams that are going to rob
-     * @param logger - the logger used to store the process
+     * Initializes the instance.
+     *
+     * @param rooms  the museum rooms
+     * @param teams  the teams
+     * @param logger the logger to log the program state
      */
     protected final void initialize(Room[] rooms, Team[] teams, Logger logger)
     {
@@ -86,7 +95,9 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
+     * Get the total number of canvas collected.
      *
+     * @return the number of canvas
      */
     public int getNrCollectedCanvas()
     {

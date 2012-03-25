@@ -1,25 +1,28 @@
 package museumassault.monitor;
 
 /**
+ * TargetRoom interface.
+ *
+ * This interface exposes all the methods that a thief should known in order to
+ * enter in it and to grab the its corridor.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public interface TargetRoom
 {
-
     /**
-     * Method that returns this TargetCorridor
+     * Get the corridor of the room.
      *
-     * @return TargetCorridor - Returns the TargetCorridor that leads to this
-     * room
+     * @return the corridor that leads to the room
      */
     public TargetCorridor getTargetCorridor();
 
     /**
-     * Method that removes a canvas from this room
+     * Attempts to roll a canvas from the room.
      *
-     * @param thiefId - the id of the thief that robbed this canvas
-     * @return boolean - Returns true if a canvas was successfully removed
+     * @param thiefId the thief id
+     *
+     * @return true if a canvas was successfully stolen, false otherwise
      */
     public boolean rollACanvas(int thiefId);
 }

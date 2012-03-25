@@ -13,8 +13,8 @@ import museumassault.monitor.ChiefControlSite;
  */
 public class Chief extends Thread
 {
-    ChiefControlSite site;
-    HashMap roomsStatus = new HashMap();
+    protected ChiefControlSite site;
+    protected HashMap roomsStatus = new HashMap();
     protected int id;
 
     /**

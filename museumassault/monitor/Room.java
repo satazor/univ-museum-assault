@@ -1,6 +1,9 @@
 package museumassault.monitor;
 
 /**
+ * Room class.
+ *
+ * This class represents a museum room.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -13,10 +16,12 @@ public class Room implements TargetRoom
     protected Logger logger;
 
     /**
-     * Constructor of a Room
-     * @param id - the id of the room
-     * @param corridor - the corridor that leads to this room 
-     * @param logger - the logger used to store the process
+     * Class constructor.
+     *
+     * @param id       the id of the room
+     * @param nrCanvas the number of canvas the room has initially
+     * @param corridor the corridor that leads to the room
+     * @param logger   the logger to log the program state
      */
     public Room(int id, int nrCanvas, Corridor corridor, Logger logger)
     {
@@ -27,8 +32,9 @@ public class Room implements TargetRoom
     }
 
     /**
-     * Method that returns the id of this room
-     * @return Integer - Returns the id of this room
+     * Get the room id.
+     *
+     * @return the id of the room
      */
     public int getId()
     {
@@ -36,16 +42,19 @@ public class Room implements TargetRoom
     }
 
     /**
-     * Method that returns the corridor that leads to this room
-     * @return Corridor - Returns the corridor that leads to this room
+     * Get the corridor that leads to the room (concrete).
+     *
+     * @return the corridor
      */
     public Corridor getCorridor()
     {
         return this.corridor;
     }
+
     /**
-     * Method that returns this TargetCorridor
-     * @return TargetCorridor - Returns the TargetCorridor that leads to this room
+     * Get the corridor that leads to the room.
+     *
+     * @return the corridor
      */
     @Override
     public TargetCorridor getTargetCorridor()
@@ -54,8 +63,9 @@ public class Room implements TargetRoom
     }
 
     /**
-     * Method that checks if the room is being robbed
-     * @return boolean - Returns true if this room is being robbed
+     * Check if the rooms is being robed.
+     *
+     * @return true if this room is being robbed, false otherwise
      */
     public boolean isBeingRobed()
     {
@@ -63,19 +73,21 @@ public class Room implements TargetRoom
     }
 
     /**
-     * Method that checks if the room is being robbed
-     * @param robed - true if we want to check i the room is being robbed
-     * @return boolean - Returns true if this room is being robbed
+     * Sets if a room is being robed.
+     *
+     * @param robed true to set the robed state to true, false otherwise
      */
-    public boolean isBeingRobed(boolean robed)
+    public void isBeingRobed(boolean robed)
     {
-        return this.beingRobed = robed;
+        this.beingRobed = robed;
     }
 
     /**
-     * Method that removes a canvas from this room
-     * @param thiefId - the id of the thief that robbed this canvas
-     * @return boolean - Returns true if a canvas was successfully removed
+     * Attempts to roll a canvas from the room.
+     *
+     * @param thiefId the thief id
+     *
+     * @return true if a canvas was successfully stolen, false otherwise
      */
     @Override
     public synchronized boolean rollACanvas(int thiefId)
