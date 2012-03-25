@@ -54,7 +54,9 @@ public class Logger
     }
 
     /**
-     *
+     * Method that initializes the status of the chiefs and thieves
+     * @param chiefs - the different chiefs that control the assault
+     * @param thieves - the different thieves that rob the paintings
      */
     public void configure(Chief[] chiefs, Thief[] thieves)
     {
@@ -77,8 +79,9 @@ public class Logger
     }
 
     /**
-     *
-     * @param status
+     * Method that changes the chief's status
+     * @param status - the new status of the given chief
+     * @param chiefId - the id of the chief changing status
      */
     public synchronized void setChiefStatus(int chiefId, CHIEF_STATUS status)
     {
@@ -89,8 +92,9 @@ public class Logger
     }
 
     /**
-     *
-     * @param status
+     * Method that changes the thief's status
+     * @param status - the new status of the given thief
+     * @param thiefId - the id of the thief changing status
      */
     public synchronized void setThiefStatus(int thiefId, THIEF_STATUS status)
     {
@@ -101,7 +105,7 @@ public class Logger
     }
 
     /**
-     *
+     * Method that prints the header of the log
      */
     protected void printHeader()
     {
@@ -136,7 +140,7 @@ public class Logger
     }
 
     /**
-     *
+     * Method that writes on the file the contents of the buffer
      */
     protected void writeToLog()
     {
@@ -162,7 +166,9 @@ public class Logger
     }
 
     /**
-     *
+     * Method that returns the tag associated with the given chief's status
+     * @param status - the chief's status
+     * @return String - Returns the tag associated with the status
      */
     protected String statusToStr(CHIEF_STATUS status) {
 
@@ -183,7 +189,9 @@ public class Logger
     }
 
     /**
-     *
+     * Method that returns the tag associated with the given thief's status
+     * @param status - the thief's status
+     * @return String - Returns the tag associated with the status
      */
     protected String statusToStr(THIEF_STATUS status) {
 
