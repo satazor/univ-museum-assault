@@ -360,12 +360,16 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
             throw new RuntimeException("Unknown team with id #" + teamId);
         }
 
-        broker.writeMessage(new Message(THIEF_READY_FOR_DEPARTURE_ACTION));
-
+        boolean sentMessage = false;
         while (true) {
 
             Team team;
             synchronized (broker) {
+
+                if (!sentMessage) {
+                    sentMessage = true;
+                    broker.writeMessage(new Message(THIEF_READY_FOR_DEPARTURE_ACTION));
+                }
 
                 team = (Team) this.teamsHash.get(teamId);
                 team.addThief(thiefId);

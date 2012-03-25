@@ -300,12 +300,11 @@ public class Corridor implements TargetCorridor
      */
     protected synchronized boolean checkGaps()
     {
-
         int length = this.outwards.length;
 
         //System.out.print("OUTWARDS: ");
         //for (int x = 0; x < length; x++) {
-        //    System.out.print("#" + x + " - " + this.outwards[x] + "  ");
+            //System.out.print("#" + x + " - " + this.outwards[x] + "  ");
         //}
         //System.out.println();
 
@@ -337,7 +336,7 @@ public class Corridor implements TargetCorridor
 
         //System.out.print("INWARDS: ");
         //for (int x = 0; x < length; x++) {
-        //    System.out.print("#" + x + " - " + this.inwards[x] + "  ");
+            //System.out.print("#" + x + " - " + this.inwards[x] + "  ");
         //}
         //System.out.println();
 
