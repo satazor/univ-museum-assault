@@ -4,10 +4,11 @@ import museumassault.monitor.TargetRoom;
 import museumassault.monitor.ThievesConcentrationSite;
 
 /**
+ * Thief class.
+ *
+ * This class represents a thief that runs in a thread.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
- *
- * @TODO: There should be two Team Interfaces, one for the Chief and one for the thieves
  */
 public class Thief extends Thread
 {
@@ -17,9 +18,11 @@ public class Thief extends Thread
     protected int power;
 
     /**
-     * Constructor of a Thief
-     * @param id - the id of this thief
-     * @param site -  the site where the thieves will take action
+     * Class constructor.
+     *
+     * @param id    the id of the thief
+     * @param power the number of maximum positions a thief can crawl
+     * @param site  the site where the thieves will concentrate (exterior)
      */
     public Thief(int id, int power, ThievesConcentrationSite site)
     {
@@ -31,8 +34,9 @@ public class Thief extends Thread
     }
 
     /**
-     * Method that returns the if of this thief
-     * @return Integer - Returns the id of this thief
+     * Get the thief id.
+     *
+     * @return The thief id
      */
     public int getThiefId()
     {
@@ -40,8 +44,10 @@ public class Thief extends Thread
     }
 
     /**
-     * Method that returns the power of this thief (maximum number of steps he can take)
-     * @return Integer - Returns the power of this thief
+     * Get the power of the thief.
+     * The power is associated to the maximum of positions allowed to crawl at once.
+     *
+     * @return the power of this thief
      */
     public int getPower()
     {
@@ -49,7 +55,7 @@ public class Thief extends Thread
     }
 
     /**
-     *
+     * Runs the thief lifecycle.
      */
     @Override
     public void run()

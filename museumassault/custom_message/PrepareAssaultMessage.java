@@ -3,7 +3,9 @@ package museumassault.custom_message;
 import museumassault.message_broker.Message;
 
 /**
- * Message class.
+ * PrepareAssaultMessage class.
+ *
+ * This custom message is used when preparing an assault.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -11,11 +13,13 @@ public class PrepareAssaultMessage extends Message
 {
     protected int roomId;
     protected int teamId;
+
     /**
-     * Constructor of a PrepareAssaultMessage
-     * @param action - the action to be performed
-     * @param teamId - the id of the team that is going to take action
-     * @param roomId - the id of the room 
+     * Class constructor.
+     *
+     * @param action the action that was performed
+     * @param teamId the id of the team that will assault the room
+     * @param roomId the id of the room that will be robbed
      */
     public PrepareAssaultMessage(int action, int teamId, int roomId)
     {
@@ -26,16 +30,18 @@ public class PrepareAssaultMessage extends Message
     }
 
     /**
-     * Method that returns the id of the room to rob
-     * @return Integer - Returns the id of the room
+     * Get the room id.
+     *
+     * @return the id of the room
      */
     public int getRoomId() {
         return this.roomId;
     }
 
     /**
-     * Method that returns the id of the team that is going to rob
-     * @return Integer - Returns the id of the team
+     * Get the team id.
+     *
+     * @return the id of the team
      */
     public int getTeamId() {
         return this.teamId;

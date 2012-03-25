@@ -4,20 +4,24 @@ import java.util.HashMap;
 import museumassault.monitor.ChiefControlSite;
 
 /**
+ * Chief class.
+ *
+ * This class represents a chief that runs in a thread.
+ * The thread will live until the rooms are empty and all the canvasses are collected.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class Chief extends Thread
 {
-
     ChiefControlSite site;
     HashMap roomsStatus = new HashMap();
     protected int id;
 
     /**
-     * Constructor of a Chief
-     * @param id - the id of the chief
-     * @param site - the site where the chief will control the thieves
+     * Class constructor.
+     *
+     * @param id   the id of the chief
+     * @param site the chief control site (exterior)
      */
     public Chief(int id, ChiefControlSite site)
     {
@@ -26,7 +30,9 @@ public class Chief extends Thread
     }
 
     /**
+     * Get the thief id.
      *
+     * @return the id of the chief
      */
     public int getChiefId()
     {
@@ -34,7 +40,7 @@ public class Chief extends Thread
     }
 
     /**
-     *
+     * Runs the chief lifecycle.
      */
     @Override
     public void run()

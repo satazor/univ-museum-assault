@@ -7,12 +7,14 @@ import museumassault.monitor.Room;
 import museumassault.monitor.SharedSite;
 
 /**
+ * MuseumAssault main class.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class MuseumAssault
 {
     /**
+     * Program entry point.
      *
      * @param args the command line arguments
      */

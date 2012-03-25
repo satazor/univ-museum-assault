@@ -125,7 +125,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
      * and waking up the thieves that will form the team
      * @param chiefId - the id of the chief
      * @param roomId - the room to be robbed
-     * @return Integer - Returns the id of the team prepared to rob
+     * @return Integer - Returns the id of the team isBusy to rob
      */
     @Override
     public Integer prepareAssaultParty(int chiefId, int roomId)
@@ -143,9 +143,9 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
             for (int x = 0; x < nrTeams; x++) {
 
-                if (!this.teams[x].isBusy() && !this.teams[x].isPrepared()) {
+                if (!this.teams[x].isBusy() && !this.teams[x].isBeingPrepared()) {
 
-                    this.teams[x].isPrepared(true);
+                    this.teams[x].isBeingPrepared(true);
                     this.teams[x].setAssignedRoom(room);
                     int nrThieves = this.teams[x].getCapacity();
                     for (int y = 0; y < nrThieves; y++) {
@@ -182,11 +182,9 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
         synchronized (this.chiefBroker) {
 
-            if (!team.isPrepared()) {
-                throw new RuntimeException("Team with id #" + teamId + " is not prepared yet.");
+            if (!team.isBeingPrepared()) {
+                throw new RuntimeException("Team with id #" + teamId + " is not being prepared.");
             }
-
-            team.isBusy(true);
 
             MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
             int nrThieves = team.getCapacity();

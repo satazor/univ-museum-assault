@@ -3,6 +3,8 @@ package museumassault.message_broker;
 /**
  * Message class.
  *
+ * This is the base message that the message broker is aware of.
+ *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class Message
@@ -11,9 +13,10 @@ public class Message
     protected int originId;
 
     /**
-     * Constructor of a Message based on the action to be performed and on the id of the sender
-     * @param action - the action to be performed
-     * @param originId - the id of the sender
+     * Class constructor.
+     *
+     * @param action   the action to be performed
+     * @param originId the id of the sender
      */
     public Message(int action, int originId)
     {
@@ -22,8 +25,9 @@ public class Message
     }
 
     /**
-     * Constructor of a Message based on the action to be performed
-     * @param action - the action to be performed
+     * Class constructor.
+     *
+     * @param action the action to be performed
      */
     public Message(int action)
     {
@@ -31,8 +35,9 @@ public class Message
     }
 
     /**
-     * Method that returns the id of the sender of the message
-     * @return Integer - Returns the id of the sender
+     * Get the id of the sender.
+     *
+     * @return returns the id of the sender
      */
     public int getOriginId()
     {
@@ -40,8 +45,9 @@ public class Message
     }
 
     /**
-     * Method that returns the action to be performed 
-     * @return Integer - Returns the action to be performed
+     * Get the action that was performed.
+     *
+     * @return the action that was performed
      */
     public int getAction()
     {

@@ -4,12 +4,15 @@ import java.util.LinkedList;
 import museumassault.monitor.Room;
 
 /**
+ * Team class.
+ *
+ * This class represents a team of thieves or a party.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class Team {
-
-    protected boolean prepared = false;
+public class Team
+{
+    protected boolean beingPrepared = false;
     protected boolean busy = false;
     protected int id;
     protected int nrThieves;
@@ -18,9 +21,10 @@ public class Team {
     protected LinkedList<Integer> thiefIds = new LinkedList();
 
     /**
-     * Constructor of a Team
-     * @param id - the id of the team
-     * @param nrThieves - the number of thieves in the team
+     * Class constructor.
+     *
+     * @param id        the id of the team
+     * @param nrThieves the number of thieves in the team
      */
     public Team(int id, int nrThieves)
     {
@@ -29,8 +33,9 @@ public class Team {
     }
 
     /**
-     * Method that returns the id of this team
-     * @return Integer - the id of the team
+     * Get the team id.
+     *
+     * @return Integer the id of the team
      */
     public int getId()
     {
@@ -38,8 +43,9 @@ public class Team {
     }
 
     /**
-     * Method that returns the number of thieves in this team
-     * @return Integer - the number of thieves in the team
+     * Get the team capacity (total of thieves that it can hold).
+     *
+     * @return the team capacity
      */
     public int getCapacity()
     {
@@ -47,16 +53,20 @@ public class Team {
     }
 
     /**
-     * Method that returns the number of thieves robbing
-     * @return Integer - the number of busy thieves
+     * Get the number of thieves that are present in the team.
+     *
+     * @return the number of thieves currently in the team
      */
-    public int getNrBusyThieves()
+    public int getNrThieves()
     {
         return this.nrBusyThieves;
     }
 
     /**
-     * Method that increments the number of busy thieves
+     * Adds a thief to the team.
+     * The team status will be set to busy automatically upon adition.
+     *
+     * @param thiefId the id of the thief to be added
      */
     public void addThief(int thiefId)
     {
@@ -73,7 +83,10 @@ public class Team {
     }
 
     /**
-     * Method that decrements the number of busy thieves
+     * Removes a thief from the team.
+     * The team status will be set to non-busy if the team has no thieves currently in the team.
+     *
+     * @param thiefId the id of the thief to be removed
      */
     public void removeThief(int thiefId)
     {
@@ -92,7 +105,9 @@ public class Team {
     }
 
     /**
+     * Get the thiefs currently in the team.
      *
+     * @return the array of ids of the thieves currently present
      */
     public int[] getThiefs()
     {
@@ -101,13 +116,15 @@ public class Team {
         for (int x = 0; x < length; x++) {
             newArray[x] = thiefIds.get(x);
         }
-        
+
         return newArray;
     }
 
+
     /**
-     * Method that returns the room to be robbed by this team
-     * @return Room
+     * Get the room that was assigned for the team.
+     *
+     * @return the assigned room
      */
     public Room getAssignedRoom()
     {
@@ -115,53 +132,59 @@ public class Team {
     }
 
     /**
-     * Method that assigns a room to be robbed to this team
-     * @param room - the room to be assigned to this team
+     * Set the assigned room for the team.
+     *
+     * @param the room to be assigned
      */
     public void setAssignedRoom(Room room)
     {
         this.room = room;
     }
+
     /**
-     * Method that checks if the team is prepared to rob the assigned room
-     * @param prepared - true if we want to check if the team is ready to rob
-     * @return boolean - Returns true if the team is ready to rob
+     * Set if the team is being prepared (assembled).
+     *
+     * @param prepared true if the team is being prepared, false otherwise
      */
-    public boolean isPrepared(boolean prepared)
+    public void isBeingPrepared(boolean prepared)
     {
-        return this.prepared = prepared;
+        this.beingPrepared = prepared;
     }
 
     /**
-     * Method that checks if the team is prepared to rob the assigned room
-     * @return boolean - Returns true if the team is ready to rob
+     * Check if the team is being prepared (assembled).
+     *
+     * @return true if the team is being prepared, false otherwise
      */
-    public boolean isPrepared()
+    public boolean isBeingPrepared()
     {
-        return this.prepared;
+        return this.beingPrepared;
     }
 
     /**
-     * Method that checks if the team is robbing
-     * @param busy - true if we want to check if the team is robbing
-     * @return boolean - Returns true if the team is robbing
+     * Sets the busy state of the team.
+     *
+     * A team is busy if it has thieves that are robbing a room.
+     *
+     * @param busy true to set the team as busy, false otherwise
      */
-    public boolean isBusy(boolean busy)
+    protected void isBusy(boolean busy)
     {
-        this.prepared = busy;
-
         if (!busy) this.nrBusyThieves = 0;
 
         if (this.room != null) {
             this.room.isBeingRobed(busy);
         }
 
-        return this.busy = busy;
+        this.busy = busy;
     }
 
     /**
-     * Method that checks if the team is robbing
-     * @return boolean - Returns true if the team is robbing
+     * Checks if the team is busy.
+     *
+     * A team is busy if it has thieves that are robbing a room.
+     *
+     * @param busy true to set the team as busy, false otherwise
      */
     public boolean isBusy()
     {

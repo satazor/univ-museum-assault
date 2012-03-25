@@ -4,6 +4,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
+ * MessageBroker.
+ *
+ * A message broker is a repository of messages, indexed by action.
+ * It decouples a recipient from the sender with an indirect communication (with messages)
+ * All the messages are indexed by action and stored in a first in first out policy.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -12,10 +17,34 @@ public class MessageBroker
     HashMap messages = new HashMap();
 
     /**
-     * Method that returns and removes from the list of messages the message to be read
-     * @param action - the action to be performed
-     * @param originId - the id of the sender of the message
-     * @return Message - Returns the message to be read
+     * Reads a message from the broker.
+     * If muliple messages with the same action exists, the first is returned.
+     *
+     * @param action the action of the message that is expected to be read
+     *
+     * @return The message or null if none found
+     */
+    public synchronized Message readMessage(int action)
+    {
+        LinkedList messagesList = (LinkedList) this.messages.get(action);
+
+        if (messagesList != null) {
+            if (messagesList.size() > 0) {
+                return (Message) messagesList.pop();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Reads a message from the broker.
+     * Searchs for a specific sender within the list of messages of a given action.
+     *
+     * @param action   the action of the message that is expected to be read
+     * @param originId the expected of the sender
+     *
+     * @return The message or null if none found
      */
     public Message readMessage(int action, int originId)
     {
@@ -37,26 +66,9 @@ public class MessageBroker
     }
 
     /**
-     * Method that returns the message at the head of the message list
-     * @param action - the action to be performed
-     * @return Message - Returns the message to be read
-     */
-    public synchronized Message readMessage(int action)
-    {
-        LinkedList messagesList = (LinkedList) this.messages.get(action);
-
-        if (messagesList != null) {
-            if (messagesList.size() > 0) {
-                return (Message) messagesList.pop();
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Method that puts a new Message in the message list
-     * @param message - the message to be put in the message list
+     * Writes a message in the broker.
+     *
+     * @param message the message to be put in the broker
      */
     public synchronized void writeMessage(Message message)
     {
