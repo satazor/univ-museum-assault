@@ -49,6 +49,7 @@ public class Corridor implements TargetCorridor
     /**
      *
      */
+    @Override
     public synchronized boolean crallIn(int thiefId, int increment)
     {
         Integer currentPosition = (Integer) this.thievesPositions.get(thiefId);
@@ -146,6 +147,7 @@ public class Corridor implements TargetCorridor
     /**
      *
      */
+    @Override
     public synchronized boolean crallOut(int thiefId, int increment)
     {
         Integer currentPosition = (Integer) this.thievesPositions.get(thiefId);
