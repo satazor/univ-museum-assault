@@ -24,6 +24,9 @@ public class Corridor implements TargetCorridor
         if (nrPositions % 2 != 0) {
             throw new RuntimeException("Number of positions must be even.");
         }
+        if (maxDistanceBetweenThieves <= 0) {
+            throw new RuntimeException("Max distance between thieves must be greater than zero.");
+        }
 
         this.inwards = new Integer[nrPositions];
         this.outwards = new Integer[nrPositions];

@@ -17,9 +17,10 @@ public class MuseumAssault
     public static void main(String[] args)
     {
         int nrChiefs = 1;
-        int nrTeams = 1;
+        int nrTeams = 2;
         int nrThievesPerTeam = 5;
         int nrRooms = 4;
+        int maxDistanceBetweenThieves = 1;
         int totalThieves = nrTeams * nrThievesPerTeam;
 
         Team[] teams = new Team[nrTeams];
@@ -29,7 +30,7 @@ public class MuseumAssault
 
         Room[] rooms = new Room[nrRooms];
         for (int x = 0; x < nrRooms; x++) {
-            rooms[x] = new Room(x + 1, 5, new Corridor(6, 1));
+            rooms[x] = new Room(x + 1, 5, new Corridor(6, maxDistanceBetweenThieves));
         }
 
         SharedSite site = new SharedSite(rooms, teams, (nrChiefs > 1));
