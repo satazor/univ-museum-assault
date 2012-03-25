@@ -334,14 +334,16 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
         }
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
-        synchronized (broker) {
-            this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.OUTSIDE);
-            team.decrementNrBusyThieves();
-        }
-
-        this.chiefBroker.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId));
-        this.chiefBroker.writeMessage(new HandCanvasMessage(THIEF_HAND_CANVAS_ACTION, thiefId, team.getId(), rolledCanvas));
         synchronized (this.chiefBroker) {
+
+            synchronized (broker) {
+                this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.OUTSIDE);
+                team.decrementNrBusyThieves();
+            }
+
+            this.chiefBroker.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId));
+            this.chiefBroker.writeMessage(new HandCanvasMessage(THIEF_HAND_CANVAS_ACTION, thiefId, team.getId(), rolledCanvas));
+
             if (this.multipleMasters) {
                 this.chiefBroker.notifyAll();
             } else {

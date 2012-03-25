@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import museumassault.Chief;
+import museumassault.Team;
 import museumassault.Thief;
 
 /**
@@ -32,6 +33,7 @@ public class Logger
     protected HashMap thievesStatus = new HashMap();
     protected Chief[] chiefs;
     protected Thief[] thieves;
+    protected Team[] teams;
 
     FileWriter fileWriter;
     BufferedWriter writeBuff;
@@ -55,10 +57,11 @@ public class Logger
     /**
      *
      */
-    public void configure(Chief[] chiefs, Thief[] thieves)
+    public void configure(Chief[] chiefs, Thief[] thieves, Team[] teams)
     {
         this.thieves = thieves;
         this.chiefs = chiefs;
+        this.teams = teams;
         this.configured = true;
 
         int length = chiefs.length;
@@ -106,6 +109,11 @@ public class Logger
     {
         if (this.writeBuff != null) {
             try {
+
+                this.writeBuff.write("Assault to the museum");
+                this.writeBuff.newLine();
+                this.writeBuff.newLine();
+
                 int length = this.chiefs.length;
                 for (int x = 0; x < length; x++) {
                     this.writeBuff.write(String.format("%-12s", "CHIEF_" + x));
@@ -125,6 +133,26 @@ public class Logger
                 for (int x = 0; x < length; x++) {
                     this.writeBuff.write(String.format("%-6s", "Stat"));
                     this.writeBuff.write(String.format("%-6s", "Str"));
+                }
+
+                this.writeBuff.newLine();
+
+                length = this.teams.length;
+                for (int x = 0; x < length; x++) {
+                    int nrColumns = 12 + this.teams[x].getNrThieves()*6;
+                    this.writeBuff.write(String.format("%-" + nrColumns + "s", "PARTY_" + x));
+                }
+
+                this.writeBuff.newLine();
+
+                for (int x = 0; x < length; x++) {
+                    this.writeBuff.write(String.format("%-4s", "RId"));
+                    this.writeBuff.write(String.format("%-6s", "RTPos"));
+                    int nrMembers = this.teams[x].getNrThieves();
+                    for (int y = 0; y < nrMembers; y++) {
+                        this.writeBuff.write(String.format("%-6s", "Mem_" + y));
+                    }
+                    this.writeBuff.write("  ");
                 }
 
                 this.writeBuff.newLine();
@@ -150,6 +178,21 @@ public class Logger
                 for (int x = 0; x < length; x++) {
                     this.writeBuff.write(String.format("%-6s", this.thievesStatus.get(this.thieves[x].getThiefId())));
                     this.writeBuff.write(String.format("%-6s", this.thieves[x].getPower()));
+                }
+
+                this.writeBuff.newLine();
+
+                length = this.teams.length;
+                for (int x = 0; x < length; x++) {
+                    Room room = this.teams[x].getAssignedRoom();
+                    this.writeBuff.write(String.format("%-4s", room != null ? this.teams[x].getAssignedRoom().getId() : "-"));
+                    this.writeBuff.write(String.format("%-6s", room != null ? room.getCorridor().getTotalPositions() : "-" ));
+                    int nrMembers = this.teams[x].getNrThieves();
+                    for (int y = 0; y < nrMembers; y++) {
+                        this.writeBuff.write(String.format("%-3s", "-"));
+                        this.writeBuff.write(String.format("%-3s", "-"));
+                    }
+                    this.writeBuff.write("  ");
                 }
 
                 this.writeBuff.newLine();

@@ -35,6 +35,14 @@ public class Corridor implements TargetCorridor
     /**
      *
      */
+    public int getTotalPositions()
+    {
+        return this.inwards.length + this.outwards.length;
+    }
+
+    /**
+     *
+     */
     public void clearPositions() {
 
         int length = this.inwards.length;
