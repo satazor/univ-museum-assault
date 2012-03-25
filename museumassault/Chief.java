@@ -15,8 +15,10 @@ public class Chief extends Thread
     protected int id;
 
     /**
-     *
-     * @param site
+     * Chief constructor.
+     * 
+     * @param id The chief id
+     * @param site The chief control site
      */
     public Chief(int id, ChiefControlSite site)
     {
