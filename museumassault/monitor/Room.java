@@ -10,16 +10,18 @@ public class Room implements TargetRoom
     protected int id;
     protected int nrCanvas;
     protected Corridor corridor;
+    protected Logger logger;
 
     /**
      *
      * @param id
      */
-    public Room(int id, int nrCanvas, Corridor corridor)
+    public Room(int id, int nrCanvas, Corridor corridor, Logger logger)
     {
         this.id = id;
         this.nrCanvas = nrCanvas;
         this.corridor = corridor;
+        this.logger = logger;
     }
 
     /**
@@ -72,8 +74,10 @@ public class Room implements TargetRoom
      * @return
      */
     @Override
-    public synchronized boolean rollACanvas()
+    public synchronized boolean rollACanvas(int thiefId)
     {
+        this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_A_ROOM);
+
         if (this.nrCanvas > 0) {
             this.nrCanvas--;
             return true;

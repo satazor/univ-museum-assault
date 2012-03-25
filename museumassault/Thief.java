@@ -23,13 +23,19 @@ public class Thief extends Thread
      */
     public Thief(int id, int power, ThievesConcentrationSite site)
     {
-        if (power < 0) {
-            throw new RuntimeException("Power must be greater than zero.");
-        }
+        assert (power < 0);
 
         this.id = id;
         this.power = power;
         this.site = site;
+    }
+
+    /**
+     *
+     */
+    public int getThiefId()
+    {
+        return this.id;
     }
 
     /**
@@ -43,7 +49,7 @@ public class Thief extends Thread
             this.teamId = this.site.amINeeded(this.id);
 
             // Prepare for excursion
-            TargetRoom room = this.site.prepareExcursion(this.teamId);
+            TargetRoom room = this.site.prepareExcursion(this.id, this.teamId);
 
             System.out.println("[Thief #" + this.id + "] Started crawling in..");
 
@@ -51,7 +57,7 @@ public class Thief extends Thread
             while (!room.getTargetCorridor().crawlOut(this.id, this.power)) {}
 
             System.out.println("[Thief #" + this.id + "] Rolling canvas..");
-            boolean rolledCanvas = room.rollACanvas();
+            boolean rolledCanvas = room.rollACanvas(this.id);
 
             System.out.println("[Thief #" + this.id + "] Started crawling out..");
 

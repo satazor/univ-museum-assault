@@ -2,6 +2,7 @@ package museumassault;
 
 import java.util.Random;
 import museumassault.monitor.Corridor;
+import museumassault.monitor.Logger;
 import museumassault.monitor.Room;
 import museumassault.monitor.SharedSite;
 
@@ -23,8 +24,11 @@ public class MuseumAssault
         int nrRooms = 4;
         int maxDistanceBetweenThieves = 1;
         int totalThieves = nrTeams * nrThievesPerTeam;
+        String logFileName = "log.txt";
         Random random = new Random();
+        Logger logger = new Logger(logFileName);
 
+        // Initing the necessary entities
         Team[] teams = new Team[nrTeams];
         for (int x = 0; x < nrTeams; x++) {
             teams[x] = new Team(x + 1, nrThievesPerTeam);
@@ -32,32 +36,42 @@ public class MuseumAssault
 
         Room[] rooms = new Room[nrRooms];
         for (int x = 0; x < nrRooms; x++) {
-            rooms[x] = new Room(x + 1, 5, new Corridor(6, maxDistanceBetweenThieves));
+            rooms[x] = new Room(x + 1, 5, new Corridor(6, maxDistanceBetweenThieves, logger), logger);
         }
 
-        SharedSite site = new SharedSite(rooms, teams, (nrChiefs > 1));
+        SharedSite site = new SharedSite(rooms, teams, logger, (nrChiefs > 1));
 
         Thief[] thieves = new Thief[totalThieves];
         for (int x = 0; x < totalThieves; x++) {
             Thief thief = new Thief(x + 1, random.nextInt(totalThieves - 2) + 1, site);
             thieves[x] = thief;
-            thief.start();
         }
 
         Chief[] chiefs = new Chief[nrChiefs];
         for (int x = 0; x < nrChiefs; x++) {
             Chief chief = new Chief(x + 1, site);
             chiefs[x] = chief;
-            chief.start();
         }
 
+        // Configure the logger
+        logger.configure(chiefs, thieves);
+
+        // Start the threads
+        for (int x = 0; x < totalThieves; x++) {
+            thieves[x].start();
+        }
+
+        for (int x = 0; x < nrChiefs; x++) {
+            chiefs[x].start();
+        }
+
+        // Wait for the chiefs to join
         for (int x = 0; x < nrChiefs; x++) {
             try {
                 chiefs[x].join();
             } catch (InterruptedException e) {}
         }
 
-        System.out.println("End");
         System.exit(0);
     }
 }

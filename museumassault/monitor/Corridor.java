@@ -15,22 +15,21 @@ public class Corridor implements TargetCorridor
     protected int maxDistanceBetweenThieves;
     protected int atTheRoom = 0;
 
+    protected Logger logger;
+
     /**
      *
      * @param room
      */
-    public Corridor(int nrPositions, int maxDistanceBetweenThieves)
+    public Corridor(int nrPositions, int maxDistanceBetweenThieves, Logger logger)
     {
-        if (nrPositions % 2 != 0) {
-            throw new RuntimeException("Number of positions must be even.");
-        }
-        if (maxDistanceBetweenThieves <= 0) {
-            throw new RuntimeException("Max distance between thieves must be greater than zero.");
-        }
+        assert(nrPositions % 2 != 0);
+        assert(maxDistanceBetweenThieves <= 0);
 
         this.inwards = new Integer[nrPositions];
         this.outwards = new Integer[nrPositions];
         this.maxDistanceBetweenThieves = maxDistanceBetweenThieves;
+        this.logger = logger;
     }
 
     /**
@@ -59,6 +58,8 @@ public class Corridor implements TargetCorridor
         } else if (currentPosition == -1) {
             throw new RuntimeException("Thief already crawled out.");
         }
+
+        this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.CRAWLING_OUTWARDS);
 
         int newPosition = -1;
         System.out.println("[Thief #" + thiefId +"] Crawl out from " + currentPosition + " with increment " + increment);
@@ -161,6 +162,8 @@ public class Corridor implements TargetCorridor
             }
             currentPosition -= this.outwards.length;
         }
+
+        this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.CRAWLING_INWARDS);
 
         int newPosition = -1;
         System.out.println("[Thief #" + thiefId +"] Crawl in from " + currentPosition + " with increment " + increment);

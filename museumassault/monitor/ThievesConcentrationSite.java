@@ -14,7 +14,7 @@ public interface ThievesConcentrationSite
     /**
      *
      */
-    public TargetRoom prepareExcursion(int teamId);
+    public TargetRoom prepareExcursion(int thiefId, int teamId);
 
     /**
      *

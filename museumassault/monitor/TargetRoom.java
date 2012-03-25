@@ -15,5 +15,5 @@ public interface TargetRoom
      *
      * @return
      */
-    public boolean rollACanvas();
+    public boolean rollACanvas(int thiefId);
 }

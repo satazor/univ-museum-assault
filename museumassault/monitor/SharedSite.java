@@ -34,27 +34,29 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     protected int nrCanvasCollected = 0;
     protected boolean multipleMasters = false;
 
+    protected Logger logger;
+
     /**
      *
      */
-    public SharedSite(Room[] rooms, Team[] teams)
+    public SharedSite(Room[] rooms, Team[] teams, Logger logger)
     {
-        this.initialize(rooms, teams);
+        this.initialize(rooms, teams, logger);
     }
 
     /**
      *
      */
-    public SharedSite(Room[] rooms, Team[] teams, boolean multipleMasters)
+    public SharedSite(Room[] rooms, Team[] teams, Logger logger, boolean multipleMasters)
     {
-        this.initialize(rooms, teams);
+        this.initialize(rooms, teams, logger);
         this.multipleMasters = multipleMasters;
     }
 
     /**
      *
      */
-    protected final void initialize(Room[] rooms, Team[] teams)
+    protected final void initialize(Room[] rooms, Team[] teams, Logger logger)
     {
         this.teams = teams;
         int nrTeams = teams.length;
@@ -69,15 +71,19 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
             this.roomsHash.put(rooms[x].getId(), rooms[x]);
             this.roomsStatus.put(rooms[x].getId(), true);
         }
+
+        this.logger = logger;
     }
 
     /**
      *
      */
     @Override
-    public Integer appraiseSit()
+    public Integer appraiseSit(int chiefId)
     {
         synchronized (this.chiefBroker) {
+
+            this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.DECIDING_WHAT_TO_DO);
 
             if (this.nrRoomsToBeRobed > 0) {
 
@@ -98,7 +104,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
      *
      */
     @Override
-    public Integer prepareAssaultParty(int roomId)
+    public Integer prepareAssaultParty(int chiefId, int roomId)
     {
         Room room = (Room) this.roomsHash.get(roomId);
         if (room == null) {
@@ -106,6 +112,8 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
         }
 
         synchronized (this.chiefBroker) {
+
+            this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.ASSEMBLING_A_GROUP);
 
             int nrTeams = this.teams.length;
 
@@ -138,7 +146,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
      *
      */
     @Override
-    public void sendAssaultParty(int teamId)
+    public void sendAssaultParty(int chiefId, int teamId)
     {
         Team team = (Team) this.teamsHash.get(teamId);
         if (team == null) {
@@ -177,11 +185,13 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
      * @return
      */
     @Override
-    public Integer takeARest()
+    public Integer takeARest(int chiefId)
     {
         while (true) {
 
             synchronized (this.chiefBroker) {
+
+                this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.WAITING_FOR_ARRIVAL);
 
                 Message message = this.chiefBroker.readMessage(THIEF_ARRIVE_ACTION);
                 if (message != null) {
@@ -212,7 +222,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
      *
      */
     @Override
-    public void collectCanvas(int thiefId)
+    public void collectCanvas(int chiefId, int thiefId)
     {
         while (true) {
 
@@ -237,6 +247,20 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
                 break;
             }
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public int sumUpResults(int chiefId) {
+
+        synchronized (this.chiefBroker) {
+            this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.PRESENTING_THE_REPORT);
+
+            return this.nrCanvasCollected;
         }
     }
 
@@ -269,7 +293,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
      *
      */
     @Override
-    public TargetRoom prepareExcursion(int teamId) {
+    public TargetRoom prepareExcursion(int thiefId, int teamId) {
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
         if (broker == null) {
@@ -311,6 +335,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
         synchronized (broker) {
+            this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.OUTSIDE);
             team.decrementNrBusyThieves();
         }
 
@@ -322,18 +347,6 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
             } else {
                 this.chiefBroker.notify();
             }
-        }
-    }
-
-    /**
-     * 
-     * @return
-     */
-    @Override
-    public int sumUpResults() {
-
-        synchronized (this.chiefBroker) {
-            return this.nrCanvasCollected;
         }
     }
 }

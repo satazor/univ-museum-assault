@@ -9,31 +9,31 @@ public interface ChiefControlSite
     /**
      *
      */
-    public Integer appraiseSit();
+    public Integer appraiseSit(int chiefId);
 
     /**
      *
      */
-    public Integer prepareAssaultParty(int roomId);
+    public Integer prepareAssaultParty(int chiefId, int roomId);
 
     /**
      *
      */
-    public void sendAssaultParty(int teamId);
+    public void sendAssaultParty(int chiefId, int teamId);
 
     /**
      *
      * @return
      */
-    public Integer takeARest();
+    public Integer takeARest(int chiefId);
 
     /**
      *
      */
-    public void collectCanvas(int thiefId);
+    public void collectCanvas(int chiefId, int thiefId);
 
     /**
      *
      */
-    public int sumUpResults();
+    public int sumUpResults(int chiefId);
 }
