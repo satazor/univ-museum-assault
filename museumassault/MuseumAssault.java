@@ -1,5 +1,6 @@
 package museumassault;
 
+import java.util.Random;
 import museumassault.monitor.Corridor;
 import museumassault.monitor.Room;
 import museumassault.monitor.SharedSite;
@@ -22,6 +23,7 @@ public class MuseumAssault
         int nrRooms = 4;
         int maxDistanceBetweenThieves = 1;
         int totalThieves = nrTeams * nrThievesPerTeam;
+        Random random = new Random();
 
         Team[] teams = new Team[nrTeams];
         for (int x = 0; x < nrTeams; x++) {
@@ -37,7 +39,7 @@ public class MuseumAssault
 
         Thief[] thieves = new Thief[totalThieves];
         for (int x = 0; x < totalThieves; x++) {
-            Thief thief = new Thief(x + 1, site);
+            Thief thief = new Thief(x + 1, random.nextInt(totalThieves - 2) + 1, site);
             thieves[x] = thief;
             thief.start();
         }
