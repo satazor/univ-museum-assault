@@ -13,8 +13,11 @@ public class HandCanvasMessage extends Message
     protected int teamId;
 
     /**
-     *
-     * @param action
+     * Constructor of a HandCanvasMessage
+     * @param action - the action performed
+     * @param thiefId - the if of the thief that stole (or not) the canvas
+     * @param gotCanvas -  true if the thief stole a canvas
+     * @param teamId - the id of the team that was robbing the room
      */
     public HandCanvasMessage(int action, int thiefId, int teamId, boolean gotCanvas)
     {
@@ -25,14 +28,16 @@ public class HandCanvasMessage extends Message
     }
 
     /**
-     *
+     * Method that returns the id of the team that got the canvas
+     * @return Integer - Returns the id of the team robbing the room
      */
     public int getTeamId() {
         return this.teamId;
     }
 
     /**
-     *
+     * Method that checks if a canvas was stolen from the room
+     * @return boolean - true if a canvas was really stolen
      */
     public boolean rolledCanvas() {
         return this.gotCanvas;

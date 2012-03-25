@@ -16,8 +16,9 @@ public class Team {
     protected Room room;
 
     /**
-     *
-     * @param id
+     * Constructor of a Team
+     * @param id - the id of the team
+     * @param nrThieves - the number of thieves in the team 
      */
     public Team(int id, int nrThieves)
     {
@@ -26,7 +27,8 @@ public class Team {
     }
 
     /**
-     *
+     * Method that returns the id of this team
+     * @return Integer - the id of the team
      */
     public int getId()
     {
@@ -34,7 +36,8 @@ public class Team {
     }
 
     /**
-     *
+     * Method that returns the number of thieves in this team
+     * @return Integer - the number of thieves in the team
      */
     public int getNrThieves()
     {
@@ -42,7 +45,8 @@ public class Team {
     }
 
     /**
-     *
+     * Method that returns the number of thieves robbing
+     * @return Integer - the number of busy thieves
      */
     public int getNrBusyThieves()
     {
@@ -50,7 +54,7 @@ public class Team {
     }
 
     /**
-     *
+     * Method that increments the number of busy thieves
      */
     public void incrementNrBusyThieves()
     {
@@ -63,7 +67,7 @@ public class Team {
     }
 
     /**
-     *
+     * Method that decrements the number of busy thieves
      */
     public void decrementNrBusyThieves()
     {
@@ -76,7 +80,8 @@ public class Team {
     }
 
     /**
-     *
+     * Method that returns the room to be robbed by this team
+     * @return Room
      */
     public Room getAssignedRoom()
     {
@@ -84,15 +89,17 @@ public class Team {
     }
 
     /**
-     *
+     * Method that assigns a room to be robbed to this team
+     * @param room - the room to be assigned to this team
      */
     public void setAssignedRoom(Room room)
     {
         this.room = room;
     }
     /**
-     *
-     * @return
+     * Method that checks if the team is prepared to rob the assigned room
+     * @param prepared - true if we want to check if the team is ready to rob
+     * @return boolean - Returns true if the team is ready to rob
      */
     public boolean isPrepared(boolean prepared)
     {
@@ -100,8 +107,8 @@ public class Team {
     }
 
     /**
-     *
-     * @return
+     * Method that checks if the team is prepared to rob the assigned room
+     * @return boolean - Returns true if the team is ready to rob
      */
     public boolean isPrepared()
     {
@@ -109,8 +116,9 @@ public class Team {
     }
 
     /**
-     *
-     * @return
+     * Method that checks if the team is robbing
+     * @param busy - true if we want to check if the team is robbing
+     * @return boolean - Returns true if the team is robbing
      */
     public boolean isBusy(boolean busy)
     {
@@ -126,8 +134,8 @@ public class Team {
     }
 
     /**
-     *
-     * @return
+     * Method that checks if the team is robbing
+     * @return boolean - Returns true if the team is robbing
      */
     public boolean isBusy()
     {

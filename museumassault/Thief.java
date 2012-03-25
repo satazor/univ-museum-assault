@@ -17,9 +17,9 @@ public class Thief extends Thread
     protected int power;
 
     /**
-     *
-     * @param id
-     * @param site
+     * Constructor of a Thief
+     * @param id - the id of this thief
+     * @param site -  the site where the thieves will take action
      */
     public Thief(int id, int power, ThievesConcentrationSite site)
     {
@@ -31,7 +31,8 @@ public class Thief extends Thread
     }
 
     /**
-     *
+     * Method that returns the if of this thief
+     * @return Integer - Returns the id of this thief
      */
     public int getThiefId()
     {
@@ -39,7 +40,8 @@ public class Thief extends Thread
     }
 
     /**
-     *
+     * Method that returns the power of this thief (maximum number of steps he can take)
+     * @return Integer - Returns the power of this thief
      */
     public int getPower()
     {

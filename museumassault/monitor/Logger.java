@@ -39,7 +39,8 @@ public class Logger
     protected boolean configured = false;
 
     /**
-     *
+     * Constructor of a Logger
+     * @param fileName - the name of the file to be written
      */
     public Logger(String fileName)
     {

@@ -13,8 +13,10 @@ public class Room implements TargetRoom
     protected Logger logger;
 
     /**
-     *
-     * @param id
+     * Constructor of a Room
+     * @param id - the id of the room
+     * @param corridor - the corridor that leads to this room 
+     * @param logger - the logger used to store the process
      */
     public Room(int id, int nrCanvas, Corridor corridor, Logger logger)
     {
@@ -25,8 +27,8 @@ public class Room implements TargetRoom
     }
 
     /**
-     *
-     * @return
+     * Method that returns the id of this room
+     * @return Integer - Returns the id of this room
      */
     public int getId()
     {
@@ -34,16 +36,16 @@ public class Room implements TargetRoom
     }
 
     /**
-     *
-     * @return
+     * Method that returns the corridor that leads to this room
+     * @return Corridor - Returns the corridor that leads to this room
      */
     public Corridor getCorridor()
     {
         return this.corridor;
     }
     /**
-     *
-     * @return
+     * Method that returns this TargetCorridor
+     * @return TargetCorridor - Returns the TargetCorridor that leads to this room
      */
     @Override
     public TargetCorridor getTargetCorridor()
@@ -52,8 +54,8 @@ public class Room implements TargetRoom
     }
 
     /**
-     *
-     * @return
+     * Method that checks if the room is being robbed
+     * @return boolean - Returns true if this room is being robbed
      */
     public boolean isBeingRobed()
     {
@@ -61,8 +63,9 @@ public class Room implements TargetRoom
     }
 
     /**
-     *
-     * @return
+     * Method that checks if the room is being robbed
+     * @param robed - true if we want to check i the room is being robbed
+     * @return boolean - Returns true if this room is being robbed
      */
     public boolean isBeingRobed(boolean robed)
     {
@@ -70,8 +73,9 @@ public class Room implements TargetRoom
     }
 
     /**
-     *
-     * @return
+     * Method that removes a canvas from this room
+     * @param thiefId - the id of the thief that robbed this canvas
+     * @return boolean - Returns true if a canvas was successfully removed
      */
     @Override
     public synchronized boolean rollACanvas(int thiefId)
