@@ -41,16 +41,16 @@ public class Thief extends Thread
 
             System.out.println("[Thief #" + this.id + "] Started crawling in..");
 
-            // Crall in
-            while (!room.getTargetCorridor().crallIn(this.id, 1)) {}
+            // Crawl in
+            while (!room.getTargetCorridor().crawlIn(this.id, 1)) {}
 
             System.out.println("[Thief #" + this.id + "] Rolling canvas..");
             boolean rolledCanvas = room.rollACanvas();
 
             System.out.println("[Thief #" + this.id + "] Started crawling out..");
 
-            // Crall out
-            while (!room.getTargetCorridor().crallOut(this.id, 1)) {}
+            // Crawl out
+            while (!room.getTargetCorridor().crawlOut(this.id, 1)) {}
 
             // Hand the canvas
             System.out.println("[Thief #" + this.id + "] Handing canvas..");

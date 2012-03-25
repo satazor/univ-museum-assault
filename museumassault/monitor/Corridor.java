@@ -50,18 +50,18 @@ public class Corridor implements TargetCorridor
      *
      */
     @Override
-    public synchronized boolean crallIn(int thiefId, int increment)
+    public synchronized boolean crawlIn(int thiefId, int increment)
     {
         Integer currentPosition = (Integer) this.thievesPositions.get(thiefId);
 
         if (currentPosition == null) {
             currentPosition = -1;
         } else if (currentPosition == -1) {
-            throw new RuntimeException("Thief already cralled in.");
+            throw new RuntimeException("Thief already crawled in.");
         }
 
         int newPosition = -1;
-        System.out.println("[Thief #" + thiefId +"] Crall in from " + currentPosition + " with increment " + increment);
+        System.out.println("[Thief #" + thiefId +"] Crawl in from " + currentPosition + " with increment " + increment);
 
         int offset;
         boolean foundSlot;
@@ -128,7 +128,7 @@ public class Corridor implements TargetCorridor
 
                 this.notifyAll();
                 try {
-                    this.wait(50);  // Give the opportunity for other thieves to crall (Thread.yeild() was not working as expected)
+                    this.wait(50);  // Give the opportunity for other thieves to crawl (Thread.yeild() was not working as expected)
                 } catch(InterruptedException e) {}
 
                 break;
@@ -148,7 +148,7 @@ public class Corridor implements TargetCorridor
      *
      */
     @Override
-    public synchronized boolean crallOut(int thiefId, int increment)
+    public synchronized boolean crawlOut(int thiefId, int increment)
     {
         Integer currentPosition = (Integer) this.thievesPositions.get(thiefId);
 
@@ -156,16 +156,16 @@ public class Corridor implements TargetCorridor
             currentPosition = -1;
         } else if (currentPosition != -1) {
             if (currentPosition < this.inwards.length) {
-                throw new RuntimeException("Thief didn't yet cralled in yet.");
+                throw new RuntimeException("Thief didn't yet crawled in yet.");
             }
             if (currentPosition - this.inwards.length >= this.outwards.length) {
-                throw new RuntimeException("Thief already cralled out.");
+                throw new RuntimeException("Thief already crawled out.");
             }
             currentPosition -= this.inwards.length;
         }
 
         int newPosition = -1;
-        System.out.println("[Thief #" + thiefId +"] Crall out from " + currentPosition + " with increment " + increment);
+        System.out.println("[Thief #" + thiefId +"] Crawl out from " + currentPosition + " with increment " + increment);
 
         int offset;
         boolean foundSlot;
@@ -233,7 +233,7 @@ public class Corridor implements TargetCorridor
 
                 this.notifyAll();
                 try {
-                    this.wait(50);  // Give the opportunity for other thieves to crall (Thread.yeild() was not working as expected)
+                    this.wait(50);  // Give the opportunity for other thieves to crawl (Thread.yeild() was not working as expected)
                 } catch(InterruptedException e) {}
 
                 break;
