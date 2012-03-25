@@ -72,6 +72,8 @@ public class MuseumAssault
             } catch (InterruptedException e) {}
         }
 
+        logger.terminateLog(site.getNrCollectedCanvas());
+
         System.exit(0);
     }
 }

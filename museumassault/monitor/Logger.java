@@ -108,6 +108,23 @@ public class Logger
     }
 
     /**
+     *
+     */
+    public synchronized void terminateLog(int totalCanvas)
+    {
+         if (this.writeBuff != null) {
+            try {
+                this.writeBuff.newLine();
+                this.writeBuff.write("My friends we are rich because we gathered a total of " + totalCanvas + " canvasses!");
+                this.writeBuff.close();
+                this.writeBuff = null;
+            } catch (IOException e) {
+                System.err.println("Unable to write to log file " + this.fileName);
+            }
+         }
+    }
+
+    /**
      * Method that prints the header of the log
      */
     protected synchronized void printHeader()

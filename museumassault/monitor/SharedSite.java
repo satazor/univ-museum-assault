@@ -31,7 +31,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     protected HashMap teamsBroker = new HashMap();
 
     protected int nrRoomsToBeRobed;
-    protected int nrCanvasCollected = 0;
+    protected int nrCollectedCanvas = 0;
     protected boolean multipleMasters = false;
 
     protected Logger logger;
@@ -83,6 +83,14 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
         }
 
         this.logger = logger;
+    }
+
+    /**
+     *
+     */
+    public int getNrCollectedCanvas()
+    {
+        return this.nrCollectedCanvas;
     }
 
     /**
@@ -258,7 +266,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
                 synchronized (this.chiefBroker) {
 
-                    if (message.rolledCanvas()) this.nrCanvasCollected++;
+                    if (message.rolledCanvas()) this.nrCollectedCanvas++;
 
                     Room room = team.getAssignedRoom();
                     if ((boolean) this.roomsStatus.get(room.getId()) && !message.rolledCanvas()) {
@@ -283,7 +291,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
         synchronized (this.chiefBroker) {
             this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.PRESENTING_THE_REPORT);
 
-            return this.nrCanvasCollected;
+            return this.nrCollectedCanvas;
         }
     }
 
