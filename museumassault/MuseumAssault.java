@@ -43,7 +43,7 @@ public class MuseumAssault
 
         Thief[] thieves = new Thief[totalThieves];
         for (int x = 0; x < totalThieves; x++) {
-            Thief thief = new Thief(x + 1, random.nextInt(totalThieves - 2) + 1, site);
+            Thief thief = new Thief(x + 1, random.nextInt(totalThieves - 1) + 1, site);
             thieves[x] = thief;
         }
 

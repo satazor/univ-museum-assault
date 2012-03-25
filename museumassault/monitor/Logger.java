@@ -108,23 +108,23 @@ public class Logger
             try {
                 int length = this.chiefs.length;
                 for (int x = 0; x < length; x++) {
-                    this.writeBuff.write(String.format("%10s", "CHIEF_" + x));
+                    this.writeBuff.write(String.format("%-12s", "CHIEF_" + x));
                 }
                 length = this.thieves.length;
                 for (int x = 0; x < length; x++) {
-                    this.writeBuff.write(String.format("%10s", "THIEF_" + x));
+                    this.writeBuff.write(String.format("%-12s", "THIEF_" + x));
                 }
 
                 this.writeBuff.newLine();
 
                 length = this.chiefs.length;
                 for (int x = 0; x < length; x++) {
-                    this.writeBuff.write(String.format("%10s", "Stat"));
+                    this.writeBuff.write(String.format("%-12s", "Stat"));
                 }
                 length = this.thieves.length;
                 for (int x = 0; x < length; x++) {
-                    this.writeBuff.write(String.format("%6s", "Stat"));
-                    this.writeBuff.write(String.format("%4s", "Str"));
+                    this.writeBuff.write(String.format("%-6s", "Stat"));
+                    this.writeBuff.write(String.format("%-6s", "Str"));
                 }
 
                 this.writeBuff.newLine();
@@ -143,12 +143,13 @@ public class Logger
             try {
                 int length = this.chiefs.length;
                 for (int x = 0; x < length; x++) {
-                    this.writeBuff.write(String.format("%10s", this.chiefsStatus.get(this.chiefs[x].getChiefId())));
+                    this.writeBuff.write(String.format("%-12s", this.chiefsStatus.get(this.chiefs[x].getChiefId())));
                 }
 
                 length = this.thieves.length;
                 for (int x = 0; x < length; x++) {
-                    this.writeBuff.write(String.format("%10s", this.thievesStatus.get(this.thieves[x].getThiefId())));
+                    this.writeBuff.write(String.format("%-6s", this.thievesStatus.get(this.thieves[x].getThiefId())));
+                    this.writeBuff.write(String.format("%-6s", this.thieves[x].getPower()));
                 }
 
                 this.writeBuff.newLine();

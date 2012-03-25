@@ -41,6 +41,14 @@ public class Thief extends Thread
     /**
      *
      */
+    public int getPower()
+    {
+        return this.power;
+    }
+
+    /**
+     *
+     */
     @Override
     public void run()
     {
