@@ -37,7 +37,10 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     protected Logger logger;
 
     /**
-     *
+     * Constructor of the SharedSite for a single chief
+     * @param rooms - the number of rooms in the museum
+     * @param teams - the number of teams that are going to rob
+     * @param logger - the logger used to store the process
      */
     public SharedSite(Room[] rooms, Team[] teams, Logger logger)
     {
@@ -45,7 +48,11 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     *
+     * Constructor of the SharedSite for multiple chiefs
+     * @param rooms - the number of rooms in the museum
+     * @param teams - the number of teams that are going to rob
+     * @param logger - the logger used to store the process
+     * @param multipleMasters  - true if we want multiple chiefs to control the operation
      */
     public SharedSite(Room[] rooms, Team[] teams, Logger logger, boolean multipleMasters)
     {
@@ -54,7 +61,10 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     *
+     * Method that initializes the SharedSite, starting the rooms and teams
+     * @param rooms - the number of rooms in the museum
+     * @param teams - the number of teams that are going to rob
+     * @param logger - the logger used to store the process
      */
     protected final void initialize(Room[] rooms, Team[] teams, Logger logger)
     {
@@ -76,7 +86,9 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     *
+     * Method that decides if there are still rooms to rob
+     * @param chiefID - the id of the chief
+     * @return Integer - Returns the id of the room that is being robbed
      */
     @Override
     public Integer appraiseSit(int chiefId)
@@ -101,7 +113,11 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     *
+     * Method that prepares an assault team, assigning to that team the given room
+     * and waking up the thieves that will form the team
+     * @param chiefId - the id of the chief
+     * @param roomId - the room to be robbed
+     * @return Integer - Returns the id of the team prepared to rob
      */
     @Override
     public Integer prepareAssaultParty(int chiefId, int roomId)
@@ -143,7 +159,10 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     *
+     * Method that sends the previously prepared team (from method prepareAssaultParty(roomID))
+     * to rob the designated room
+     * @param chiefId - the id of the chief
+     * @param teamId - the team to be sent
      */
     @Override
     public void sendAssaultParty(int chiefId, int teamId)
@@ -181,8 +200,9 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     *
-     * @return
+     * Method that checks if the assault is over. If it isn't the chief is told to wait
+     * @param chiefId - the id of the chief
+     * @return Integer - Returns null if no team is robbing
      */
     @Override
     public Integer takeARest(int chiefId)
@@ -219,7 +239,9 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     *
+     * Method that collects the canvas handed by a thief, and checks if the room is already empty or not
+     * @param chiefId - the id of the chief
+     * @param thiefId - the id of the thief that handed the canvas
      */
     @Override
     public void collectCanvas(int chiefId, int thiefId)
@@ -251,8 +273,9 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     *
-     * @return
+     * Method that returns the total number of canvas stolen
+     * @param chiefId - the id of the chief
+     * @return Integer - Returns the number of canvas stolen
      */
     @Override
     public int sumUpResults(int chiefId) {
@@ -265,7 +288,10 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     *
+     * Method that checks if the given thief is needed for a team.
+     * While the thief isn't needed he waits
+     * @param thiefId - the thief that needs to know if is needed
+     * @return Integer - Returns the id of the team that needs this thief
      */
     @Override
     public Integer amINeeded(int thiefId)
@@ -290,7 +316,10 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
 
     /**
-     *
+     * Method that prepares the team to rob a room. Guarantees that all thieves are sent at the same time
+     * @param teamId -  the team that is going to rob
+     * @param thiefId - the thief that is going to rob, associated with the given team
+     * @return TargetRoom - Returns the room assigned to the given team
      */
     @Override
     public TargetRoom prepareExcursion(int thiefId, int teamId) {
@@ -323,7 +352,10 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     }
 
     /**
-     *
+     * Method that notifies the chief that a canvas has been handed by the given thief
+     * @param thiefId - the thief that handed the canvas
+     * @param teamId - the team where that thief belongs
+     * @param rolledCanvas - true if a canvas was really stolen
      */
     @Override
     public void handACanvas(int thiefId, int teamId, boolean rolledCanvas)

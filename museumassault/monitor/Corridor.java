@@ -18,8 +18,10 @@ public class Corridor implements TargetCorridor
     protected Logger logger;
 
     /**
-     *
-     * @param room
+     * Constructor of a Corridor
+     * @param nrPositions - the length of the corridor
+     * @param maxDistanceBetweenThieves - the maximum distance between thieves
+     * @param logger - the logger used to store the process 
      */
     public Corridor(int nrPositions, int maxDistanceBetweenThieves, Logger logger)
     {
@@ -33,7 +35,7 @@ public class Corridor implements TargetCorridor
     }
 
     /**
-     *
+     * Method that clears the positions of the corridor
      */
     public int getTotalPositions()
     {
@@ -54,7 +56,10 @@ public class Corridor implements TargetCorridor
     }
 
     /**
-     *
+     * Method that moves the thief towards the room
+     * @param thiefId - the id of the thief that is moving
+     * @param increment - the number of steps that thief is trying to move
+     * @return boolean - Returns true if the thief managed to move to the wanted position
      */
     @Override
     public synchronized boolean crawlOut(int thiefId, int increment)
@@ -154,7 +159,10 @@ public class Corridor implements TargetCorridor
     }
 
     /**
-     *
+     * Method that moves the thief from the room to the outside
+     * @param thiefId - the id of the thief that is moving
+     * @param increment - the number of steps that thief is trying to move
+     * @return boolean - Returns true if the thief managed to move to the wanted position
      */
     @Override
     public synchronized boolean crawlIn(int thiefId, int increment)
@@ -259,7 +267,8 @@ public class Corridor implements TargetCorridor
     }
 
     /**
-     *
+     * Method that checks if the maximum distance between thieves is being passed or not
+     * @return boolean - Returns true if the maximum distance has been passed
      */
     protected synchronized boolean checkGaps() {
 

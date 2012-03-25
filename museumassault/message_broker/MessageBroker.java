@@ -12,10 +12,10 @@ public class MessageBroker
     HashMap messages = new HashMap();
 
     /**
-     *
-     * @param action
-     * @param id
-     * @return
+     * Method that returns and removes from the list of messages the message to be read
+     * @param action - the action to be performed
+     * @param originId - the id of the sender of the message
+     * @return Message - Returns the message to be read
      */
     public Message readMessage(int action, int originId)
     {
@@ -37,7 +37,9 @@ public class MessageBroker
     }
 
     /**
-     *
+     * Method that returns the message at the head of the message list
+     * @param action - the action to be performed
+     * @return Message - Returns the message to be read
      */
     public synchronized Message readMessage(int action)
     {
@@ -53,7 +55,8 @@ public class MessageBroker
     }
 
     /**
-     *
+     * Method that puts a new Message in the message list
+     * @param message - the message to be put in the message list
      */
     public synchronized void writeMessage(Message message)
     {

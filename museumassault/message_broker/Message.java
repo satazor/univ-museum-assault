@@ -11,8 +11,9 @@ public class Message
     protected int originId;
 
     /**
-     *
-     * @param action
+     * Constructor of a Message based on the action to be performed and on the id of the sender
+     * @param action - the action to be performed
+     * @param originId - the id of the sender
      */
     public Message(int action, int originId)
     {
@@ -21,8 +22,8 @@ public class Message
     }
 
     /**
-     *
-     * @param action
+     * Constructor of a Message based on the action to be performed
+     * @param action - the action to be performed
      */
     public Message(int action)
     {
@@ -30,8 +31,8 @@ public class Message
     }
 
     /**
-     *
-     * @return
+     * Method that returns the id of the sender of the message
+     * @return Integer - Returns the id of the sender
      */
     public int getOriginId()
     {
@@ -39,8 +40,8 @@ public class Message
     }
 
     /**
-     *
-     * @return
+     * Method that returns the action to be performed 
+     * @return Integer - Returns the action to be performed
      */
     public int getAction()
     {
