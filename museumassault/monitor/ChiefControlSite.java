@@ -1,53 +1,66 @@
 package museumassault.monitor;
 
 /**
+ * ChiefControlSite interface.
+ *
+ * This interfaces offers all the methods that a chief should be aware off to
+ * complete its lifecycle.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public interface ChiefControlSite
 {
-	/**
-     * Method that decides if there are still rooms to rob
-     * @param chiefId - the id of the chief
-     * @return Integer - Returns the id of the room that is being robbed
+    /**
+     * Decide if the chief should sit or rob a room.
+     *
+     * @param chiefId the id of the chief
+     *
+     * @return the id of the room that should be robed or null if the chief should sit
      */
     public Integer appraiseSit(int chiefId);
 
     /**
-     * Method that prepares an assault team, assigning to that team the given room
-     * and waking up the thieves that will form the team
-     * @param chiefId - the id of the chief
-     * @param roomId - the room to be robbed
-     * @return Integer - Returns the id of the team prepared to rob
+     * Prepares an assault team, assigning a team that will be responsible for it.
+     *
+     * @param chiefId the id of the chief
+     * @param roomId  the room that will be robbed
+     *
+     * @return returns the id of the assigned team or null if none is free
      */
     public Integer prepareAssaultParty(int chiefId, int roomId);
 
     /**
-     * Method that sends the previously prepared team (from method prepareAssaultParty(roomID))
-     * to rob the designated room
-     * @param chiefId - the id of the chief
-     * @param teamId - the team to be sent
+     * Method that sends a previously prepared team to rob the designated room.
+     * This method should guarantee that all the thieves depart at the same time.
+     *
+     * @param chiefId the id of the chief
+     * @param teamId  the team to be sent
      */
     public void sendAssaultParty(int chiefId, int teamId);
 
     /**
-     * Method that checks if the assault is over. If it isn't the chief is told to wait
-     * @param chiefId - the id of the chief
-     * @return Integer - Returns null if no team is robbing
+     * Takes a rest, waiting for a thief arrival.
+     *
+     * @param chiefId the id of the chief
+     *
+     * @return the id of the thief that arrived or null if there is no remaining thieves
      */
     public Integer takeARest(int chiefId);
 
     /**
-     * Method that collects the canvas handed by a thief, and checks if the room is already empty or not
-     * @param chiefId - the id of the chief
-     * @param thiefId - the id of the thief that handed the canvas
+     * Collects the canvas of thief that arrived.
+     *
+     * @param chiefId the id of the chief
+     * @param thiefId the id of the thief that handed the canvas
      */
     public void collectCanvas(int chiefId, int thiefId);
 
     /**
-     * Method that returns the total number of canvas stolen
-     * @param chiefId - the id of the chief
-     * @return Integer - Returns the number of canvas stolen
+     * Sums up the total canvas stolen.
+     *
+     * @param chiefId the id of the chief
+     *
+     * @return the total number of canvas stolen
      */
     public int sumUpResults(int chiefId);
 }

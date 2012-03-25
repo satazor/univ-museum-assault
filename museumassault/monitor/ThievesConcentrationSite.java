@@ -1,38 +1,42 @@
 package museumassault.monitor;
 
 /**
+ * ThievesConcentrationSite interface.
+ *
+ * This interfaces offers all the methods that a thief should be aware off to
+ * complete its lifecycle.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public interface ThievesConcentrationSite
 {
     /**
-     * Method that checks if the given thief is needed for a team. While the
-     * thief isn't needed he waits
+     * Waits until the thief is needed.
      *
-     * @param thiefId - the thief that needs to know if is needed
-     * @return Integer - Returns the id of the team that needs this thief
+     * @param thiefId the thief id
+     *
+     * @return the id of the team in which this thief is needed
      */
     public Integer amINeeded(int thiefId);
 
     /**
-     * Method that prepares the team to rob a room. Guarantees that all thieves
-     * are sent at the same time
+     * Prepares the thief for the excursion.
+     * This method should signal the master that the thief is ready and only depart
+     * when notified.
      *
-     * @param teamId - the team that is going to rob
-     * @param thiefId - the thief that is going to rob, associated with the
-     * given team
-     * @return TargetRoom - Returns the room assigned to the given team
+     * @param thiefId the thief id
+     * @param teamId  the team in which the thief belongs
+     *
+     * @return the room assigned to the team
      */
     public TargetRoom prepareExcursion(int thiefId, int teamId);
 
     /**
-     * Method that notifies the chief that a canvas has been handed by the given
-     * thief
+     * Hands a canvas to the chief.
      *
-     * @param thiefId - the thief that handed the canvas
-     * @param teamId - the team where that thief belongs
-     * @param rolledCanvas - true if a canvas was really stolen
+     * @param thiefId      the thief id
+     * @param teamId       the team where that thief belongs
+     * @param rolledCanvas true if a canvas was stolen, false otherwise
      */
     public void handACanvas(int thiefId, int teamId, boolean rolledCanvas);
 }
