@@ -147,7 +147,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     {
         Room room = (Room) this.roomsHash.get(roomId);
         if (room == null) {
-            throw new RuntimeException("Unknown room with id #" + roomId);
+            throw new IllegalArgumentException("Unknown room with id #" + roomId);
         }
 
         synchronized (this.chiefBroker) {
@@ -194,13 +194,13 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     {
         Team team = (Team) this.teamsHash.get(teamId);
         if (team == null) {
-            throw new RuntimeException("Unknown team with id #" + teamId);
+            throw new IllegalArgumentException("Unknown team with id #" + teamId);
         }
 
         synchronized (this.chiefBroker) {
 
             if (!team.isBeingPrepared()) {
-                throw new RuntimeException("Team with id #" + teamId + " is not being prepared.");
+                throw new IllegalStateException("Team with id #" + teamId + " is not being prepared.");
             }
 
             MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
@@ -279,7 +279,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
                 Team team = (Team) this.teamsHash.get(message.getTeamId());
                 if (team == null) {
-                    throw new RuntimeException("Unknown team with id #" + message.getTeamId());
+                    throw new IllegalArgumentException("Unknown team with id #" + message.getTeamId());
                 }
 
                 synchronized (this.chiefBroker) {
@@ -360,7 +360,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
         if (broker == null) {
-            throw new RuntimeException("Unknown team with id #" + teamId);
+            throw new IllegalArgumentException("Unknown team with id #" + teamId);
         }
 
         boolean sentMessage = false;
@@ -401,7 +401,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     {
         Team team = (Team) this.teamsHash.get(teamId);
         if (team == null) {
-            throw new RuntimeException("Unknown team with id #" + teamId);
+            throw new IllegalArgumentException("Unknown team with id #" + teamId);
         }
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);

@@ -58,7 +58,7 @@ public class Logger
 
         try {
             this.fileWriter = new FileWriter(fileName);
-            this.writeBuff = new BufferedWriter(fileWriter);
+            this.writeBuff = new BufferedWriter(fileWriter, 51200);   // Write to log each 50kb
         } catch (IOException e) {
             System.err.println("Unable to write to log file " + fileName);
         }
@@ -103,7 +103,7 @@ public class Logger
     public synchronized void setChiefStatus(int chiefId, CHIEF_STATUS status)
     {
         if (!this.initialized) {
-            throw new RuntimeException("Please initialize the logger first.");
+            throw new IllegalStateException("Please initialize the logger first.");
         }
 
         this.chiefsStatus.put(chiefId, this.statusToStr(status));
@@ -120,7 +120,7 @@ public class Logger
     public synchronized void setThiefStatus(int thiefId, THIEF_STATUS status)
     {
         if (!this.initialized) {
-            throw new RuntimeException("Please initialize the logger first.");
+            throw new IllegalStateException("Please initialize the logger first.");
         }
 
         this.thievesStatus.put(thiefId, this.statusToStr(status));
@@ -266,7 +266,6 @@ public class Logger
                 }
 
                 this.writeBuff.newLine();
-                this.writeBuff.flush();
             } catch (IOException e) {
                 System.err.println("Unable to write to log file " + this.fileName);
             }

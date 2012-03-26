@@ -30,7 +30,7 @@ public class Corridor implements TargetCorridor
     public Corridor(int distance, int maxDistanceBetweenThieves, Logger logger)
     {
         if (maxDistanceBetweenThieves <= 0) {
-            throw new RuntimeException("The max distance between thieves must be greater than zero.");
+            throw new IllegalArgumentException("The max distance between thieves must be greater than zero.");
         }
 
         this.inwards = new Integer[distance];
@@ -95,7 +95,7 @@ public class Corridor implements TargetCorridor
         if (currentPosition == null) {
             currentPosition = -1;
         } else if (currentPosition == -1) {
-            throw new RuntimeException("Thief already crawled out.");
+            throw new IllegalArgumentException("Thief already crawled out.");
         }
 
         this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.CRAWLING_OUTWARDS);
@@ -199,10 +199,10 @@ public class Corridor implements TargetCorridor
 
         if (currentPosition != -1) {
             if (currentPosition < this.outwards.length) {
-                throw new RuntimeException("Thief didn't yet crawled out yet.");
+                throw new IllegalStateException("Thief didn't yet crawled out yet.");
             }
             if (currentPosition - this.outwards.length >= this.inwards.length) {
-                throw new RuntimeException("Thief already crawled in.");
+                throw new IllegalStateException("Thief already crawled in.");
             }
             currentPosition -= this.outwards.length;
         }
