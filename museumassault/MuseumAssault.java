@@ -61,7 +61,7 @@ public class MuseumAssault
         }
 
         // Initialize the logger
-        logger.initialize(chiefs, thieves, teams);
+        logger.initialize(chiefs, thieves, teams, rooms);
 
         // Start the threads
         for (int x = 0; x < totalThieves; x++) {

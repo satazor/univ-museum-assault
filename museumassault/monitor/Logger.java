@@ -40,6 +40,7 @@ public class Logger
     protected Chief[] chiefs;
     protected Thief[] thieves;
     protected Team[] teams;
+    protected Room[] rooms;
 
     protected FileWriter fileWriter;
     protected BufferedWriter writeBuff;
@@ -69,12 +70,14 @@ public class Logger
      * @param chiefs  the chiefs instances
      * @param thieves the thieves instances
      * @param teams   the teams instances
+     * @param rooms   the rooms instances
      */
-    public void initialize(Chief[] chiefs, Thief[] thieves, Team[] teams)
+    public void initialize(Chief[] chiefs, Thief[] thieves, Team[] teams, Room[] rooms)
     {
         this.thieves = thieves;
         this.chiefs = chiefs;
         this.teams = teams;
+        this.rooms = rooms;
         this.initialized = true;
 
         int length = chiefs.length;
@@ -184,8 +187,14 @@ public class Logger
                     this.writeBuff.write(String.format("%-" + nrColumns + "s", "PARTY_" + x));
                 }
 
+                length = this.rooms.length;
+                for (int x = 0; x < length; x++) {
+                    this.writeBuff.write(String.format("%-12s", "ROOM_" + x));
+                }
+
                 this.writeBuff.newLine();
 
+                length = this.teams.length;
                 for (int x = 0; x < length; x++) {
                     this.writeBuff.write(String.format("%-4s", "RId"));
                     this.writeBuff.write(String.format("%-6s", "RTPos"));
@@ -194,6 +203,12 @@ public class Logger
                         this.writeBuff.write(String.format("%-6s", "Mem_" + y));
                     }
                     this.writeBuff.write("  ");
+                }
+
+                length = this.rooms.length;
+                for (int x = 0; x < length; x++) {
+                    this.writeBuff.write(String.format("%-6s", "RId"));
+                    this.writeBuff.write(String.format("%-6s", "NC"));
                 }
 
                 this.writeBuff.newLine();
@@ -242,6 +257,12 @@ public class Logger
                         }
                     }
                     this.writeBuff.write("  ");
+                }
+
+                length = this.rooms.length;
+                for (int x = 0; x < length; x++) {
+                    this.writeBuff.write(String.format("%-6s", this.rooms[x].getId()));
+                    this.writeBuff.write(String.format("%-6s", this.rooms[x].getNrCanvas()));
                 }
 
                 this.writeBuff.newLine();

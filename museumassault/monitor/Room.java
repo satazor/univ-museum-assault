@@ -42,6 +42,16 @@ public class Room implements TargetRoom
     }
 
     /**
+     * Get the current number of canvas in the room.
+     *
+     * @return the number of canvas currently in the room
+     */
+    public int getNrCanvas()
+    {
+        return this.nrCanvas;
+    }
+
+    /**
      * Get the corridor that leads to the room (concrete).
      *
      * @return the corridor
@@ -98,7 +108,7 @@ public class Room implements TargetRoom
             this.nrCanvas--;
             return true;
         }
-        
+
         return false;
     }
 }
