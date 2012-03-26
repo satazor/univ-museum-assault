@@ -22,16 +22,16 @@ public class MuseumAssault
     {
     	// Configurable params
         int nrChiefs = 1;
-        int nrTeams = 4;
+        int nrTeams = 5;
         int nrThievesPerTeam = 3;
+        int nrTotalThieves = 7;
         int nrRooms = 5;
         int maxDistanceBetweenThieves = 1;
-        int maxPositionsInCorridor = 30;
+        int maxDistanceBetweenRoomAndOutside = 10;
         int maxPowerPerThief = 5;
-        int maxCanvasInRoom = 50;
+        int maxCanvasInRoom = 20;
         String logFileName = "log.txt";
 
-        int totalThieves = nrTeams * nrThievesPerTeam;
         Random random = new Random();
         Logger logger = new Logger(logFileName);
 
@@ -43,13 +43,13 @@ public class MuseumAssault
 
         Room[] rooms = new Room[nrRooms];
         for (int x = 0; x < nrRooms; x++) {
-            rooms[x] = new Room(x + 1, random.nextInt(maxCanvasInRoom - 1) + 1, new Corridor((random.nextInt(maxPositionsInCorridor - 1) + 1), maxDistanceBetweenThieves, logger), logger);
+            rooms[x] = new Room(x + 1, random.nextInt(maxCanvasInRoom - 1) + 1, new Corridor((random.nextInt(maxDistanceBetweenRoomAndOutside - 1) + 1), maxDistanceBetweenThieves, logger), logger);
         }
 
         SharedSite site = new SharedSite(rooms, teams, logger, (nrChiefs > 1));
 
-        Thief[] thieves = new Thief[totalThieves];
-        for (int x = 0; x < totalThieves; x++) {
+        Thief[] thieves = new Thief[nrTotalThieves];
+        for (int x = 0; x < nrTotalThieves; x++) {
             Thief thief = new Thief(x + 1, random.nextInt(maxPowerPerThief - 1) + 1, site);
             thieves[x] = thief;
         }
@@ -64,7 +64,7 @@ public class MuseumAssault
         logger.initialize(chiefs, thieves, teams, rooms);
 
         // Start the threads
-        for (int x = 0; x < totalThieves; x++) {
+        for (int x = 0; x < nrTotalThieves; x++) {
             thieves[x].start();
         }
 

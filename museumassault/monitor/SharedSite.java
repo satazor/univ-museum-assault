@@ -39,6 +39,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
     protected int nrRoomsToBeRobed;
     protected int nrCollectedCanvas = 0;
     protected boolean multipleMasters = false;
+    protected int nrIdleThieves = 0;
 
     protected Logger logger;
 
@@ -157,7 +158,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
 
             for (int x = 0; x < nrTeams; x++) {
 
-                if (!this.teams[x].isBusy() && !this.teams[x].isBeingPrepared()) {
+                if (!this.teams[x].isBusy() && !this.teams[x].isBeingPrepared() && this.nrIdleThieves >= this.teams[x].getCapacity()) {
 
                     this.teams[x].isBeingPrepared(true);
                     this.teams[x].setAssignedRoom(room);
@@ -329,9 +330,11 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
             synchronized (this.thievesBroker) {
 
                 //System.out.println("[Thief #" + thiefId + "] Waiting for orders..");
+                this.nrIdleThieves++;
                 try {
                     this.thievesBroker.wait();
                 } catch (InterruptedException ex) {}
+                this.nrIdleThieves--;
             }
 
             PrepareAssaultMessage message = (PrepareAssaultMessage) this.thievesBroker.readMessage(PREPARE_ASSAULT_ACTION);
