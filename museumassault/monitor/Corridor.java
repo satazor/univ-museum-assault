@@ -23,23 +23,24 @@ public class Corridor implements TargetCorridor
     /**
      * Class constructor.
      *
-     * @param nrPositions               the number of positions of the corridor
+     * @param distance                  the distance from the outside to the room
      * @param maxDistanceBetweenThieves max allowed distance between positions
      * @param logger                    the logger to log the program state
      */
-    public Corridor(int nrPositions, int maxDistanceBetweenThieves, Logger logger)
+    public Corridor(int distance, int maxDistanceBetweenThieves, Logger logger)
     {
-        assert(nrPositions % 2 != 0);
-        assert(maxDistanceBetweenThieves <= 0);
+        if (maxDistanceBetweenThieves <= 0) {
+            throw new RuntimeException("The max distance between thieves must be greater than zero.");
+        }
 
-        this.inwards = new Integer[nrPositions];
-        this.outwards = new Integer[nrPositions];
+        this.inwards = new Integer[distance];
+        this.outwards = new Integer[distance];
         this.maxDistanceBetweenThieves = maxDistanceBetweenThieves;
         this.logger = logger;
     }
 
     /**
-     * Get the total number of positions.
+     * Get the total number of positions (double of the distance).
      *
      * @return the number of positions
      */

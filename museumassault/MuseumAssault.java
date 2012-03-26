@@ -22,9 +22,9 @@ public class MuseumAssault
     {
     	// Configurable params
         int nrChiefs = 1;
-        int nrTeams = 1;
-        int nrThievesPerTeam = 5;
-        int nrRooms = 4;
+        int nrTeams = 2;
+        int nrThievesPerTeam = 3;
+        int nrRooms = 5;
         int maxDistanceBetweenThieves = 1;
         int totalThieves = nrTeams * nrThievesPerTeam;
         String logFileName = "log.txt";
@@ -41,14 +41,14 @@ public class MuseumAssault
 
         Room[] rooms = new Room[nrRooms];
         for (int x = 0; x < nrRooms; x++) {
-            rooms[x] = new Room(x + 1, random.nextInt(nrRooms - 1 <= 0 ? 1 : nrRooms - 1) + 1, new Corridor(random.nextInt(nrRooms - 1 <= 0 ? 1 : nrRooms - 1) + 1, maxDistanceBetweenThieves, logger), logger);
+            rooms[x] = new Room(x + 1, random.nextInt(nrRooms - 2 <= 0 ? 1 : nrRooms - 2) + 1, new Corridor((random.nextInt(nrRooms - 2 <= 0 ? 1 : nrRooms - 2) + 1), maxDistanceBetweenThieves, logger), logger);
         }
 
         SharedSite site = new SharedSite(rooms, teams, logger, (nrChiefs > 1));
 
         Thief[] thieves = new Thief[totalThieves];
         for (int x = 0; x < totalThieves; x++) {
-            Thief thief = new Thief(x + 1, random.nextInt(totalThieves - 2) + 1, site);
+            Thief thief = new Thief(x + 1, random.nextInt(totalThieves - 3) + 1, site);
             thieves[x] = thief;
         }
 

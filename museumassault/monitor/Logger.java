@@ -99,7 +99,10 @@ public class Logger
      */
     public synchronized void setChiefStatus(int chiefId, CHIEF_STATUS status)
     {
-        assert(this.initialized);
+        if (!this.initialized) {
+            throw new RuntimeException("Please initialize the logger first.");
+        }
+
         this.chiefsStatus.put(chiefId, this.statusToStr(status));
 
         this.writeToLog();
@@ -113,7 +116,10 @@ public class Logger
      */
     public synchronized void setThiefStatus(int thiefId, THIEF_STATUS status)
     {
-        assert(this.initialized);
+        if (!this.initialized) {
+            throw new RuntimeException("Please initialize the logger first.");
+        }
+
         this.thievesStatus.put(thiefId, this.statusToStr(status));
 
         this.writeToLog();

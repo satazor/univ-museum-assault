@@ -26,7 +26,9 @@ public class Thief extends Thread
      */
     public Thief(int id, int power, ThievesConcentrationSite site)
     {
-        assert (power < 0);
+        if (power <= 0) {
+            throw new RuntimeException("Thief power must be greater then zero.");
+        }
 
         this.id = id;
         this.power = power;
