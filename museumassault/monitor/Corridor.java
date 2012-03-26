@@ -110,7 +110,7 @@ public class Corridor implements TargetCorridor
 
         while (true) {
 
-            for (offset = increment; offset > 0; offset--) {
+            for (offset = increment + (currentPosition == -1 ? 1 : 0); offset > 0; offset--) {
 
                 newPosition = currentPosition + offset;
 
@@ -210,16 +210,17 @@ public class Corridor implements TargetCorridor
         this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.CRAWLING_INWARDS);
 
         int newPosition = -1;
-        //System.out.println("[Thief #" + thiefId +"] Crawl in from " + currentPosition + " with increment " + increment);
 
         int offset;
         boolean foundSlot;
         boolean moved = false;
         boolean ret = false;
 
+        //System.out.println("[Thief #" + thiefId +"] Crawl in from " + currentPosition + " with increment " + increment);
+
         while (true) {
 
-            for (offset = increment; offset > 0; offset--) {
+            for (offset = increment + (currentPosition == -1 ? 1 : 0); offset > 0; offset--) {
 
                 newPosition = currentPosition + offset;
 
@@ -305,7 +306,7 @@ public class Corridor implements TargetCorridor
 
         //System.out.print("OUTWARDS: ");
         //for (int x = 0; x < length; x++) {
-            //System.out.print("#" + x + " - " + this.outwards[x] + "  ");
+        //    System.out.print("#" + x + " - " + this.outwards[x] + "  ");
         //}
         //System.out.println();
 
@@ -337,7 +338,7 @@ public class Corridor implements TargetCorridor
 
         //System.out.print("INWARDS: ");
         //for (int x = 0; x < length; x++) {
-            //System.out.print("#" + x + " - " + this.inwards[x] + "  ");
+        //    System.out.print("#" + x + " - " + this.inwards[x] + "  ");
         //}
         //System.out.println();
 
