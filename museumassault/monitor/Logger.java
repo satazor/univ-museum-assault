@@ -253,7 +253,7 @@ public class Logger
     }
 
     /**
-     * Converts from the status from the chief enum type to string.
+     * Converts the status from the chief enum type to string.
      *
      * @param status the thief's status
      *
@@ -278,7 +278,7 @@ public class Logger
     }
 
     /**
-     * Converts from the status from the thief enum type to string.
+     * Converts the status from the thief enum type to string.
      *
      * @param status the thief's status
      *

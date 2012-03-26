@@ -26,10 +26,9 @@ public class MuseumAssault
         int nrThievesPerTeam = 3;
         int nrRooms = 5;
         int maxDistanceBetweenThieves = 1;
-        int totalThieves = nrTeams * nrThievesPerTeam;
         String logFileName = "log.txt";
 
-
+        int totalThieves = nrTeams * nrThievesPerTeam;
         Random random = new Random();
         Logger logger = new Logger(logFileName);
 

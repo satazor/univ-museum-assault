@@ -98,6 +98,7 @@ public class Room implements TargetRoom
             this.nrCanvas--;
             return true;
         }
+        
         return false;
     }
 }
