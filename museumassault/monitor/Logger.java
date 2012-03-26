@@ -41,9 +41,9 @@ public class Logger
     protected Thief[] thieves;
     protected Team[] teams;
 
-    FileWriter fileWriter;
-    BufferedWriter writeBuff;
-    String fileName;
+    protected FileWriter fileWriter;
+    protected BufferedWriter writeBuff;
+    protected String fileName;
     protected boolean initialized = false;
 
     /**
