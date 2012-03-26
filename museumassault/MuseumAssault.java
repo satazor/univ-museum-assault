@@ -32,10 +32,10 @@ public class MuseumAssault
         int maxCanvasInRoom = 20;
         String logFileName = "log.txt";
 
+        // Initializing the necessary entities
         Random random = new Random();
         Logger logger = new Logger(logFileName);
 
-        // Initializing the necessary entities
         Team[] teams = new Team[nrTeams];
         for (int x = 0; x < nrTeams; x++) {
             teams[x] = new Team(x + 1, nrThievesPerTeam);
