@@ -160,11 +160,11 @@ public class Logger
 
                 int length = this.chiefs.length;
                 for (int x = 0; x < length; x++) {
-                    this.writeBuff.write(String.format("%-12s", "CHIEF_" + x));
+                    this.writeBuff.write(String.format("%-12s", "CHIEF_" + this.chiefs[x].getChiefId()));
                 }
                 length = this.thieves.length;
                 for (int x = 0; x < length; x++) {
-                    this.writeBuff.write(String.format("%-12s", "THIEF_" + x));
+                    this.writeBuff.write(String.format("%-12s", "THIEF_" + this.thieves[x].getThiefId()));
                 }
 
                 this.writeBuff.newLine();
@@ -184,12 +184,12 @@ public class Logger
                 length = this.teams.length;
                 for (int x = 0; x < length; x++) {
                     int nrColumns = 6 + this.teams[x].getCapacity()*6;
-                    this.writeBuff.write(String.format("%-" + nrColumns + "s", "PARTY_" + x));
+                    this.writeBuff.write(String.format("%-" + nrColumns + "s", "PARTY_" + this.teams[x].getId()));
                 }
 
                 length = this.rooms.length;
                 for (int x = 0; x < length; x++) {
-                    this.writeBuff.write(String.format("%-14s", "ROOM_" + x));
+                    this.writeBuff.write(String.format("%-14s", "ROOM_" + this.rooms[x].getId()));
                 }
 
                 this.writeBuff.newLine();
@@ -251,7 +251,7 @@ public class Logger
                             this.writeBuff.write(String.format("%-3s", "-"));
                         } else {
                             this.writeBuff.write(String.format("%-3s", thievesIds[y]));
-                            Integer position = room != null ? room.getCorridor().getThiefPosition(y) : null;
+                            Integer position = room != null ? room.getCorridor().getThiefPosition(thievesIds[y]) : null;
                             this.writeBuff.write(String.format("%-3s", position != null ? position : "-" ));
                         }
                     }
