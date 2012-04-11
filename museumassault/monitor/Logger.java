@@ -31,12 +31,14 @@ public class Logger
     public static enum THIEF_STATUS {
         OUTSIDE,
         CRAWLING_INWARDS,
+        AT_ROOM_ENTRANCE,
         AT_A_ROOM,
+        AT_ROOM_EXIT,
         CRAWLING_OUTWARDS
     };
 
-    protected HashMap<Integer, String> chiefsStatus = new HashMap<>();
-    protected HashMap<Integer, String> thievesStatus = new HashMap<>();
+    protected HashMap<Integer, CHIEF_STATUS> chiefsStatus = new HashMap<>();
+    protected HashMap<Integer, THIEF_STATUS> thievesStatus = new HashMap<>();
     protected Chief[] chiefs;
     protected Thief[] thieves;
     protected Team[] teams;
@@ -82,12 +84,12 @@ public class Logger
 
         int length = chiefs.length;
         for (int x = 0; x < length; x++) {
-            this.chiefsStatus.put(chiefs[x].getChiefId(), this.statusToStr(CHIEF_STATUS.PLANNING_THE_HEIST));
+            this.chiefsStatus.put(chiefs[x].getChiefId(), CHIEF_STATUS.PLANNING_THE_HEIST);
         }
 
         length = thieves.length;
         for (int x = 0; x < length; x++) {
-            this.thievesStatus.put(thieves[x].getThiefId(), this.statusToStr(THIEF_STATUS.OUTSIDE));
+            this.thievesStatus.put(thieves[x].getThiefId(), THIEF_STATUS.OUTSIDE);
         }
 
         this.writeHeader();
@@ -106,7 +108,7 @@ public class Logger
             throw new IllegalStateException("Please initialize the logger first.");
         }
 
-        this.chiefsStatus.put(chiefId, this.statusToStr(status));
+        this.chiefsStatus.put(chiefId, status);
 
         this.writeToLog();
     }
@@ -123,7 +125,7 @@ public class Logger
             throw new IllegalStateException("Please initialize the logger first.");
         }
 
-        this.thievesStatus.put(thiefId, this.statusToStr(status));
+        this.thievesStatus.put(thiefId, status);
 
         this.writeToLog();
     }
@@ -227,12 +229,12 @@ public class Logger
             try {
                 int length = this.chiefs.length;
                 for (int x = 0; x < length; x++) {
-                    this.writeBuff.write(String.format("%-12s", this.chiefsStatus.get(this.chiefs[x].getChiefId())));
+                    this.writeBuff.write(String.format("%-12s", this.statusToStr(this.chiefsStatus.get(this.chiefs[x].getChiefId()))));
                 }
 
                 length = this.thieves.length;
                 for (int x = 0; x < length; x++) {
-                    this.writeBuff.write(String.format("%-6s", this.thievesStatus.get(this.thieves[x].getThiefId())));
+                    this.writeBuff.write(String.format("%-6s", this.statusToStr(this.thievesStatus.get(this.thieves[x].getThiefId()))));
                     this.writeBuff.write(String.format("%-6s", this.thieves[x].getPower()));
                 }
 
@@ -251,7 +253,8 @@ public class Logger
                             this.writeBuff.write(String.format("%-3s", "-"));
                         } else {
                             this.writeBuff.write(String.format("%-3s", thievesIds[y]));
-                            Integer position = room != null ? room.getCorridor().getThiefPosition(thievesIds[y]) : null;
+                            THIEF_STATUS status = this.thievesStatus.get(thievesIds[y]);
+                            Integer position = room != null ? (status == THIEF_STATUS.AT_ROOM_ENTRANCE || status == THIEF_STATUS.AT_ROOM_EXIT ? null : room.getCorridor().getThiefPosition(thievesIds[y])) : null;
                             this.writeBuff.write(String.format("%-3s", position != null ? position : "-" ));
                         }
                     }
@@ -311,8 +314,12 @@ public class Logger
                 return "OUTS";
             case CRAWLING_OUTWARDS:
                 return "COUT";
+            case AT_ROOM_ENTRANCE:
+                return "RENT";
             case AT_A_ROOM:
                 return "ATAR";
+            case AT_ROOM_EXIT:
+                return "REXIT";
             case CRAWLING_INWARDS:
                 return "CRIN";
             default:

@@ -160,6 +160,7 @@ public class Corridor implements TargetCorridor
                 if (newPosition >= this.outwards.length) {
                     ret = true;
                     this.thievesPositions.put(thiefId, -1);
+                    this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_ROOM_ENTRANCE);
                     //System.out.println("[Thief #" + thiefId +"] Moved successfully outside the outwards corridor");
                 } else {
                     this.thievesPositions.put(thiefId, newPosition);
@@ -270,6 +271,7 @@ public class Corridor implements TargetCorridor
                 if (newPosition >= this.inwards.length) {
                     ret = true;
                     this.thievesPositions.put(thiefId, this.getTotalPositions());
+                    this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_ROOM_EXIT);
                     //System.out.println("[Thief #" + thiefId +"] Moved successfully outside the inwards corridor");
                 } else {
                     this.thievesPositions.put(thiefId, newPosition + this.outwards.length);
