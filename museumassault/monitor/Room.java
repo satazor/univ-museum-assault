@@ -102,13 +102,19 @@ public class Room implements TargetRoom
     @Override
     public synchronized boolean rollACanvas(int thiefId)
     {
+        boolean rolledCanvas;
+
         this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_A_ROOM);
 
         if (this.nrCanvas > 0) {
             this.nrCanvas--;
-            return true;
+            rolledCanvas = true;
+        } else {
+            rolledCanvas = false;
         }
 
-        return false;
+        this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_ROOM_EXIT);
+
+        return rolledCanvas;
     }
 }
