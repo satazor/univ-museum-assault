@@ -1,6 +1,6 @@
 package museumassault;
 
-import museumassault.monitor.ChiefControlSite;
+import museumassault.monitor.IChiefControlSite;
 
 /**
  * Chief class.
@@ -12,7 +12,7 @@ import museumassault.monitor.ChiefControlSite;
  */
 public class Chief extends Thread
 {
-    protected ChiefControlSite site;
+    protected IChiefControlSite site;
     protected int id;
 
     /**
@@ -21,7 +21,7 @@ public class Chief extends Thread
      * @param id   the id of the chief
      * @param site the chief control site (exterior)
      */
-    public Chief(int id, ChiefControlSite site)
+    public Chief(int id, IChiefControlSite site)
     {
         this.id = id;
         this.site = site;

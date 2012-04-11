@@ -8,7 +8,7 @@ package museumassault.monitor;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public interface ThievesConcentrationSite
+public interface IThievesConcentrationSite
 {
     /**
      * Waits until the thief is needed.
@@ -29,7 +29,7 @@ public interface ThievesConcentrationSite
      *
      * @return the room assigned to the team
      */
-    public TargetRoom prepareExcursion(int thiefId, int teamId);
+    public ITargetRoom prepareExcursion(int thiefId, int teamId);
 
     /**
      * Hands a canvas to the chief.

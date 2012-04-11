@@ -1,7 +1,7 @@
 package museumassault;
 
-import museumassault.monitor.TargetRoom;
-import museumassault.monitor.ThievesConcentrationSite;
+import museumassault.monitor.ITargetRoom;
+import museumassault.monitor.IThievesConcentrationSite;
 
 /**
  * Thief class.
@@ -12,7 +12,7 @@ import museumassault.monitor.ThievesConcentrationSite;
  */
 public class Thief extends Thread
 {
-    protected ThievesConcentrationSite site;
+    protected IThievesConcentrationSite site;
     protected int id;
     protected int teamId;
     protected int power;
@@ -24,7 +24,7 @@ public class Thief extends Thread
      * @param power the number of maximum positions a thief can crawl
      * @param site  the site where the thieves will concentrate (exterior)
      */
-    public Thief(int id, int power, ThievesConcentrationSite site)
+    public Thief(int id, int power, IThievesConcentrationSite site)
     {
         if (power <= 0) {
             throw new IllegalArgumentException("Thief power must be greater then zero.");
@@ -67,7 +67,7 @@ public class Thief extends Thread
             this.teamId = this.site.amINeeded(this.id);
 
             // Prepare for excursion
-            TargetRoom room = this.site.prepareExcursion(this.id, this.teamId);
+            ITargetRoom room = this.site.prepareExcursion(this.id, this.teamId);
 
             //System.out.println("[Thief #" + this.id + "] Started crawling in..");
 

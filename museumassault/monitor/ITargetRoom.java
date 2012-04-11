@@ -8,14 +8,14 @@ package museumassault.monitor;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public interface TargetRoom
+public interface ITargetRoom
 {
     /**
      * Get the corridor of the room.
      *
      * @return the corridor that leads to the room
      */
-    public TargetCorridor getTargetCorridor();
+    public ITargetCorridor getTargetCorridor();
 
     /**
      * Attempts to roll a canvas from the room.

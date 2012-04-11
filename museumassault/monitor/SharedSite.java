@@ -17,7 +17,7 @@ import museumassault.message_broker.MessageBroker;
  * @see ThievesConcentrationSite
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
+public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
 {
     public static final int PREPARE_ASSAULT_ACTION = 1;
     public static final int SEND_ASSAULT_PARTY_ACTION = 2;
@@ -358,7 +358,7 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
      * @return the room assigned to the team
      */
     @Override
-    public TargetRoom prepareExcursion(int thiefId, int teamId) {
+    public ITargetRoom prepareExcursion(int thiefId, int teamId) {
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
         if (broker == null) {

@@ -8,7 +8,7 @@ package museumassault.monitor;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public interface TargetCorridor
+public interface ITargetCorridor
 {
     /**
      * Moves the thief towards the room.

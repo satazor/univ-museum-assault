@@ -7,7 +7,7 @@ package museumassault.monitor;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class Room implements TargetRoom
+public class Room implements ITargetRoom
 {
     protected boolean beingRobed = false;
     protected int id;
@@ -67,9 +67,9 @@ public class Room implements TargetRoom
      * @return the corridor
      */
     @Override
-    public TargetCorridor getTargetCorridor()
+    public ITargetCorridor getTargetCorridor()
     {
-        return (TargetCorridor) this.corridor;
+        return (ITargetCorridor) this.corridor;
     }
 
     /**

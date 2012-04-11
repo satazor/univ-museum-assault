@@ -8,7 +8,7 @@ package museumassault.monitor;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public interface ChiefControlSite
+public interface IChiefControlSite
 {
     /**
      * Decide if the chief should sit or rob a room.

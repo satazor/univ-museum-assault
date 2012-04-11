@@ -9,7 +9,7 @@ import java.util.HashMap;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class Corridor implements TargetCorridor
+public class Corridor implements ITargetCorridor
 {
     protected Integer[] inwards;
     protected Integer[] outwards;
