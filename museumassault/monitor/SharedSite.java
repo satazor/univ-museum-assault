@@ -334,13 +334,15 @@ public class SharedSite implements ChiefControlSite, ThievesConcentrationSite
                 try {
                     this.thievesBroker.wait();
                 } catch (InterruptedException ex) {}
-                this.nrIdleThieves--;
-            }
 
-            PrepareAssaultMessage message = (PrepareAssaultMessage) this.thievesBroker.readMessage(PREPARE_ASSAULT_ACTION);
-            if (message != null) {
-                //System.out.println("[Thief #" + thiefId + "] I am needed on team " + message.getTeamId() + "..");
-                return message.getTeamId();
+
+                PrepareAssaultMessage message = (PrepareAssaultMessage) this.thievesBroker.readMessage(PREPARE_ASSAULT_ACTION);
+                if (message != null) {
+                    //System.out.println("[Thief #" + thiefId + "] I am needed on team " + message.getTeamId() + "..");
+                    this.nrIdleThieves--;
+                    return message.getTeamId();
+                }
+
             }
         }
     }
