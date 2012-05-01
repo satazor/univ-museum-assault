@@ -1,5 +1,8 @@
 package museumassault.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
@@ -94,12 +97,12 @@ public class Configuration
      *
      * @return
      */
-    public static int[] getRoomIds()
+    public static List<Integer> getRoomIds()
     {
-        int[] ids = new int[nrRooms];
+        ArrayList<Integer> ids = new ArrayList(nrRooms);
 
         for (int x = 0; x < nrRooms; x++) {
-            ids[x] = x + 1;
+            ids.add(x + 1);
         }
 
         return ids;

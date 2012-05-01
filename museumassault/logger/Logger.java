@@ -243,8 +243,9 @@ public class Logger
 
                 length = this.teams.length;
                 for (int x = 0; x < length; x++) {
-                    Room room = this.teams[x].getAssignedRoom();
-                    this.writeBuff.write(String.format("%-4s", room != null ? this.teams[x].getAssignedRoom().getId() : "-"));
+                    // TODO: how do we handle the rooms here? maybe pass them ?!
+                    //Room room = this.teams[x].getAssignedRoomId();
+                    //this.writeBuff.write(String.format("%-4s", room != null ? this.teams[x].getAssignedRoomId().getId() : "-"));
                     int[] thievesIds = this.teams[x].getThiefs();
                     int nrMembers = thievesIds.length;
                     int capacity = this.teams[x].getCapacity();
@@ -255,8 +256,8 @@ public class Logger
                         } else {
                             this.writeBuff.write(String.format("%-3s", thievesIds[y]));
                             THIEF_STATUS status = this.thievesStatus.get(thievesIds[y]);
-                            Integer position = room != null ? (status == THIEF_STATUS.AT_ROOM_ENTRANCE || status == THIEF_STATUS.AT_ROOM_EXIT ? null : room.getCorridor().getThiefPosition(thievesIds[y])) : null;
-                            this.writeBuff.write(String.format("%-3s", position != null ? position : "-" ));
+                            //Integer position = room != null ? (status == THIEF_STATUS.AT_ROOM_ENTRANCE || status == THIEF_STATUS.AT_ROOM_EXIT ? null : room.getCorridor().getThiefPosition(thievesIds[y])) : null;
+                            //this.writeBuff.write(String.format("%-3s", position != null ? position : "-" ));
                         }
                     }
                     this.writeBuff.write("  ");

@@ -18,11 +18,24 @@ public class Message
      *
      * @param action   the action to be performed
      * @param originId the id of the sender
+     * @param extra    an object with aditional information
      */
     public Message(int type, int originId, Object extra)
     {
         this.type = type;
         this.originId = originId;
+        this.extra = extra;
+    }
+
+    /**
+     * Class constructor.
+     *
+     * @param action   the action to be performed
+     * @param extra    an object with aditional information
+     */
+    public Message(int type, Object extra)
+    {
+        this.type = type;
         this.extra = extra;
     }
 

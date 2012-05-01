@@ -34,7 +34,7 @@ public class Main
         // Initialize the server
         while (true) {
             ServerCom newCon = con.accept();
-            RequestHandler handler = new RequestHandler(newCon);
+            RequestHandler handler = new RequestHandler(newCon, site);
             handler.start();
         }
     }
