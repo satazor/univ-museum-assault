@@ -1,7 +1,5 @@
 package museumassault.shared_site;
 
-import museumassault.room.ITargetRoom;
-
 /**
  * IThievesMessageConstants interface.
  *

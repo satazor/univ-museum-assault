@@ -6,7 +6,7 @@ import museumassault.common.ClientCom;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class SharedSiteChiefClient
+public class SharedSiteChiefClient implements IChiefMessageConstants
 {
     protected ClientCom con;
 

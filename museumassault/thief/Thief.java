@@ -1,9 +1,7 @@
 package museumassault.thief;
 
-import museumassault.shared_site.SharedSiteThiefClient;
-import museumassault.room.ITargetRoom;
 import museumassault.room.RoomClient;
-import museumassault.shared_site.IThiefMessageConstants;
+import museumassault.shared_site.SharedSiteThiefClient;
 
 /**
  * Thief class.

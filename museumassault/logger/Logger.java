@@ -1,12 +1,12 @@
 package museumassault.logger;
 
-import museumassault.room.Room;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import museumassault.chief.Chief;
 import museumassault.common.Team;
+import museumassault.room.Room;
 import museumassault.thief.Thief;
 
 /**
