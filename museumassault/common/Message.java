@@ -69,7 +69,10 @@ public class Message
     }
 
     /**
+     * Get the extra object associated with this message.
+     * This can be anything that must be passed associated with the type of the message.
      *
+     * @return the object
      */
     public Object getExtra()
     {
