@@ -1,9 +1,9 @@
-package museumassault.thief;
+package museumassault.shared_site;
 
 import java.util.Random;
 import museumassault.common.ClientCom;
 import museumassault.common.Message;
-import museumassault.shared_site.IThiefMessageConstants;
+import museumassault.room.RoomClient;
 
 /**
  *
@@ -65,7 +65,7 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
      */
     public RoomClient prepareExcursion(int thiefId, int teamId)
     {
-
+        return null;
     }
 
     /**

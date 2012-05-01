@@ -66,9 +66,8 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
      * @param logger          the logger to log the program state
      * @param multipleMasters true if muliple chiefs (masters) coexist, false otherwise
      */
-    public SharedSite(Room[] rooms, Team[] teams, Logger logger, boolean multipleMasters)
+    public SharedSite(Room[] rooms, Team[] teams, boolean multipleMasters)
     {
-        this.initialize(rooms, teams, logger);
         this.multipleMasters = multipleMasters;
     }
 
@@ -79,7 +78,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
      * @param teams  the teams
      * @param logger the logger to log the program state
      */
-    protected final void initialize(Room[] rooms, Team[] teams, Logger logger)
+    protected final void initialize(Room[] rooms, Team[] teams)
     {
         this.teams = teams;
         int nrTeams = teams.length;
@@ -95,7 +94,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
             this.roomsStatus.put(rooms[x].getId(), true);
         }
 
-        this.logger = logger;
+        //this.logger = logger;
     }
 
     /**
@@ -119,7 +118,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
     {
         synchronized (this.chiefBroker) {
 
-            this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.DECIDING_WHAT_TO_DO);
+            //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.DECIDING_WHAT_TO_DO);
 
             if (this.nrRoomsToBeRobed > 0) {
 
@@ -153,7 +152,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
 
         synchronized (this.chiefBroker) {
 
-            this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.ASSEMBLING_A_GROUP);
+            //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.ASSEMBLING_A_GROUP);
 
             int nrTeams = this.teams.length;
 
@@ -235,7 +234,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
 
             synchronized (this.chiefBroker) {
 
-                this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.WAITING_FOR_ARRIVAL);
+                //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.WAITING_FOR_ARRIVAL);
 
                 Message message = this.chiefBroker.readMessage(THIEF_ARRIVE_ACTION);
                 if (message != null) {
@@ -306,7 +305,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
     public int sumUpResults(int chiefId) {
 
         synchronized (this.chiefBroker) {
-            this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.PRESENTING_THE_REPORT);
+            //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.PRESENTING_THE_REPORT);
 
             return this.nrCollectedCanvas;
         }
@@ -403,7 +402,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
         synchronized (this.chiefBroker) {
 
             synchronized (broker) {
-                this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.OUTSIDE);
+                //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.OUTSIDE);
                 team.removeThief(thiefId);
             }
 

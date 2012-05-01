@@ -1,4 +1,4 @@
-package museumassault.thief;
+package museumassault.corridor;
 
 /**
  *

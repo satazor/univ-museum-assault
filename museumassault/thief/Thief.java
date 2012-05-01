@@ -1,6 +1,8 @@
 package museumassault.thief;
 
+import museumassault.shared_site.SharedSiteThiefClient;
 import museumassault.room.ITargetRoom;
+import museumassault.room.RoomClient;
 import museumassault.shared_site.IThiefMessageConstants;
 
 /**
@@ -12,7 +14,7 @@ import museumassault.shared_site.IThiefMessageConstants;
  */
 public class Thief extends Thread
 {
-    protected IThiefMessageConstants site;
+    protected SharedSiteThiefClient site;
     protected int id;
     protected int teamId;
     protected int power;
@@ -24,7 +26,7 @@ public class Thief extends Thread
      * @param power the number of maximum positions a thief can crawl
      * @param site  the site where the thieves will concentrate (exterior)
      */
-    public Thief(int id, int power, IThiefMessageConstants site)
+    public Thief(int id, int power, SharedSiteThiefClient site)
     {
         if (power <= 0) {
             throw new IllegalArgumentException("Thief power must be greater then zero.");
@@ -67,24 +69,24 @@ public class Thief extends Thread
             this.teamId = this.site.amINeeded(this.id);
 
             // Prepare for excursion
-            ITargetRoom room = this.site.prepareExcursion(this.id, this.teamId);
+            RoomClient room = this.site.prepareExcursion(this.id, this.teamId);
 
             //System.out.println("[Thief #" + this.id + "] Started crawling in..");
 
             // Crawl in
-            while (!room.getTargetCorridor().crawlOut(this.id, this.power)) {}
+            //while (!room.getTargetCorridor().crawlOut(this.id, this.power)) {}
 
             //System.out.println("[Thief #" + this.id + "] Rolling canvas..");
-            boolean rolledCanvas = room.rollACanvas(this.id);
+            //boolean rolledCanvas = room.rollACanvas(this.id);
 
             //System.out.println("[Thief #" + this.id + "] Started crawling out..");
 
             // Crawl out
-            while (!room.getTargetCorridor().crawlIn(this.id, this.power)) {}
+            //while (!room.getTargetCorridor().crawlIn(this.id, this.power)) {}
 
             // Hand the canvas
             //System.out.println("[Thief #" + this.id + "] Handing canvas..");
-            this.site.handACanvas(this.id, this.teamId, rolledCanvas);
+            //this.site.handACanvas(this.id, this.teamId, rolledCanvas);
         }
     }
 }
