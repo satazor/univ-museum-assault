@@ -11,8 +11,8 @@ import museumassault.shared_site.IThiefMessageConstants;
  */
 public class SharedSiteThiefClient implements IThiefMessageConstants
 {
-    ClientCom con;
-    Random random = new Random();
+    protected ClientCom con;
+    protected Random random = new Random();
 
     /**
      * Constructor.
@@ -33,7 +33,7 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
     {
         while (true) {
 
-            while (!this.con.open ()) {                         // Try until the server responds
+            while (!this.con.open()) {                         // Try until the server responds
                 try {
                     Thread.sleep(this.random.nextInt(500) + 500);
                 } catch (InterruptedException e) {}
