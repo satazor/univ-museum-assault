@@ -33,7 +33,7 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
     {
         while (true) {
 
-            while (!this.con.open()) {                         // Try until the server responds
+            while (!this.con.open()) {                           // Try until the server responds
                 try {
                     Thread.sleep(this.random.nextInt(500) + 500);
                 } catch (InterruptedException e) {}
