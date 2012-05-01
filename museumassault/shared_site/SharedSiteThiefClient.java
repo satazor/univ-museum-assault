@@ -33,6 +33,9 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
     {
         while (true) {
 
+            // TODO: the connection is kept open until the server responds..
+            //       should we keep trying instead and sleeping a bit between?
+
             while (!this.con.open()) {                           // Try until the server responds
                 try {
                     Thread.sleep(this.random.nextInt(500) + 500);
@@ -45,10 +48,9 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
 
             if (response.getType() == YOUR_NEEDED_TYPE) {
                 return (Integer) response.getExtra();
-            } else if (response.getType() == YOUR_NOT_NEEDED_TYPE) {
-                try {
-                    Thread.sleep(this.random.nextInt(90) + 10);  // Ask again after 10-100 ms
-                } catch (InterruptedException e) {}
+            } else {
+                System.err.println("Unexpected message type sent by the server: " + response.getType());
+                System.exit(1);
             }
         }
     }
