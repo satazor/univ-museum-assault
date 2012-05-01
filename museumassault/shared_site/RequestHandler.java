@@ -35,15 +35,19 @@ public class RequestHandler extends Thread
 
         switch (fromClient.getType()) {
             case IThiefMessageConstants.AM_I_NEEDED_TYPE:
+                System.out.println("Handling message of type AM_I_NEEDED_TYPE..");
                 Integer teamId = this.site.amINeeded(fromClient.getOriginId());
                 toClient = new Message(IThiefMessageConstants.YOUR_NEEDED_TYPE, teamId);
                 break;
             default:
+                System.out.println("Handling message of type UNKNOWN_TYPE..");
                 toClient = new Message(IThiefMessageConstants.UNKNOWN_TYPE);
         }
 
         // Send the message and close the connection
         this.con.writeMessage(toClient);
         this.con.close();
+
+        System.out.println("Response sent!");
     }
 }

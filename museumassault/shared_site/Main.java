@@ -34,6 +34,9 @@ public class Main
         // Initialize the server
         while (true) {
             ServerCom newCon = con.accept();
+
+            System.out.println("New connection accepted from a client, creating thread to handle it..");
+
             RequestHandler handler = new RequestHandler(newCon, site);
             handler.start();
         }
