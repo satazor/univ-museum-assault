@@ -1,7 +1,7 @@
-package museumassault;
+package museumassault.thief;
 
-import museumassault.monitor.ITargetRoom;
-import museumassault.monitor.IThievesConcentrationSite;
+import museumassault.room.ITargetRoom;
+import museumassault.shared_site.IThiefMessageConstants;
 
 /**
  * Thief class.
@@ -12,7 +12,7 @@ import museumassault.monitor.IThievesConcentrationSite;
  */
 public class Thief extends Thread
 {
-    protected IThievesConcentrationSite site;
+    protected IThiefMessageConstants site;
     protected int id;
     protected int teamId;
     protected int power;
@@ -24,7 +24,7 @@ public class Thief extends Thread
      * @param power the number of maximum positions a thief can crawl
      * @param site  the site where the thieves will concentrate (exterior)
      */
-    public Thief(int id, int power, IThievesConcentrationSite site)
+    public Thief(int id, int power, IThiefMessageConstants site)
     {
         if (power <= 0) {
             throw new IllegalArgumentException("Thief power must be greater then zero.");

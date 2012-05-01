@@ -1,6 +1,7 @@
-package museumassault.monitor;
+package museumassault.corridor;
 
 import java.util.HashMap;
+import museumassault.logger.Logger;
 
 /**
  * Corridor class.

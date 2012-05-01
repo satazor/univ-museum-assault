@@ -1,4 +1,4 @@
-package museumassault.message_broker;
+package museumassault.common;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -73,11 +73,11 @@ public class MessageBroker
      */
     public synchronized void writeMessage(Message message)
     {
-    	LinkedList<Message> messagesList = this.messages.get(message.getAction());
+    	LinkedList<Message> messagesList = this.messages.get(message.getType());
 
         if (messagesList == null) {
             messagesList = new LinkedList<>();
-            this.messages.put(message.getAction(), messagesList);
+            this.messages.put(message.getType(), messagesList);
         }
 
         messagesList.addLast(message);

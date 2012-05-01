@@ -1,4 +1,9 @@
-package museumassault.monitor;
+package museumassault.room;
+
+import museumassault.room.ITargetRoom;
+import museumassault.corridor.ITargetCorridor;
+import museumassault.corridor.Corridor;
+import museumassault.logger.Logger;
 
 /**
  * Room class.

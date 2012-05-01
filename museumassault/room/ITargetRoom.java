@@ -1,4 +1,6 @@
-package museumassault.monitor;
+package museumassault.room;
+
+import museumassault.corridor.ITargetCorridor;
 
 /**
  * TargetRoom interface.

@@ -1,10 +1,13 @@
 package museumassault;
 
+import museumassault.common.Team;
+import museumassault.chief.Chief;
+import museumassault.thief.Thief;
 import java.util.Random;
-import museumassault.monitor.Corridor;
-import museumassault.monitor.Logger;
-import museumassault.monitor.Room;
-import museumassault.monitor.SharedSite;
+import museumassault.corridor.Corridor;
+import museumassault.logger.Logger;
+import museumassault.room.Room;
+import museumassault.shared_site.SharedSite;
 
 /**
  * MuseumAssault main class.

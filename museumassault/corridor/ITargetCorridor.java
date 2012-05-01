@@ -1,4 +1,4 @@
-package museumassault.monitor;
+package museumassault.corridor;
 
 /**
  * TargetCorridor interface.

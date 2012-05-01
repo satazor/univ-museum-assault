@@ -1,6 +1,6 @@
-package museumassault;
+package museumassault.chief;
 
-import museumassault.monitor.IChiefControlSite;
+import museumassault.shared_site.IChiefMessageConstants;
 
 /**
  * Chief class.
@@ -12,7 +12,7 @@ import museumassault.monitor.IChiefControlSite;
  */
 public class Chief extends Thread
 {
-    protected IChiefControlSite site;
+    protected IChiefMessageConstants site;
     protected int id;
 
     /**
@@ -21,7 +21,7 @@ public class Chief extends Thread
      * @param id   the id of the chief
      * @param site the chief control site (exterior)
      */
-    public Chief(int id, IChiefControlSite site)
+    public Chief(int id, IChiefMessageConstants site)
     {
         this.id = id;
         this.site = site;

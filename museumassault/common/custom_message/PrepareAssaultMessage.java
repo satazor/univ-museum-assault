@@ -1,6 +1,6 @@
-package museumassault.custom_message;
+package museumassault.common.custom_message;
 
-import museumassault.message_broker.Message;
+import museumassault.common.Message;
 
 /**
  * PrepareAssaultMessage class.

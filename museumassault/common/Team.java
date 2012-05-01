@@ -1,7 +1,7 @@
-package museumassault;
+package museumassault.common;
 
 import java.util.LinkedList;
-import museumassault.monitor.Room;
+import museumassault.room.Room;
 
 /**
  * Team class.

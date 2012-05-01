@@ -1,11 +1,14 @@
-package museumassault.monitor;
+package museumassault.shared_site;
 
 import java.util.HashMap;
-import museumassault.Team;
-import museumassault.custom_message.HandCanvasMessage;
-import museumassault.custom_message.PrepareAssaultMessage;
-import museumassault.message_broker.Message;
-import museumassault.message_broker.MessageBroker;
+import museumassault.common.Team;
+import museumassault.common.custom_message.HandCanvasMessage;
+import museumassault.common.custom_message.PrepareAssaultMessage;
+import museumassault.common.Message;
+import museumassault.common.MessageBroker;
+import museumassault.room.ITargetRoom;
+import museumassault.logger.Logger;
+import museumassault.room.Room;
 
 /**
  * SharedSite class.
@@ -17,7 +20,7 @@ import museumassault.message_broker.MessageBroker;
  * @see ThievesConcentrationSite
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
+public class SharedSite implements IChiefMessageConstants, IThiefMessageConstants
 {
     public static final int PREPARE_ASSAULT_ACTION = 1;
     public static final int SEND_ASSAULT_PARTY_ACTION = 2;
@@ -112,7 +115,6 @@ public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
      *
      * @return the id of the room that should be robed or null if the chief should sit
      */
-    @Override
     public Integer appraiseSit(int chiefId)
     {
         synchronized (this.chiefBroker) {
@@ -142,7 +144,6 @@ public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
      *
      * @return returns the id of the assigned team or null if none is free
      */
-    @Override
     public Integer prepareAssaultParty(int chiefId, int roomId)
     {
         Room room = (Room) this.roomsHash.get(roomId);
@@ -189,7 +190,6 @@ public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
      * @param chiefId the id of the chief
      * @param teamId  the team to be sent
      */
-    @Override
     public void sendAssaultParty(int chiefId, int teamId)
     {
         Team team = (Team) this.teamsHash.get(teamId);
@@ -229,7 +229,6 @@ public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
      *
      * @return the id of the thief that arrived or null if there is no remaining thieves
      */
-    @Override
     public Integer takeARest(int chiefId)
     {
         while (true) {
@@ -269,7 +268,6 @@ public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
      * @param chiefId the id of the chief
      * @param thiefId the id of the thief that handed the canvas
      */
-    @Override
     public void collectCanvas(int chiefId, int thiefId)
     {
         while (true) {
@@ -305,7 +303,6 @@ public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
      *
      * @return the total number of canvas stolen
      */
-    @Override
     public int sumUpResults(int chiefId) {
 
         synchronized (this.chiefBroker) {
@@ -322,7 +319,6 @@ public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
      *
      * @return the id of the team in which this thief is needed
      */
-    @Override
     public Integer amINeeded(int thiefId)
     {
         while (true) {
@@ -342,7 +338,6 @@ public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
                     this.nrIdleThieves--;
                     return message.getTeamId();
                 }
-
             }
         }
     }
@@ -357,7 +352,6 @@ public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
      *
      * @return the room assigned to the team
      */
-    @Override
     public ITargetRoom prepareExcursion(int thiefId, int teamId) {
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
@@ -398,7 +392,6 @@ public class SharedSite implements IChiefControlSite, IThievesConcentrationSite
      * @param teamId       the team where that thief belongs
      * @param rolledCanvas true if a canvas was stolen, false otherwise
      */
-    @Override
     public void handACanvas(int thiefId, int teamId, boolean rolledCanvas)
     {
         Team team = (Team) this.teamsHash.get(teamId);

@@ -1,4 +1,4 @@
-package museumassault.message_broker;
+package museumassault.common;
 
 /**
  * Message class.
@@ -9,8 +9,9 @@ package museumassault.message_broker;
  */
 public class Message
 {
-    protected int action;
+    protected int type;
     protected int originId;
+    protected Object extra;
 
     /**
      * Class constructor.
@@ -18,9 +19,22 @@ public class Message
      * @param action   the action to be performed
      * @param originId the id of the sender
      */
-    public Message(int action, int originId)
+    public Message(int type, int originId, Object extra)
     {
-        this.action = action;
+        this.type = type;
+        this.originId = originId;
+        this.extra = extra;
+    }
+
+    /**
+     * Class constructor.
+     *
+     * @param action   the action to be performed
+     * @param originId the id of the sender
+     */
+    public Message(int type, int originId)
+    {
+        this.type = type;
         this.originId = originId;
     }
 
@@ -29,9 +43,9 @@ public class Message
      *
      * @param action the action to be performed
      */
-    public Message(int action)
+    public Message(int type)
     {
-        this.action = action;
+        this.type = type;
     }
 
     /**
@@ -49,8 +63,16 @@ public class Message
      *
      * @return the action that was performed
      */
-    public int getAction()
+    public int getType()
     {
-        return this.action;
+        return this.type;
+    }
+
+    /**
+     *
+     */
+    public Object getExtra()
+    {
+        return this.extra;
     }
 }
