@@ -24,10 +24,10 @@ public class Main
             throw new IllegalArgumentException("Please pass the corridor id as first argument.");
         }
 
-        String corridorId = args[0];
+        int corridorId = Integer.parseInt(args[0]);
 
         // Initialize the corridor
-        Corridor corridor = new Corridor((random.nextInt(Configuration.getMaxDistanceBetweenRoomAndOutside() - 1) + 1), Configuration.getMaxDistanceBetweenThieves());
+        Corridor corridor = new Corridor(corridorId, (random.nextInt(Configuration.getMaxDistanceBetweenRoomAndOutside() - 1) + 1), Configuration.getMaxDistanceBetweenThieves());
 
         // Initialize the server connection
         // TODO: the port bellow should be read from the configuration

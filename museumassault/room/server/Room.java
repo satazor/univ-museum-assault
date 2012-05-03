@@ -60,26 +60,6 @@ public class Room
     }
 
     /**
-     * Check if the rooms is being robed.
-     *
-     * @return true if this room is being robbed, false otherwise
-     */
-    public boolean isBeingRobed()
-    {
-        return this.beingRobed;
-    }
-
-    /**
-     * Sets if a room is being robed.
-     *
-     * @param robed true to set the robed state to true, false otherwise
-     */
-    public void isBeingRobed(boolean robed)
-    {
-        this.beingRobed = robed;
-    }
-
-    /**
      * Attempts to roll a canvas from the room.
      *
      * @param thiefId the thief id

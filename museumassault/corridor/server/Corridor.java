@@ -11,6 +11,7 @@ import java.util.HashMap;
  */
 public class Corridor
 {
+    protected int id;
     protected Integer[] inwards;
     protected Integer[] outwards;
 
@@ -24,15 +25,26 @@ public class Corridor
      * @param distance                  the distance from the outside to the room
      * @param maxDistanceBetweenThieves max allowed distance between positions
      */
-    public Corridor(int distance, int maxDistanceBetweenThieves)
+    public Corridor(int id, int distance, int maxDistanceBetweenThieves)
     {
         if (maxDistanceBetweenThieves <= 0) {
             throw new IllegalArgumentException("The max distance between thieves must be greater than zero.");
         }
 
+        this.id = id;
         this.inwards = new Integer[distance];
         this.outwards = new Integer[distance];
         this.maxDistanceBetweenThieves = maxDistanceBetweenThieves;
+    }
+
+    /**
+     * Get the corridor id.
+     *
+     * @return the id of the corridor
+     */
+    public int getId()
+    {
+        return this.id;
     }
 
     /**
@@ -66,7 +78,6 @@ public class Corridor
      */
     public void clearPositions()
     {
-
         int length = this.inwards.length;
         for (int x = 0; x < length; x++) {
             this.inwards[x] = this.outwards[x] = null;
