@@ -1,5 +1,6 @@
 package museumassault.shared_site;
 
+import java.util.HashMap;
 import java.util.Random;
 import museumassault.common.ClientCom;
 import museumassault.common.Message;
@@ -75,7 +76,7 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
                 } catch (InterruptedException e) {}
             }
 
-            this.con.writeMessage(new Message(PREPARE_EXCURSION_TYPE, thiefId));
+            this.con.writeMessage(new Message(PREPARE_EXCURSION_TYPE, thiefId,teamId));
 
             Message response = this.con.readMessage();
             con.close();
@@ -107,7 +108,10 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
                 } catch (InterruptedException e) {}
             }
 
-            this.con.writeMessage(new Message(HAND_A_CANVAS_TYPE, thiefId));
+            HashMap<String,Object> extra = new HashMap<String,Object>();
+            extra.put("rolledCanvas", rolledCanvas);
+            extra.put("teamId", teamId);
+            this.con.writeMessage(new Message(HAND_A_CANVAS_TYPE, thiefId, extra));
 
             Message response = this.con.readMessage();
             con.close();

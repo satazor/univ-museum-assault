@@ -67,7 +67,7 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
             } catch (InterruptedException e) {}
         }
 
-        this.con.writeMessage(new Message(PREPARE_ASSAULT_PARTY_TYPE, chiefId));
+        this.con.writeMessage(new Message(PREPARE_ASSAULT_PARTY_TYPE, chiefId, roomId));
 
         Message response = this.con.readMessage();
         this.con.close();
@@ -97,7 +97,7 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
             } catch (InterruptedException e) {}
         }
 
-        this.con.writeMessage(new Message(SEND_ASSAULT_PARTY_TYPE, chiefId));
+        this.con.writeMessage(new Message(SEND_ASSAULT_PARTY_TYPE, chiefId,teamId));
 
         Message response = this.con.readMessage();
 
@@ -150,7 +150,7 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
             } catch (InterruptedException e) {}
         }
 
-        this.con.writeMessage(new Message(COLLECT_CANVAS_TYPE, chiefId));
+        this.con.writeMessage(new Message(COLLECT_CANVAS_TYPE, chiefId, thiefId));
 
         Message response = this.con.readMessage();
 
