@@ -4,16 +4,16 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- * MessageBroker.
+ * MessageRepository.
  *
- * A message broker is a repository of messages, indexed by action.
+ * This class is a repository of messages, indexed by type.
  * It decouples a recipient from the sender with an indirect communication (with messages)
  * All the messages are indexed by action and stored in a first in first out policy.
  *
  * @see Message
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class MessageBroker
+public class MessageRepository
 {
     HashMap<Integer, LinkedList<Message>> messages = new HashMap<>();
 

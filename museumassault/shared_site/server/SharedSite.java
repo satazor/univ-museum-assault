@@ -3,10 +3,8 @@ package museumassault.shared_site.server;
 import java.util.HashMap;
 import java.util.List;
 import museumassault.common.Message;
-import museumassault.common.MessageBroker;
+import museumassault.common.MessageRepository;
 import museumassault.common.Team;
-import museumassault.common.custom_message.HandCanvasMessage;
-import museumassault.common.custom_message.PrepareAssaultMessage;
 import museumassault.shared_site.IChiefMessageConstants;
 import museumassault.shared_site.IThiefMessageConstants;
 
@@ -28,8 +26,8 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
     public static final int THIEF_ARRIVE_ACTION = 4;
     public static final int THIEF_READY_FOR_DEPARTURE_ACTION = 5;
 
-    protected final MessageBroker chiefBroker = new MessageBroker();
-    protected final MessageBroker thievesBroker = new MessageBroker();
+    protected final MessageRepository chiefRepository = new MessageRepository();
+    protected final MessageRepository thievesRepository = new MessageRepository();
 
     protected List<Integer> roomIds;
     protected HashMap<Integer, Boolean> roomsEngagedStatus = new HashMap<>();
@@ -37,7 +35,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
 
     protected Team[] teams;
     protected HashMap<Integer, Team> teamsHash = new HashMap<>();
-    protected HashMap<Integer, MessageBroker> teamsBroker = new HashMap<>();
+    protected HashMap<Integer, MessageRepository> teamsRepository = new HashMap<>();
 
     protected int nrRoomsToBeRobed;
     protected int nrCollectedCanvas = 0;
@@ -82,7 +80,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
         int nrTeams = teams.length;
         for (int x = 0; x < nrTeams; x++) {
             this.teamsHash.put(teams[x].getId(), teams[x]);
-            this.teamsBroker.put(teams[x].getId(), new MessageBroker());
+            this.teamsRepository.put(teams[x].getId(), new MessageRepository());
         }
 
         this.roomIds = roomIds;
@@ -114,7 +112,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
      */
     public Integer appraiseSit(int chiefId)
     {
-        synchronized (this.chiefBroker) {
+        synchronized (this.chiefRepository) {
 
             //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.DECIDING_WHAT_TO_DO);
 
@@ -148,7 +146,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
             throw new IllegalArgumentException("Unknown room with id #" + roomId);
         }
 
-        synchronized (this.chiefBroker) {
+        synchronized (this.chiefRepository) {
 
             //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.ASSEMBLING_A_GROUP);
 
@@ -165,9 +163,9 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
 
                     int nrThieves = this.teams[x].getCapacity();
                     for (int y = 0; y < nrThieves; y++) {
-                        this.thievesBroker.writeMessage(new PrepareAssaultMessage(PREPARE_ASSAULT_ACTION, this.teams[x].getId(), roomId));
-                        synchronized (this.thievesBroker) {
-                            this.thievesBroker.notify();
+                        this.thievesRepository.writeMessage(new Message(PREPARE_ASSAULT_ACTION, (Integer) this.teams[x].getId()));
+                        synchronized (this.thievesRepository) {
+                            this.thievesRepository.notify();
                         }
                     }
 
@@ -196,27 +194,27 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
             throw new IllegalArgumentException("Unknown team with id #" + teamId);
         }
 
-        synchronized (this.chiefBroker) {
+        synchronized (this.chiefRepository) {
 
             if (!team.isBeingPrepared()) {
                 throw new IllegalStateException("Team with id #" + teamId + " is not being prepared.");
             }
 
-            MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
+            MessageRepository repository = (MessageRepository) this.teamsRepository.get(teamId);
             int nrThieves = team.getCapacity();
             for (int x = 0; x < nrThieves; x++) {
 
-                while (broker.readMessage(THIEF_READY_FOR_DEPARTURE_ACTION) == null) {
+                while (repository.readMessage(THIEF_READY_FOR_DEPARTURE_ACTION) == null) {
                     Thread.yield();
                 }
 
-                broker.writeMessage(new Message(SEND_ASSAULT_PARTY_ACTION));
+                repository.writeMessage(new Message(SEND_ASSAULT_PARTY_ACTION));
             }
 
             //System.out.println("[Chief] Notifying all thieves of the party to start crawling to room #" + team.getAssignedRoom().getId() + "..");
 
-            synchronized (broker) {
-                broker.notifyAll();
+            synchronized (repository) {
+                repository.notifyAll();
             }
         }
     }
@@ -232,11 +230,11 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
     {
         while (true) {
 
-            synchronized (this.chiefBroker) {
+            synchronized (this.chiefRepository) {
 
                 //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.WAITING_FOR_ARRIVAL);
 
-                Message message = this.chiefBroker.readMessage(THIEF_ARRIVE_ACTION);
+                Message message = this.chiefRepository.readMessage(THIEF_ARRIVE_ACTION);
                 if (message != null) {
                     return message.getOriginId();
                 }
@@ -255,7 +253,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
                 }
 
                 try {
-                    this.chiefBroker.wait();
+                    this.chiefRepository.wait();
                 } catch (InterruptedException ex) {}
             }
         }
@@ -271,20 +269,25 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
     {
         while (true) {
 
-            HandCanvasMessage message = (HandCanvasMessage) this.chiefBroker.readMessage(THIEF_HAND_CANVAS_ACTION, thiefId);
-            if (message != null) {
+            Message message = (Message) this.chiefRepository.readMessage(THIEF_HAND_CANVAS_ACTION, thiefId);
 
-                Team team = (Team) this.teamsHash.get(message.getTeamId());
+            if (message != null) {
+                HashMap <String, Object> extra = (HashMap <String, Object>) message.getExtra();
+                Integer teamId = (Integer) extra.get("teamId");
+                Boolean rolledCanvas = (Boolean) extra.get("rolledCanvas");
+
+                Team team = (Team) this.teamsHash.get(teamId);
+
                 if (team == null) {
-                    throw new IllegalArgumentException("Unknown team with id #" + message.getTeamId());
+                    throw new IllegalArgumentException("Unknown team with id #" + teamId);
                 }
 
-                synchronized (this.chiefBroker) {
+                synchronized (this.chiefRepository) {
 
-                    if (message.rolledCanvas()) this.nrCollectedCanvas++;
+                    if (rolledCanvas) this.nrCollectedCanvas++;
 
                     int roomId = team.getAssignedRoomId();
-                    if ((boolean) this.roomsEngagedStatus.get(roomId) && !message.rolledCanvas()) {
+                    if ((boolean) this.roomsEngagedStatus.get(roomId) && !rolledCanvas) {
                         this.roomsEngagedStatus.put(roomId, false);
                         this.nrRoomsToBeRobed--;
                     }
@@ -304,7 +307,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
      */
     public Integer sumUpResults(int chiefId) {
 
-        synchronized (this.chiefBroker) {
+        synchronized (this.chiefRepository) {
             //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.PRESENTING_THE_REPORT);
 
             return this.nrCollectedCanvas;
@@ -322,20 +325,20 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
     {
         while (true) {
 
-            synchronized (this.thievesBroker) {
+            synchronized (this.thievesRepository) {
 
                 //System.out.println("[Thief #" + thiefId + "] Waiting for orders..");
                 this.nrIdleThieves++;
                 try {
-                    this.thievesBroker.wait();
+                    this.thievesRepository.wait();
                 } catch (InterruptedException ex) {}
 
 
-                PrepareAssaultMessage message = (PrepareAssaultMessage) this.thievesBroker.readMessage(PREPARE_ASSAULT_ACTION);
+                Message message = (Message) this.thievesRepository.readMessage(PREPARE_ASSAULT_ACTION);
                 if (message != null) {
-                    //System.out.println("[Thief #" + thiefId + "] I am needed on team " + message.getTeamId() + "..");
+                    //System.out.println("[Thief #" + thiefId + "] I am needed on team " + ((Integer) message.getExtra()) + "..");
                     this.nrIdleThieves--;
-                    return message.getTeamId();
+                    return (Integer) message.getExtra();
                 }
             }
         }
@@ -353,8 +356,8 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
      */
     public Integer prepareExcursion(int thiefId, int teamId) {
 
-        MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
-        if (broker == null) {
+        MessageRepository repository = (MessageRepository) this.teamsRepository.get(teamId);
+        if (repository == null) {
             throw new IllegalArgumentException("Unknown team with id #" + teamId);
         }
 
@@ -362,22 +365,22 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
         while (true) {
 
             Team team;
-            synchronized (broker) {
+            synchronized (repository) {
 
                 if (!sentMessage) {
                     sentMessage = true;
-                    broker.writeMessage(new Message(THIEF_READY_FOR_DEPARTURE_ACTION));
+                    repository.writeMessage(new Message(THIEF_READY_FOR_DEPARTURE_ACTION));
                 }
 
                 team = (Team) this.teamsHash.get(teamId);
                 team.addThief(thiefId);
 
                 try {
-                    broker.wait();
+                    repository.wait();
                 } catch (InterruptedException ex) {}
             }
 
-            Message message = broker.readMessage(SEND_ASSAULT_PARTY_ACTION);
+            Message message = repository.readMessage(SEND_ASSAULT_PARTY_ACTION);
             if (message != null) {
                 return team.getAssignedRoomId();
             }
@@ -398,21 +401,25 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
             throw new IllegalArgumentException("Unknown team with id #" + teamId);
         }
 
-        MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
-        synchronized (this.chiefBroker) {
+        MessageRepository repository = (MessageRepository) this.teamsRepository.get(teamId);
+        synchronized (this.chiefRepository) {
 
-            synchronized (broker) {
+            synchronized (repository) {
                 //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.OUTSIDE);
                 team.removeThief(thiefId);
             }
 
-            this.chiefBroker.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId));
-            this.chiefBroker.writeMessage(new HandCanvasMessage(THIEF_HAND_CANVAS_ACTION, thiefId, team.getId(), rolledCanvas));
+            this.chiefRepository.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId));
+            HashMap <String, Object> extra = new HashMap<>();
+            extra.put("teamId", team.getId());
+            extra.put("rolledCanvas", rolledCanvas);
+
+            this.chiefRepository.writeMessage(new Message(THIEF_HAND_CANVAS_ACTION, thiefId, extra));
 
             if (this.multipleMasters) {
-                this.chiefBroker.notifyAll();
+                this.chiefRepository.notifyAll();
             } else {
-                this.chiefBroker.notify();
+                this.chiefRepository.notify();
             }
         }
     }
