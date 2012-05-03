@@ -24,7 +24,7 @@ public class Main
         Thief[] thieves = new Thief[nrTotalThieves];
         for (int x = 0; x < nrTotalThieves; x++) {
 
-            SharedSiteThiefClient site = new SharedSiteThiefClient(Configuration.getSharedSiteConnectionString());
+            SharedSiteThiefClient site = new SharedSiteThiefClient(Configuration.getSharedThievesSiteConnectionString());
 
             Thief thief = new Thief(x + 1, random.nextInt(Configuration.getMaxPowerPerThief() - 1) + 1, site);
             thieves[x] = thief;

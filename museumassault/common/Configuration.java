@@ -19,8 +19,8 @@ public class Configuration
     protected static int maxPowerPerThief = 5;
     protected static int maxCanvasInRoom = 20;
 
-    protected static String sharedSiteConnectionString = "localhost:11000";
-
+    protected static String sharedSiteThievesConnectionString = "localhost:11000";  // The server address must be equal to the line bellow
+    protected static String sharedSiteChiefsConnectionString = "localhost:11001";   // The server address must be equal to the line above
 
     /**
      * Constructor.
@@ -130,18 +130,41 @@ public class Configuration
      *
      * @return
      */
-    public static String getSharedSiteConnectionString()
+    public static String getSharedChiefsSiteConnectionString()
     {
-        return sharedSiteConnectionString;
+        return sharedSiteChiefsConnectionString;
     }
 
     /**
      *
      * @return
      */
-    public static int getSharedSitePort()
+    public static String getSharedThievesSiteConnectionString()
     {
-        String[] split = sharedSiteConnectionString.split(":");
+        return sharedSiteThievesConnectionString;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static int getSharedThievesSitePort()
+    {
+        String[] split = sharedSiteThievesConnectionString.split(":");
+        if (split.length != 2) {
+            throw new RuntimeException("Could not extract port from the connection string.");
+        }
+
+        return Integer.parseInt(split[1]);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static int getSharedChiefsSitePort()
+    {
+        String[] split = sharedSiteChiefsConnectionString.split(":");
         if (split.length != 2) {
             throw new RuntimeException("Could not extract port from the connection string.");
         }

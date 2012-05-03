@@ -23,7 +23,7 @@ public class Main
         for (int x = 0; x < nrTotalChiefs; x++) {
 
             // Initialize the shared site client api for the chiefs
-            SharedSiteChiefClient site = new SharedSiteChiefClient(Configuration.getSharedSiteConnectionString());
+            SharedSiteChiefClient site = new SharedSiteChiefClient(Configuration.getSharedChiefsSiteConnectionString());
 
             Chief chief = new Chief(x + 1, site);
             chiefs[x] = chief;

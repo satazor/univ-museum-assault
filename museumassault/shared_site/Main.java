@@ -17,13 +17,6 @@ public class Main
      */
     public static void main(String[] args)
     {
-        // TODO: This class should bind 2 ports, one for handling thieves and another for chiefs
-        //       This means that we need two request handler classes or we can pass a type parameter to it
-        
-        // Initialize the server connection
-        ServerCom con = new ServerCom(Configuration.getSharedSitePort());
-        con.start();
-
         // Initialize the teams
         int nrTeams = Configuration.getNrTeams();
         Team[] teams = new Team[nrTeams];
@@ -32,18 +25,61 @@ public class Main
         }
 
         // Initialize the shared site
-        SharedSite site = new SharedSite(Configuration.getRoomIds(), teams, Configuration.getNrChiefs() > 1);
+        final SharedSite site = new SharedSite(Configuration.getRoomIds(), teams, Configuration.getNrChiefs() > 1);
 
-        System.out.println("Now listening for requests..");
+        /**
+         * Inline class to listen for the thieves requests.
+         */
+        class ThievesListener extends Thread {
+            @Override
+            public void run() {
+                // Initialize the server connection
+                ServerCom con = new ServerCom(Configuration.getSharedThievesSitePort());
+                con.start();
 
-        // Initialize the server
-        while (true) {
-            ServerCom newCon = con.accept();
+                System.out.println("Now listening for thieves requests..");
 
-            System.out.println("New connection accepted from a client, creating thread to handle it..");
+                // Initialize the server
+                while (true) {
+                    ServerCom newCon = con.accept();
 
-            RequestHandler handler = new RequestHandler(newCon, site);
-            handler.start();
+                    System.out.println("New connection accepted from a thief, creating thread to handle it..");
+
+                    RequestHandler handler = new RequestHandler(newCon, site);
+                    handler.start();
+                }
+            }
         }
+
+        /**
+         * Inline class to listen for the chiefs requests.
+         */
+        class ChiefsListener extends Thread {
+            @Override
+            public void run() {
+
+                // Initialize the server connection
+                ServerCom con = new ServerCom(Configuration.getSharedChiefsSitePort());
+                con.start();
+
+                System.out.println("Now listening for chiefs requests..");
+
+                // Initialize the server
+                while (true) {
+                    ServerCom newCon = con.accept();
+
+                    System.out.println("New connection accepted from a chief, creating thread to handle it..");
+
+                    RequestHandler handler = new RequestHandler(newCon, site);
+                    handler.start();
+                }
+            }
+        }
+
+        ThievesListener thievesListener = new ThievesListener();
+        thievesListener.start();
+
+        ChiefsListener chiefsListener = new ChiefsListener();
+        chiefsListener.start();
     }
 }
