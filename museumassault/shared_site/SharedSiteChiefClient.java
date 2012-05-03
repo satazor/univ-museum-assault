@@ -36,8 +36,10 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
             } catch (InterruptedException e) {}
         }
 
+        System.out.println("Sending message");
         this.con.writeMessage(new Message(APPRAISE_SIT_TYPE, chiefId));
 
+        System.out.println("Message sent!");
         Message response = this.con.readMessage();
         this.con.close();
 

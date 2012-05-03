@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Random;
 import museumassault.common.ClientCom;
 import museumassault.common.Message;
-import museumassault.room.RoomClient;
 
 /**
  *
@@ -85,7 +84,7 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
             } else {
                 System.err.println("Unexpected message type sent by the server: " + response.getType());
                 System.exit(1);
-                
+
                 return null;
             }
         }
@@ -108,20 +107,20 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
                 } catch (InterruptedException e) {}
             }
 
-            HashMap<String,Object> extra = new HashMap<String,Object>();
+            HashMap<String,Object> extra = new HashMap<>();
             extra.put("rolledCanvas", rolledCanvas);
             extra.put("teamId", teamId);
             this.con.writeMessage(new Message(HAND_A_CANVAS_TYPE, thiefId, extra));
 
             Message response = this.con.readMessage();
             con.close();
-            
-            if (response.getType() == HANDED_CANVAS_TYPE) {
+
+            if (response.getType() == GOT_CANVAS_TYPE) {
                 return;
             } else {
                 System.err.println("Unexpected message type sent by the server: " + response.getType());
                 System.exit(1);
-                
+
                 return;
             }
         }

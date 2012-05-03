@@ -59,11 +59,11 @@ public class ServerCom
         try {
             this.serverSocket = new ServerSocket(this.serverPort, this.timeout);
         } catch (BindException e) {
-            System.err.println("Socket bind failed on port " + this.clientSocket.getPort() + " (port already in use?).");
+            System.err.println("Socket bind failed on port " + this.serverPort + " (port already in use?).");
             e.printStackTrace(System.err);
             System.exit(1);
         } catch (IOException e) {
-            System.err.println("Unknown error when trying to listening on port " + this.clientSocket.getPort() + ".");
+            System.err.println("Unknown error when trying to listening on port " + this.serverPort + ".");
             e.printStackTrace(System.err);
             System.exit(1);
         }

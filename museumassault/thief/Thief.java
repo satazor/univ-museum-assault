@@ -67,9 +67,9 @@ public class Thief extends Thread
             this.teamId = this.site.amINeeded(this.id);
 
             // Prepare for excursion
-            RoomClient room = this.site.prepareExcursion(this.id, this.teamId);
-            break;
-            //System.out.println("[Thief #" + this.id + "] Started crawling in..");
+            Integer roomId = this.site.prepareExcursion(this.id, this.teamId);
+            System.out.println("Excursion to " + roomId);
+            System.out.println("[Thief #" + this.id + "] Started crawling in..");
 
             // Crawl in
             //while (!room.getTargetCorridor().crawlOut(this.id, this.power)) {}

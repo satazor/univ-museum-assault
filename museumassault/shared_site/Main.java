@@ -17,6 +17,9 @@ public class Main
      */
     public static void main(String[] args)
     {
+        // TODO: This class should bind 2 ports, one for handling thieves and another for chiefs
+        //       This means that we need two request handler classes or we can pass a type parameter to it
+        
         // Initialize the server connection
         ServerCom con = new ServerCom(Configuration.getSharedSitePort());
         con.start();
@@ -32,7 +35,7 @@ public class Main
         SharedSite site = new SharedSite(Configuration.getRoomIds(), teams, Configuration.getNrChiefs() > 1);
 
         System.out.println("Now listening for requests..");
-        
+
         // Initialize the server
         while (true) {
             ServerCom newCon = con.accept();
