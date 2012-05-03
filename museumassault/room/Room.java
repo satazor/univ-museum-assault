@@ -1,7 +1,5 @@
 package museumassault.room;
 
-import museumassault.room.ITargetRoom;
-import museumassault.corridor.ITargetCorridor;
 import museumassault.corridor.Corridor;
 import museumassault.logger.Logger;
 
@@ -12,7 +10,7 @@ import museumassault.logger.Logger;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class Room implements ITargetRoom
+public class Room
 {
     protected boolean beingRobed = false;
     protected int id;
@@ -71,10 +69,9 @@ public class Room implements ITargetRoom
      *
      * @return the corridor
      */
-    @Override
-    public ITargetCorridor getTargetCorridor()
+    public Corridor getTargetCorridor()
     {
-        return (ITargetCorridor) this.corridor;
+        return this.corridor;
     }
 
     /**
@@ -104,7 +101,6 @@ public class Room implements ITargetRoom
      *
      * @return true if a canvas was successfully stolen, false otherwise
      */
-    @Override
     public synchronized boolean rollACanvas(int thiefId)
     {
         boolean rolledCanvas;

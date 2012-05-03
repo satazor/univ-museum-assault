@@ -1,14 +1,12 @@
 package museumassault.shared_site;
 
 import java.util.HashMap;
+import java.util.List;
+import museumassault.common.Message;
+import museumassault.common.MessageBroker;
 import museumassault.common.Team;
 import museumassault.common.custom_message.HandCanvasMessage;
 import museumassault.common.custom_message.PrepareAssaultMessage;
-import museumassault.common.Message;
-import museumassault.common.MessageBroker;
-import museumassault.room.ITargetRoom;
-import museumassault.logger.Logger;
-import museumassault.room.Room;
 
 /**
  * SharedSite class.
@@ -31,9 +29,9 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
     protected final MessageBroker chiefBroker = new MessageBroker();
     protected final MessageBroker thievesBroker = new MessageBroker();
 
-    protected Room[] rooms;
-    protected HashMap<Integer, Room> roomsHash = new HashMap<>();
-    protected HashMap<Integer, Boolean> roomsStatus = new HashMap<>();
+    protected List<Integer> roomIds;
+    protected HashMap<Integer, Boolean> roomsEngagedStatus = new HashMap<>();
+    protected HashMap<Integer, Boolean> roomsCanvasStatus = new HashMap<>();
 
     protected Team[] teams;
     protected HashMap<Integer, Team> teamsHash = new HashMap<>();
@@ -41,34 +39,31 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
 
     protected int nrRoomsToBeRobed;
     protected int nrCollectedCanvas = 0;
-    protected boolean multipleMasters = false;
+    protected boolean multipleMasters;
     protected int nrIdleThieves = 0;
-
-    protected Logger logger;
 
     /**
      * Class constructor.
      *
-     * @param rooms  the museum rooms
-     * @param teams  the teams
-     * @param logger the logger to log the program state
+     * @param roomIds  the museum room ids
+     * @param teams    the teams
      */
-    public SharedSite(Room[] rooms, Team[] teams, Logger logger)
+    public SharedSite(List<Integer> roomIds, Team[] teams)
     {
-        this.initialize(rooms, teams, logger);
+        this.initialize(roomIds, teams);
+        this.multipleMasters = false;
     }
 
     /**
      * Class constructor.
      *
-     * @param rooms           the museum rooms
+     * @param roomIds         the museum room ids
      * @param teams           the teams
-     * @param logger          the logger to log the program state
      * @param multipleMasters true if muliple chiefs (masters) coexist, false otherwise
      */
-    public SharedSite(Room[] rooms, Team[] teams, Logger logger, boolean multipleMasters)
+    public SharedSite(List<Integer> roomIds, Team[] teams, boolean multipleMasters)
     {
-        this.initialize(rooms, teams, logger);
+        this.initialize(roomIds, teams);
         this.multipleMasters = multipleMasters;
     }
 
@@ -79,7 +74,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
      * @param teams  the teams
      * @param logger the logger to log the program state
      */
-    protected final void initialize(Room[] rooms, Team[] teams, Logger logger)
+    protected final void initialize(List<Integer> roomIds, Team[] teams)
     {
         this.teams = teams;
         int nrTeams = teams.length;
@@ -88,14 +83,14 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
             this.teamsBroker.put(teams[x].getId(), new MessageBroker());
         }
 
-        this.rooms = rooms;
-        this.nrRoomsToBeRobed = rooms.length;
+        this.roomIds = roomIds;
+        this.nrRoomsToBeRobed = roomIds.size();
         for (int x = 0; x < this.nrRoomsToBeRobed; x++) {
-            this.roomsHash.put(rooms[x].getId(), rooms[x]);
-            this.roomsStatus.put(rooms[x].getId(), true);
+            this.roomsEngagedStatus.put(this.roomIds.get(x), false);
+            this.roomsCanvasStatus.put(this.roomIds.get(x), true);
         }
 
-        this.logger = logger;
+        //this.logger = logger;
     }
 
     /**
@@ -119,15 +114,16 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
     {
         synchronized (this.chiefBroker) {
 
-            this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.DECIDING_WHAT_TO_DO);
+            //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.DECIDING_WHAT_TO_DO);
 
             if (this.nrRoomsToBeRobed > 0) {
 
-                int nrRooms = this.rooms.length;
+                int nrRooms = this.roomIds.size();
                 for (int x = 0; x < nrRooms; x++) {
-                    if ((boolean) this.roomsStatus.get(this.rooms[x].getId()) && !this.rooms[x].isBeingRobed()) {
-                        this.rooms[x].isBeingRobed(true);
-                        return this.rooms[x].getId();
+                    int roomId = this.roomIds.get(x);
+                    if ((boolean) this.roomsCanvasStatus.get(roomId) && !this.roomsEngagedStatus.get(roomId)) {
+                        this.roomsEngagedStatus.put(roomId, true);
+                        return roomId;
                     }
                 }
             }
@@ -146,14 +142,13 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
      */
     public Integer prepareAssaultParty(int chiefId, int roomId)
     {
-        Room room = (Room) this.roomsHash.get(roomId);
-        if (room == null) {
+        if (!this.roomsCanvasStatus.containsKey(roomId)) {
             throw new IllegalArgumentException("Unknown room with id #" + roomId);
         }
 
         synchronized (this.chiefBroker) {
 
-            this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.ASSEMBLING_A_GROUP);
+            //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.ASSEMBLING_A_GROUP);
 
             int nrTeams = this.teams.length;
 
@@ -162,8 +157,9 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
                 if (!this.teams[x].isBusy() && !this.teams[x].isBeingPrepared() && this.nrIdleThieves >= this.teams[x].getCapacity()) {
 
                     this.teams[x].isBeingPrepared(true);
-                    this.teams[x].setAssignedRoom(room);
-                    room.getCorridor().clearPositions();
+                    this.teams[x].setAssignedRoomId(roomId);
+                    // TODO: check this
+                    //room.getCorridor().clearPositions();
 
                     int nrThieves = this.teams[x].getCapacity();
                     for (int y = 0; y < nrThieves; y++) {
@@ -177,7 +173,8 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
                 }
             }
 
-            room.isBeingRobed(false);
+            // TODO: check this
+            //room.isBeingRobed(false);
 
             return null;
         }
@@ -235,7 +232,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
 
             synchronized (this.chiefBroker) {
 
-                this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.WAITING_FOR_ARRIVAL);
+                //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.WAITING_FOR_ARRIVAL);
 
                 Message message = this.chiefBroker.readMessage(THIEF_ARRIVE_ACTION);
                 if (message != null) {
@@ -284,9 +281,9 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
 
                     if (message.rolledCanvas()) this.nrCollectedCanvas++;
 
-                    Room room = team.getAssignedRoom();
-                    if ((boolean) this.roomsStatus.get(room.getId()) && !message.rolledCanvas()) {
-                        this.roomsStatus.put(room.getId(), false);
+                    int roomId = team.getAssignedRoomId();
+                    if ((boolean) this.roomsEngagedStatus.get(roomId) && !message.rolledCanvas()) {
+                        this.roomsEngagedStatus.put(roomId, false);
                         this.nrRoomsToBeRobed--;
                     }
                 }
@@ -306,7 +303,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
     public int sumUpResults(int chiefId) {
 
         synchronized (this.chiefBroker) {
-            this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.PRESENTING_THE_REPORT);
+            //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.PRESENTING_THE_REPORT);
 
             return this.nrCollectedCanvas;
         }
@@ -350,9 +347,9 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
      * @param thiefId the thief id
      * @param teamId  the team in which the thief belongs
      *
-     * @return the room assigned to the team
+     * @return the id of the room assigned to the team
      */
-    public ITargetRoom prepareExcursion(int thiefId, int teamId) {
+    public Integer prepareExcursion(int thiefId, int teamId) {
 
         MessageBroker broker = (MessageBroker) this.teamsBroker.get(teamId);
         if (broker == null) {
@@ -380,7 +377,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
 
             Message message = broker.readMessage(SEND_ASSAULT_PARTY_ACTION);
             if (message != null) {
-                return team.getAssignedRoom();
+                return team.getAssignedRoomId();
             }
         }
     }
@@ -403,7 +400,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
         synchronized (this.chiefBroker) {
 
             synchronized (broker) {
-                this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.OUTSIDE);
+                //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.OUTSIDE);
                 team.removeThief(thiefId);
             }
 

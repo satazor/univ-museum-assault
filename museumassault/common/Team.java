@@ -17,7 +17,7 @@ public class Team
     protected int id;
     protected int nrThieves;
     protected int nrBusyThieves = 0;
-    protected Room room;
+    protected int roomId;
     protected LinkedList<Integer> thiefIds = new LinkedList<>();
 
     /**
@@ -126,9 +126,9 @@ public class Team
      *
      * @return the assigned room
      */
-    public Room getAssignedRoom()
+    public int getAssignedRoomId()
     {
-        return this.room;
+        return this.roomId;
     }
 
     /**
@@ -136,9 +136,9 @@ public class Team
      *
      * @param room the room to be assigned
      */
-    public void setAssignedRoom(Room room)
+    public void setAssignedRoomId(int id)
     {
-        this.room = room;
+        this.roomId = id;
     }
 
     /**
@@ -172,9 +172,10 @@ public class Team
     {
         if (!busy) this.nrBusyThieves = 0;
 
-        if (this.room != null) {
+        // TODO: check this
+        /*if (this.room != null) {
             this.room.isBeingRobed(busy);
-        }
+        }*/
 
         this.beingPrepared = busy;
         this.busy = busy;

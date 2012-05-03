@@ -85,7 +85,7 @@ public class ClientCom
         try {
             this.out = new ObjectOutputStream(this.socket.getOutputStream());
         } catch (IOException e) {
-            System.err.println("Unable to open output stream upon connection to " + this.serverAddress + ":" + this.serverPort + ".");
+            System.err.println("Unable to open output stream upon connecting to " + this.serverAddress + ":" + this.serverPort + ".");
             e.printStackTrace(System.err);
             System.exit(1);
         }
@@ -93,7 +93,7 @@ public class ClientCom
         try {
             this.in = new ObjectInputStream(this.socket.getInputStream());
         } catch (IOException e) {
-            System.err.println("Unable to open output stream upon connection to " + this.serverAddress + ":" + this.serverPort + ".");
+            System.err.println("Unable to open output stream upon connecting to " + this.serverAddress + ":" + this.serverPort + ".");
             e.printStackTrace(System.err);
             System.exit(1);
         }

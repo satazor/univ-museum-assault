@@ -1,7 +1,5 @@
 package museumassault.shared_site;
 
-import museumassault.room.ITargetRoom;
-
 /**
  * IThievesMessageConstants interface.
  *
@@ -12,6 +10,7 @@ import museumassault.room.ITargetRoom;
  */
 public interface IThiefMessageConstants
 {
+    public static final int UNKNOWN_TYPE = 0;
     public static final int AM_I_NEEDED_TYPE = 1;
     public static final int YOUR_NEEDED_TYPE = 2;
     public static final int YOUR_NOT_NEEDED_TYPE = 3;

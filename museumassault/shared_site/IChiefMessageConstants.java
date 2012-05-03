@@ -10,5 +10,5 @@ package museumassault.shared_site;
  */
 public interface IChiefMessageConstants
 {
-
+    public static final int UNKNOWN_TYPE = 0;
 }

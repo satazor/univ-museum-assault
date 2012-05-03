@@ -1,5 +1,7 @@
 package museumassault.common;
 
+import java.io.Serializable;
+
 /**
  * Message class.
  *
@@ -7,8 +9,10 @@ package museumassault.common;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class Message
+public class Message implements Serializable
 {
+    private static final long serialVersionUID = 1000L;
+
     protected int type;
     protected int originId;
     protected Object extra;
@@ -18,11 +22,24 @@ public class Message
      *
      * @param action   the action to be performed
      * @param originId the id of the sender
+     * @param extra    an object with aditional information
      */
     public Message(int type, int originId, Object extra)
     {
         this.type = type;
         this.originId = originId;
+        this.extra = extra;
+    }
+
+    /**
+     * Class constructor.
+     *
+     * @param action   the action to be performed
+     * @param extra    an object with aditional information
+     */
+    public Message(int type, Object extra)
+    {
+        this.type = type;
         this.extra = extra;
     }
 
@@ -69,7 +86,10 @@ public class Message
     }
 
     /**
+     * Get the extra object associated with this message.
+     * This can be anything that must be passed associated with the type of the message.
      *
+     * @return the object
      */
     public Object getExtra()
     {
