@@ -31,6 +31,8 @@ public class Main
         // Initialize the shared site
         SharedSite site = new SharedSite(Configuration.getRoomIds(), teams, Configuration.getNrChiefs() > 1);
 
+        System.out.println("Now listening for requests..");
+        
         // Initialize the server
         while (true) {
             ServerCom newCon = con.accept();

@@ -1,5 +1,7 @@
 package museumassault.common;
 
+import java.io.Serializable;
+
 /**
  * Message class.
  *
@@ -7,8 +9,10 @@ package museumassault.common;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class Message
+public class Message implements Serializable
 {
+    private static final long serialVersionUID = 1000L;
+
     protected int type;
     protected int originId;
     protected Object extra;

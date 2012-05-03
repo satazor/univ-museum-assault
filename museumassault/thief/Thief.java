@@ -68,7 +68,7 @@ public class Thief extends Thread
 
             // Prepare for excursion
             RoomClient room = this.site.prepareExcursion(this.id, this.teamId);
-
+            break;
             //System.out.println("[Thief #" + this.id + "] Started crawling in..");
 
             // Crawl in
