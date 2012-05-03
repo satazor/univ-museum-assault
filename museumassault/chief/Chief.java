@@ -47,7 +47,7 @@ public class Chief extends Thread
 
             System.out.println("[Chief] Appraising sit..");
             Integer roomId = this.site.appraiseSit(this.id);
-            System.out.println("done");
+
             if (roomId != null) {
 
                 System.out.println("[Chief] There is still rooms to rob, preparing assault to room #" + roomId + "..");

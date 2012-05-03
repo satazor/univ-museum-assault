@@ -45,7 +45,8 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
             this.con.writeMessage(new Message(AM_I_NEEDED_TYPE, thiefId));
 
             Message response = this.con.readMessage();
-            con.close();
+            this.con.close();
+
             if (response.getType() == YOUR_NEEDED_TYPE) {
                 return (Integer) response.getExtra();
             } else {
@@ -78,7 +79,8 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
             this.con.writeMessage(new Message(PREPARE_EXCURSION_TYPE, thiefId,teamId));
 
             Message response = this.con.readMessage();
-            con.close();
+            this.con.close();
+
             if (response.getType() == EXCURSION_PREPARED_TYPE) {
                 return (Integer) response.getExtra();
             } else {
@@ -113,7 +115,7 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
             this.con.writeMessage(new Message(HAND_A_CANVAS_TYPE, thiefId, extra));
 
             Message response = this.con.readMessage();
-            con.close();
+            this.con.close();
 
             if (response.getType() == GOT_CANVAS_TYPE) {
                 return;

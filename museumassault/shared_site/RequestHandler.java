@@ -64,7 +64,7 @@ public class RequestHandler extends Thread
             case IChiefMessageConstants.PREPARE_ASSAULT_PARTY_TYPE:
                 System.out.println("Handling message of type PREPARE_ASSAULT_PARTY_TYPE..");
                 teamId = this.site.prepareAssaultParty(fromClient.getOriginId(), (Integer) fromClient.getExtra());
-                toClient = new Message(IChiefMessageConstants.APPRAISED_SIT_TYPE, teamId);
+                toClient = new Message(IChiefMessageConstants.ASSAULT_PARTY_PREPARED_TYPE, teamId);
                 break;
             case IChiefMessageConstants.SEND_ASSAULT_PARTY_TYPE:
                 System.out.println("Handling message of type SEND_ASSAULT_PARTY_TYPE..");
@@ -90,8 +90,6 @@ public class RequestHandler extends Thread
                 System.out.println("Handling message of type UNKNOWN_TYPE..");
                 toClient = new Message(IThiefMessageConstants.UNKNOWN_TYPE);
         }
-
-        System.out.println("Sending response...");
 
         // Send the message and close the connection
         this.con.writeMessage(toClient);

@@ -16,13 +16,15 @@ public class Main
      */
     public static void main(String[] args)
     {
-        // Initialize the shared site client api for the chiefs
-        SharedSiteChiefClient site = new SharedSiteChiefClient(Configuration.getSharedSiteConnectionString());
 
         // Simulate all the thieves in this computer
         int nrTotalChiefs = Configuration.getNrChiefs();
         Chief[] chiefs = new Chief[nrTotalChiefs];
         for (int x = 0; x < nrTotalChiefs; x++) {
+
+            // Initialize the shared site client api for the chiefs
+            SharedSiteChiefClient site = new SharedSiteChiefClient(Configuration.getSharedSiteConnectionString());
+
             Chief chief = new Chief(x + 1, site);
             chiefs[x] = chief;
             chiefs[x].start();

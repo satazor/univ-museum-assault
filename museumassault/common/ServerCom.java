@@ -17,7 +17,7 @@ public class ServerCom
     protected Socket clientSocket = null;
     protected int serverPort;
 
-    protected int timeout = 1;
+    protected int timeout = 10;
     protected ObjectInputStream in = null;
     protected ObjectOutputStream out = null;
 
