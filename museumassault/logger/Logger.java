@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import museumassault.chief.Chief;
 import museumassault.common.Team;
-import museumassault.room.Room;
+import museumassault.room.server.Room;
 import museumassault.thief.Thief;
 
 /**
@@ -266,7 +266,8 @@ public class Logger
                 length = this.rooms.length;
                 for (int x = 0; x < length; x++) {
                     this.writeBuff.write(String.format("%-4s", this.rooms[x].getId()));
-                    this.writeBuff.write(String.format("%-5s", this.rooms[x].getCorridor().getTotalPositions() / 2));
+                    // TODO: get a way to pass the corridor
+                    //this.writeBuff.write(String.format("%-5s", this.rooms[x].getCorridor().getTotalPositions() / 2));
                     this.writeBuff.write(String.format("%-5s", this.rooms[x].getNrCanvas()));
                 }
 

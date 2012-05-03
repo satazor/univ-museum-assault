@@ -2,7 +2,7 @@ package museumassault.thief;
 
 import java.util.Random;
 import museumassault.common.Configuration;
-import museumassault.shared_site.SharedSiteThiefClient;
+import museumassault.shared_site.client.SharedSiteThiefClient;
 
 /**
  *

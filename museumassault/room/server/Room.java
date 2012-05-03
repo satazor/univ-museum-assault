@@ -1,7 +1,4 @@
-package museumassault.room;
-
-import museumassault.corridor.Corridor;
-import museumassault.logger.Logger;
+package museumassault.room.server;
 
 /**
  * Room class.
@@ -15,8 +12,7 @@ public class Room
     protected boolean beingRobed = false;
     protected int id;
     protected int nrCanvas;
-    protected Corridor corridor;
-    protected Logger logger;
+    protected int corridorId;
 
     /**
      * Class constructor.
@@ -26,12 +22,11 @@ public class Room
      * @param corridor the corridor that leads to the room
      * @param logger   the logger to log the program state
      */
-    public Room(int id, int nrCanvas, Corridor corridor, Logger logger)
+    public Room(int id, int nrCanvas, int corridorId)
     {
         this.id = id;
         this.nrCanvas = nrCanvas;
-        this.corridor = corridor;
-        this.logger = logger;
+        this.corridorId = corridorId;
     }
 
     /**
@@ -55,23 +50,13 @@ public class Room
     }
 
     /**
-     * Get the corridor that leads to the room (concrete).
+     * Get the corridor id that leads to the room.
      *
      * @return the corridor
      */
-    public Corridor getCorridor()
+    public int getCorridorId()
     {
-        return this.corridor;
-    }
-
-    /**
-     * Get the corridor that leads to the room.
-     *
-     * @return the corridor
-     */
-    public Corridor getTargetCorridor()
-    {
-        return this.corridor;
+        return this.corridorId;
     }
 
     /**
@@ -105,7 +90,7 @@ public class Room
     {
         boolean rolledCanvas;
 
-        this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_A_ROOM);
+        //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_A_ROOM);
 
         if (this.nrCanvas > 0) {
             this.nrCanvas--;
@@ -114,7 +99,7 @@ public class Room
             rolledCanvas = false;
         }
 
-        this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_ROOM_EXIT);
+        //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_ROOM_EXIT);
 
         return rolledCanvas;
     }

@@ -1,4 +1,4 @@
-package museumassault.shared_site;
+package museumassault.shared_site.server;
 
 import museumassault.common.Configuration;
 import museumassault.common.ServerCom;
@@ -39,13 +39,13 @@ public class Main
 
                 System.out.println("Now listening for thieves requests..");
 
-                // Initialize the server
+                // Accept connections
                 while (true) {
                     ServerCom newCon = con.accept();
 
                     System.out.println("New connection accepted from a thief, creating thread to handle it..");
 
-                    RequestHandler handler = new RequestHandler(newCon, site);
+                    RequestHandler handler = new RequestHandler(newCon, RequestHandler.REQUEST_TYPE.THIEF, site);
                     handler.start();
                 }
             }
@@ -70,7 +70,7 @@ public class Main
 
                     System.out.println("New connection accepted from a chief, creating thread to handle it..");
 
-                    RequestHandler handler = new RequestHandler(newCon, site);
+                    RequestHandler handler = new RequestHandler(newCon, RequestHandler.REQUEST_TYPE.CHIEF, site);
                     handler.start();
                 }
             }

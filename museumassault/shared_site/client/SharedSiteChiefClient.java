@@ -1,8 +1,9 @@
-package museumassault.shared_site;
+package museumassault.shared_site.client;
 
 import java.util.Random;
 import museumassault.common.ClientCom;
 import museumassault.common.Message;
+import museumassault.shared_site.IChiefMessageConstants;
 
 /**
  *

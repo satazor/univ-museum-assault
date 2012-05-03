@@ -1,6 +1,6 @@
 package museumassault.chief;
 
-import museumassault.shared_site.SharedSiteChiefClient;
+import museumassault.shared_site.client.SharedSiteChiefClient;
 
 /**
  * Chief class.

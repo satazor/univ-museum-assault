@@ -1,7 +1,7 @@
 package museumassault.chief;
 
 import museumassault.common.Configuration;
-import museumassault.shared_site.SharedSiteChiefClient;
+import museumassault.shared_site.client.SharedSiteChiefClient;
 
 /**
  *

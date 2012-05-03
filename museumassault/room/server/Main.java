@@ -1,4 +1,4 @@
-package museumassault.corridor;
+package museumassault.room.server;
 
 /**
  *

@@ -1,4 +1,4 @@
-package museumassault.shared_site;
+package museumassault.shared_site.server;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +7,8 @@ import museumassault.common.MessageBroker;
 import museumassault.common.Team;
 import museumassault.common.custom_message.HandCanvasMessage;
 import museumassault.common.custom_message.PrepareAssaultMessage;
+import museumassault.shared_site.IChiefMessageConstants;
+import museumassault.shared_site.IThiefMessageConstants;
 
 /**
  * SharedSite class.
