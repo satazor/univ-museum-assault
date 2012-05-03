@@ -44,6 +44,8 @@ public class RequestHandler extends Thread
                 toClient = new Message(IThiefMessageConstants.UNKNOWN_TYPE);
         }
 
+        System.out.println("Sending response...");
+        
         // Send the message and close the connection
         this.con.writeMessage(toClient);
         this.con.close();

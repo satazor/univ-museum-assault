@@ -300,7 +300,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
      *
      * @return the total number of canvas stolen
      */
-    public int sumUpResults(int chiefId) {
+    public Integer sumUpResults(int chiefId) {
 
         synchronized (this.chiefBroker) {
             //this.logger.setChiefStatus(chiefId, Logger.CHIEF_STATUS.PRESENTING_THE_REPORT);

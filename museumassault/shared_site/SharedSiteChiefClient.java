@@ -1,6 +1,8 @@
 package museumassault.shared_site;
 
+import java.util.Random;
 import museumassault.common.ClientCom;
+import museumassault.common.Message;
 
 /**
  *
@@ -9,6 +11,7 @@ import museumassault.common.ClientCom;
 public class SharedSiteChiefClient implements IChiefMessageConstants
 {
     protected ClientCom con;
+    protected Random random = new Random();
 
     /**
      * Constructor.
@@ -27,7 +30,25 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      */
     public Integer appraiseSit(int chiefId)
     {
-        return null;
+        while (!this.con.open()) {                           // Try until the server responds
+            try {
+                Thread.sleep(this.random.nextInt(500) + 500);
+            } catch (InterruptedException e) {}
+        }
+
+        this.con.writeMessage(new Message(APPRAISE_SIT_TYPE, chiefId));
+
+        Message response = this.con.readMessage();
+        this.con.close();
+
+        if (response.getType() == APPRAISED_SIT_TYPE) {
+            return (Integer) response.getExtra();
+        } else {
+            System.err.println("Unexpected message type sent by the server: " + response.getType());
+            System.exit(1);
+
+            return null;
+        }
     }
 
     /**
@@ -40,7 +61,25 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      */
     public Integer prepareAssaultParty(int chiefId, int roomId)
     {
-        return null;
+        while (!this.con.open()) {                           // Try until the server responds
+            try {
+                Thread.sleep(this.random.nextInt(500) + 500);
+            } catch (InterruptedException e) {}
+        }
+
+        this.con.writeMessage(new Message(PREPARE_ASSAULT_PARTY_TYPE, chiefId));
+
+        Message response = this.con.readMessage();
+        this.con.close();
+
+        if (response.getType() == ASSAULT_PARTY_PREPARED_TYPE) {
+            return (Integer) response.getExtra();
+        } else {
+            System.err.println("Unexpected message type sent by the server: " + response.getType());
+            System.exit(1);
+
+            return null;
+        }
     }
 
     /**
@@ -52,6 +91,20 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      */
     public void sendAssaultParty(int chiefId, int teamId)
     {
+        while (!this.con.open()) {                           // Try until the server responds
+            try {
+                Thread.sleep(this.random.nextInt(500) + 500);
+            } catch (InterruptedException e) {}
+        }
+
+        this.con.writeMessage(new Message(SEND_ASSAULT_PARTY_TYPE, chiefId));
+
+        Message response = this.con.readMessage();
+
+        if (response.getType() != ASSAULT_PARTY_SENT_TYPE) {
+            System.err.println("Unexpected message type sent by the server: " + response.getType());
+            System.exit(1);
+        }
     }
 
     /**
@@ -63,7 +116,24 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      */
     public Integer takeARest(int chiefId)
     {
-        return null;
+        while (!this.con.open()) {                           // Try until the server responds
+            try {
+                Thread.sleep(this.random.nextInt(500) + 500);
+            } catch (InterruptedException e) {}
+        }
+
+        this.con.writeMessage(new Message(TAKE_A_REST_TYPE, chiefId));
+
+        Message response = this.con.readMessage();
+
+        if (response.getType() == TOOK_A_REST_TYPE) {
+            return (Integer) response.getExtra();
+        } else {
+            System.err.println("Unexpected message type sent by the server: " + response.getType());
+            System.exit(1);
+
+            return null;
+        }
     }
 
     /**
@@ -74,7 +144,20 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      */
     public void collectCanvas(int chiefId, int thiefId)
     {
+        while (!this.con.open()) {                           // Try until the server responds
+            try {
+                Thread.sleep(this.random.nextInt(500) + 500);
+            } catch (InterruptedException e) {}
+        }
 
+        this.con.writeMessage(new Message(COLLECT_CANVAS_TYPE, chiefId));
+
+        Message response = this.con.readMessage();
+
+        if (response.getType() != COLLECTED_CANVAS_TYPE) {
+            System.err.println("Unexpected message type sent by the server: " + response.getType());
+            System.exit(1);
+        }
     }
 
     /**
@@ -84,8 +167,25 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      *
      * @return the total number of canvas stolen
      */
-    public int sumUpResults(int chiefId)
+    public Integer sumUpResults(int chiefId)
     {
-        return 0;
+        while (!this.con.open()) {                           // Try until the server responds
+            try {
+                Thread.sleep(this.random.nextInt(500) + 500);
+            } catch (InterruptedException e) {}
+        }
+
+        this.con.writeMessage(new Message(SUM_UP_RESULTS, chiefId));
+
+        Message response = this.con.readMessage();
+
+        if (response.getType() == SUMMED_UP_RESULTS) {
+            return (Integer) response.getExtra();
+        } else {
+            System.err.println("Unexpected message type sent by the server: " + response.getType());
+            System.exit(1);
+
+            return null;
+        }
     }
 }
