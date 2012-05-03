@@ -8,7 +8,7 @@ import java.util.LinkedList;
  *
  * This class is a repository of messages, indexed by type.
  * It decouples a recipient from the sender with an indirect communication (with messages)
- * All the messages are indexed by action and stored in a first in first out policy.
+ * All the messages are indexed by type and stored in a first in first out policy.
  *
  * @see Message
  * @author Andre Cruz <andremiguelcruz@ua.pt>
@@ -19,15 +19,15 @@ public class MessageRepository
 
     /**
      * Reads a message from the broker.
-     * If multiple messages with the same action exists, the first is returned.
+     * If multiple messages with the same type exists, the first is returned.
      *
-     * @param action the action of the message that is expected to be read
+     * @param type the type of the message that is expected to be read
      *
      * @return The message or null if none found
      */
-    public synchronized Message readMessage(int action)
+    public synchronized Message readMessage(int type)
     {
-    	LinkedList<Message> messagesList = this.messages.get(action);
+    	LinkedList<Message> messagesList = this.messages.get(type);
 
         if (messagesList != null) {
             if (messagesList.size() > 0) {
@@ -40,16 +40,16 @@ public class MessageRepository
 
     /**
      * Reads a message from the broker.
-     * Searchs for a specific sender within the list of messages of a given action.
+     * Searchs for a specific sender within the list of messages of a given type.
      *
-     * @param action   the action of the message that is expected to be read
+     * @param type     the type of the message that is expected to be read
      * @param originId the expected of the sender
      *
      * @return The message or null if none found
      */
-    public Message readMessage(int action, int originId)
+    public Message readMessage(int type, int originId)
     {
-    	LinkedList<Message> messagesList = this.messages.get(action);
+    	LinkedList<Message> messagesList = this.messages.get(type);
 
         if (messagesList != null) {
             int length = messagesList.size();
