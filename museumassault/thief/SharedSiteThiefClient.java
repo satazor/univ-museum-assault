@@ -1,9 +1,9 @@
-package museumassault.thief;
+package museumassault.shared_site;
 
 import java.util.Random;
 import museumassault.common.ClientCom;
 import museumassault.common.Message;
-import museumassault.shared_site.IThiefMessageConstants;
+import museumassault.room.RoomClient;
 
 /**
  *
@@ -33,7 +33,10 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
     {
         while (true) {
 
-            while (!this.con.open()) {                         // Try until the server responds
+            // TODO: the connection is kept open until the server responds..
+            //       should we keep trying instead and sleeping a bit between?
+
+            while (!this.con.open()) {                           // Try until the server responds
                 try {
                     Thread.sleep(this.random.nextInt(500) + 500);
                 } catch (InterruptedException e) {}
@@ -42,13 +45,12 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
             this.con.writeMessage(new Message(AM_I_NEEDED_TYPE, thiefId));
 
             Message response = this.con.readMessage();
-
+            con.close();
             if (response.getType() == YOUR_NEEDED_TYPE) {
                 return (Integer) response.getExtra();
-            } else if (response.getType() == YOUR_NOT_NEEDED_TYPE) {
-                try {
-                    Thread.sleep(this.random.nextInt(90) + 10);  // Ask again after 10-100 ms
-                } catch (InterruptedException e) {}
+            } else {
+                System.err.println("Unexpected message type sent by the server: " + response.getType());
+                System.exit(1);
             }
         }
     }
@@ -63,9 +65,29 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
      *
      * @return the room assigned to the team
      */
-    public RoomClient prepareExcursion(int thiefId, int teamId)
+    public Integer prepareExcursion(int thiefId, int teamId)
     {
+    	while (true) {
 
+            while (!this.con.open()) {                           // Try until the server responds
+                try {
+                    Thread.sleep(this.random.nextInt(500) + 500);
+                } catch (InterruptedException e) {}
+            }
+
+            this.con.writeMessage(new Message(PREPARE_EXCURSION_TYPE, thiefId));
+
+            Message response = this.con.readMessage();
+            con.close();
+            if (response.getType() == EXCURSION_PREPARED_TYPE) {
+                return (Integer) response.getExtra();
+            } else {
+                System.err.println("Unexpected message type sent by the server: " + response.getType());
+                System.exit(1);
+                
+                return null;
+            }
+        }
     }
 
     /**
@@ -77,6 +99,27 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
      */
     public void handACanvas(int thiefId, int teamId, boolean rolledCanvas)
     {
+    	while (true) {
 
+            while (!this.con.open()) {                           // Try until the server responds
+                try {
+                    Thread.sleep(this.random.nextInt(500) + 500);
+                } catch (InterruptedException e) {}
+            }
+
+            this.con.writeMessage(new Message(HAND_A_CANVAS_TYPE, thiefId));
+
+            Message response = this.con.readMessage();
+            con.close();
+            
+            if (response.getType() == HANDED_CANVAS_TYPE) {
+                return;
+            } else {
+                System.err.println("Unexpected message type sent by the server: " + response.getType());
+                System.exit(1);
+                
+                return;
+            }
+        }
     }
 }
