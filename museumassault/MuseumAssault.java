@@ -23,5 +23,6 @@ public class MuseumAssault
      */
     public static void main(String[] args)
     {
+        // TODO: Read first argument and call the main according to it.
     }
 }
