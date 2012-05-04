@@ -39,7 +39,8 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
             while (!this.con.open()) {                           // Try until the server responds
                 try {
                     Thread.sleep(this.random.nextInt(500) + 500);
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                }
             }
 
             this.con.writeMessage(new Message(AM_I_NEEDED_TYPE, thiefId));
@@ -57,9 +58,8 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
     }
 
     /**
-     * Prepares the thief for the excursion.
-     * This method should signal the master that the thief is ready and only depart
-     * when notified.
+     * Prepares the thief for the excursion. This method should signal the
+     * master that the thief is ready and only depart when notified.
      *
      * @param thiefId the thief id
      * @param teamId  the team in which the thief belongs
@@ -68,15 +68,16 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
      */
     public Integer prepareExcursion(int thiefId, int teamId)
     {
-    	while (true) {
+        while (true) {
 
             while (!this.con.open()) {                           // Try until the server responds
                 try {
                     Thread.sleep(this.random.nextInt(500) + 500);
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                }
             }
 
-            this.con.writeMessage(new Message(PREPARE_EXCURSION_TYPE, thiefId,teamId));
+            this.con.writeMessage(new Message(PREPARE_EXCURSION_TYPE, thiefId, teamId));
 
             Message response = this.con.readMessage();
             this.con.close();
@@ -101,15 +102,16 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
      */
     public void handACanvas(int thiefId, int teamId, boolean rolledCanvas)
     {
-    	while (true) {
+        while (true) {
 
             while (!this.con.open()) {                           // Try until the server responds
                 try {
                     Thread.sleep(this.random.nextInt(500) + 500);
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                }
             }
 
-            HashMap<String,Object> extra = new HashMap<>();
+            HashMap<String, Object> extra = new HashMap<>();
             extra.put("rolledCanvas", rolledCanvas);
             extra.put("teamId", teamId);
             this.con.writeMessage(new Message(HAND_A_CANVAS_TYPE, thiefId, extra));

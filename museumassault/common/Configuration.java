@@ -23,8 +23,8 @@ public class Configuration
     protected static String sharedSiteThievesConnectionString = "localhost:11000";  // The server address must be equal to the line bellow
     protected static String sharedSiteChiefsConnectionString = "localhost:11001";   // The server address must be equal to the line above
 
-    protected static HashMap<Integer,String> roomConnections;
-    protected static HashMap<Integer,String> corridorConnections;
+    protected static HashMap<Integer, String> roomConnections;
+    protected static HashMap<Integer, String> corridorConnections;
     /**
      * Constructor.
      */
@@ -187,14 +187,26 @@ public class Configuration
         return Integer.parseInt(split[1]);
     }
     
+    /**
+     * 
+     * @param roomId
+     * 
+     * @return 
+     */
     public static String getRoomConnectionString(int roomId)
     {
-    	return roomConnections.get(roomId);
+        return roomConnections.get(roomId);
     }
     
+    /**
+     * 
+     * @param roomId
+     * 
+     * @return 
+     */
     public static int getRoomPort(int roomId)
     {
-    	String[] split = roomConnections.get(roomId).split(":");
+        String[] split = roomConnections.get(roomId).split(":");
         if (split.length != 2) {
             throw new RuntimeException("Could not extract port from the connection string.");
         }
@@ -202,14 +214,26 @@ public class Configuration
         return Integer.parseInt(split[1]);
     }
     
+    /**
+     * 
+     * @param roomId
+     * 
+     * @return 
+     */
     public static String getCorridorConnectionString(int roomId)
     {
-    	return corridorConnections.get(roomId);
+        return corridorConnections.get(roomId);
     }
     
+    /**
+     * 
+     * @param roomId
+     * 
+     * @return 
+     */
     public static int getCorridorPort(int roomId)
     {
-    	String[] split = corridorConnections.get(roomId).split(":");
+        String[] split = corridorConnections.get(roomId).split(":");
         if (split.length != 2) {
             throw new RuntimeException("Could not extract port from the connection string.");
         }

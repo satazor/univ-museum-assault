@@ -27,7 +27,7 @@ public class MessageRepository
      */
     public synchronized Message readMessage(int type)
     {
-    	LinkedList<Message> messagesList = this.messages.get(type);
+        LinkedList<Message> messagesList = this.messages.get(type);
 
         if (messagesList != null) {
             if (messagesList.size() > 0) {
@@ -40,7 +40,7 @@ public class MessageRepository
 
     /**
      * Reads a message from the broker.
-     * Searchs for a specific sender within the list of messages of a given type.
+     * Search for a specific sender within the list of messages of a given type.
      *
      * @param type     the type of the message that is expected to be read
      * @param originId the expected of the sender
@@ -49,7 +49,7 @@ public class MessageRepository
      */
     public Message readMessage(int type, int originId)
     {
-    	LinkedList<Message> messagesList = this.messages.get(type);
+        LinkedList<Message> messagesList = this.messages.get(type);
 
         if (messagesList != null) {
             int length = messagesList.size();
@@ -73,7 +73,7 @@ public class MessageRepository
      */
     public synchronized void writeMessage(Message message)
     {
-    	LinkedList<Message> messagesList = this.messages.get(message.getType());
+        LinkedList<Message> messagesList = this.messages.get(message.getType());
 
         if (messagesList == null) {
             messagesList = new LinkedList<>();

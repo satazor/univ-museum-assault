@@ -1,7 +1,6 @@
 package museumassault.corridor.client;
 
 import java.util.Random;
-
 import museumassault.common.ClientCom;
 import museumassault.common.Message;
 import museumassault.corridor.ICorridorMessageConstants;
@@ -12,62 +11,77 @@ import museumassault.corridor.ICorridorMessageConstants;
  */
 public class CorridorClient implements ICorridorMessageConstants
 {
-	 protected ClientCom con;
-	 protected Random random = new Random();
+    protected ClientCom con;
+    protected Random random = new Random();
 
-	 /**
-	  * Constructor.
-	  */
-	 public CorridorClient(String connectionString)
-	 {
-	     this.con = new ClientCom(connectionString);
-	 }
-	 
-	 public boolean crawlOut(int thiefId, int increment)
-	 {
-		 while (!this.con.open()) {                           // Try until the server responds
-	            try {
-	                Thread.sleep(this.random.nextInt(500) + 500);
-	            } catch (InterruptedException e) {}
-	        }
+    /**
+     * Constructor.
+     */
+    public CorridorClient(String connectionString)
+    {
+        this.con = new ClientCom(connectionString);
+    }
 
-	        this.con.writeMessage(new Message(CRAWL_OUT_TYPE, thiefId,increment));
+    /**
+     * 
+     * @param thiefId
+     * @param increment
+     * 
+     * @return 
+     */
+    public boolean crawlOut(int thiefId, int increment)
+    {
+        while (!this.con.open()) {                           // Try until the server responds
+            try {
+                Thread.sleep(this.random.nextInt(500) + 500);
+            } catch (InterruptedException e) {
+            }
+        }
 
-	        Message response = this.con.readMessage();
-	        this.con.close();
+        this.con.writeMessage(new Message(CRAWL_OUT_TYPE, thiefId, (Integer) increment));
 
-	        if (response.getType() == CRAWLED_OUT_TYPE) {
-	            return (boolean) response.getExtra();
-	        } else {
-	            System.err.println("Unexpected message type sent by the server: " + response.getType());
-	            System.exit(1);
+        Message response = this.con.readMessage();
+        this.con.close();
 
-	            return false;
-	        }
-		 
-	 }
-	 
-	 public boolean crawlIn(int thiefId, int increment)
-	 {
-		 while (!this.con.open()) {                           // Try until the server responds
-	            try {
-	                Thread.sleep(this.random.nextInt(500) + 500);
-	            } catch (InterruptedException e) {}
-	        }
+        if (response.getType() == CRAWLED_OUT_TYPE) {
+            return (boolean) response.getExtra();
+        } else {
+            System.err.println("Unexpected message type sent by the server: " + response.getType());
+            System.exit(1);
 
-	        this.con.writeMessage(new Message(CRAWL_IN_TYPE, thiefId,increment));
+            return false;
+        }
 
-	        Message response = this.con.readMessage();
-	        this.con.close();
+    }
 
-	        if (response.getType() == CRAWLED_IN_TYPE) {
-	            return (boolean) response.getExtra();
-	        } else {
-	            System.err.println("Unexpected message type sent by the server: " + response.getType());
-	            System.exit(1);
+    /**
+     * 
+     * @param thiefId
+     * @param increment
+     * 
+     * @return 
+     */
+    public boolean crawlIn(int thiefId, int increment)
+    {
+        while (!this.con.open()) {                           // Try until the server responds
+            try {
+                Thread.sleep(this.random.nextInt(500) + 500);
+            } catch (InterruptedException e) {
+            }
+        }
 
-	            return false;
-	        }
-		 
-	 }
+        this.con.writeMessage(new Message(CRAWL_IN_TYPE, thiefId, (Integer) increment));
+
+        Message response = this.con.readMessage();
+        this.con.close();
+
+        if (response.getType() == CRAWLED_IN_TYPE) {
+            return (boolean) response.getExtra();
+        } else {
+            System.err.println("Unexpected message type sent by the server: " + response.getType());
+            System.exit(1);
+
+            return false;
+        }
+    }
 }

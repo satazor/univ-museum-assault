@@ -37,7 +37,7 @@ public class ServerCom
      */
     public ServerCom(int serverPort, ServerSocket serverSocket)
     {
-    	this.serverPort = serverPort;
+        this.serverPort = serverPort;
         this.serverSocket = serverSocket;
     }
 

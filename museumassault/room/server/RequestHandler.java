@@ -17,7 +17,7 @@ public class RequestHandler extends Thread implements IRoomMessageConstants
      * Constructor
      *
      * @param con
-     * @param room
+ param room
      */
     public RequestHandler(ServerCom con, Room room)
     {
@@ -34,14 +34,12 @@ public class RequestHandler extends Thread implements IRoomMessageConstants
         Message fromClient = this.con.readMessage();
         Message toClient;
 
-        Boolean ret;
-        
         switch (fromClient.getType()) {
-        	case ROLL_A_CANVAS_TYPE:
-	        	System.out.println("Handling message of type ROLL_A_CANVAS_TYPE..");
-	            ret = this.room.rollACanvas(fromClient.getOriginId());
-	            toClient = new Message(CANVAS_ROLLED_TYPE, ret);
-	            break;
+            case ROLL_A_CANVAS_TYPE:
+                System.out.println("Handling message of type ROLL_A_CANVAS_TYPE..");
+                Boolean rolledCanvas = this.room.rollACanvas(fromClient.getOriginId());
+                toClient = new Message(CANVAS_ROLLED_TYPE, rolledCanvas);
+                break;
             default:
                 System.out.println("Handling message of type UNKNOWN_TYPE..");
                 toClient = new Message(UNKNOWN_TYPE);

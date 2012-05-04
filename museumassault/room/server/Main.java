@@ -1,13 +1,11 @@
 package museumassault.room.server;
 
 import java.util.Random;
-
 import museumassault.common.Configuration;
 import museumassault.common.ServerCom;
-import museumassault.room.server.Room;
-import museumassault.room.server.RequestHandler;
 
 /**
+ *
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -20,35 +18,32 @@ public class Main
      */
     public static void main(String[] args)
     {
-    	 Random random = new Random();
+        Random random = new Random();
 
-         // Read room id
-         if (args.length < 1) {
-             throw new IllegalArgumentException("Please pass the room id as first argument.");
-         }
+        // Read room id
+        if (args.length < 1) {
+            throw new IllegalArgumentException("Please pass the room id as first argument.");
+        }
 
-         int roomId = Integer.parseInt(args[0]);
+        int roomId = Integer.parseInt(args[0]);
 
-         // Initialize the corridor
-         Room room = new Room(roomId, random.nextInt(Configuration.getMaxCanvasInRoom()),roomId);
-         
+        // Initialize the corridor
+        Room room = new Room(roomId, random.nextInt(Configuration.getMaxCanvasInRoom()), roomId);
 
-         // Initialize the server connection
-         
-         ServerCom con = new ServerCom(Configuration.getRoomPort(roomId));
-         con.start();
+        // Initialize the server connection
+        ServerCom con = new ServerCom(Configuration.getRoomPort(roomId));
+        con.start();
 
-         //System.out.println("Now listening for thieves requests.."); DE QUE FICA À ESPERA O ROOM?
+        System.out.println("Now listening for thieves requests..");
 
-         // Accept connections
-         while (true) {
-             ServerCom newCon = con.accept();
+        // Accept connections
+        while (true) {
+            ServerCom newCon = con.accept();
 
-             //System.out.println("New connection accepted from a thief, creating thread to handle it..");
+            System.out.println("New connection accepted from a thief, creating thread to handle it..");
 
-             RequestHandler handler = new RequestHandler(newCon, room);
-             handler.start();
-         }
-     
+            RequestHandler handler = new RequestHandler(newCon, room);
+            handler.start();
+        }
     }
 }
