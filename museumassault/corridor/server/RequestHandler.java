@@ -45,7 +45,7 @@ public class RequestHandler extends Thread implements ICorridorMessageConstants
             case CRAWL_OUT_TYPE:
                 System.out.println("Handling message of type CRAWL_OUT_TYPE..");
                 ret = this.corridor.crawlOut(fromClient.getOriginId(), (Integer) fromClient.getExtra());
-                toClient = new Message(CRAWLED_IN_TYPE, ret);
+                toClient = new Message(CRAWLED_OUT_TYPE, ret);
                 break;
             default:
                 System.out.println("Handling message of type UNKNOWN_TYPE..");

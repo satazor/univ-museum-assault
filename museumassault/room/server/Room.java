@@ -5,6 +5,7 @@ package museumassault.room.server;
  *
  * This class represents a museum room.
  *
+ * 
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class Room

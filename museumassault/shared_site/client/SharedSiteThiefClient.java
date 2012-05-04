@@ -7,8 +7,7 @@ import museumassault.common.Message;
 import museumassault.shared_site.IThiefMessageConstants;
 
 /**
- *
- * @author Andre Cruz <andremiguelcruz@ua.pt>
+ * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  */
 public class SharedSiteThiefClient implements IThiefMessageConstants
 {

@@ -6,7 +6,7 @@ package museumassault.shared_site;
  * This interfaces exposes all the message type constants related to the content
  * negotiation between the shared site and thieves.
  *
- * @author Andre Cruz <andremiguelcruz@ua.pt>
+ * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  */
 public interface IThiefMessageConstants
 {

@@ -6,7 +6,7 @@ import museumassault.room.IRoomMessageConstants;
 
 /**
  *
- * @author Andre Cruz <andremiguelcruz@ua.pt>
+ * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  */
 public class RequestHandler extends Thread implements IRoomMessageConstants
 {
@@ -17,7 +17,7 @@ public class RequestHandler extends Thread implements IRoomMessageConstants
      * Constructor
      *
      * @param con
-     * @param corridor
+     * @param room
      */
     public RequestHandler(ServerCom con, Room room)
     {
@@ -34,7 +34,14 @@ public class RequestHandler extends Thread implements IRoomMessageConstants
         Message fromClient = this.con.readMessage();
         Message toClient;
 
+        Boolean ret;
+        
         switch (fromClient.getType()) {
+        	case ROLL_A_CANVAS_TYPE:
+	        	System.out.println("Handling message of type ROLL_A_CANVAS_TYPE..");
+	            ret = this.room.rollACanvas(fromClient.getOriginId());
+	            toClient = new Message(CANVAS_ROLLED_TYPE, ret);
+	            break;
             default:
                 System.out.println("Handling message of type UNKNOWN_TYPE..");
                 toClient = new Message(UNKNOWN_TYPE);

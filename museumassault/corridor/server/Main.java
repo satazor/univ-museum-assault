@@ -5,7 +5,7 @@ import museumassault.common.Configuration;
 import museumassault.common.ServerCom;
 
 /**
- *
+ * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class Main
@@ -19,7 +19,7 @@ public class Main
     {
         Random random = new Random();
 
-        // Read room id
+        // Read corridor id
         if (args.length < 1) {
             throw new IllegalArgumentException("Please pass the corridor id as first argument.");
         }
@@ -31,7 +31,7 @@ public class Main
 
         // Initialize the server connection
         // TODO: the port bellow should be read from the configuration
-        ServerCom con = new ServerCom(10);
+        ServerCom con = new ServerCom(Configuration.getCorridorPort(corridorId));
         con.start();
 
         System.out.println("Now listening for thieves requests..");

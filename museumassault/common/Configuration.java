@@ -1,6 +1,7 @@
 package museumassault.common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,12 +23,26 @@ public class Configuration
     protected static String sharedSiteThievesConnectionString = "localhost:11000";  // The server address must be equal to the line bellow
     protected static String sharedSiteChiefsConnectionString = "localhost:11001";   // The server address must be equal to the line above
 
+    protected static HashMap<Integer,String> roomConnections;
+    protected static HashMap<Integer,String> corridorConnections;
     /**
      * Constructor.
      */
     public Configuration()
     {
-        throw new UnsupportedOperationException("This class cannot be instantiated.");
+        roomConnections = new HashMap<>();
+        roomConnections.put(1, "ip:port");
+        roomConnections.put(2, "ip:port");
+        roomConnections.put(3, "ip:port");
+        roomConnections.put(4, "ip:port");
+        roomConnections.put(5, "ip:port");
+        
+        corridorConnections = new HashMap<>();
+        corridorConnections.put(1, "ip:port");
+        corridorConnections.put(2, "ip:port");
+        corridorConnections.put(3, "ip:port");
+        corridorConnections.put(4, "ip:port");
+        corridorConnections.put(5, "ip:port");    
     }
 
     /**
@@ -165,6 +180,36 @@ public class Configuration
     public static int getSharedChiefsSitePort()
     {
         String[] split = sharedSiteChiefsConnectionString.split(":");
+        if (split.length != 2) {
+            throw new RuntimeException("Could not extract port from the connection string.");
+        }
+
+        return Integer.parseInt(split[1]);
+    }
+    
+    public static String getRoomConnectionString(int roomId)
+    {
+    	return roomConnections.get(roomId);
+    }
+    
+    public static int getRoomPort(int roomId)
+    {
+    	String[] split = roomConnections.get(roomId).split(":");
+        if (split.length != 2) {
+            throw new RuntimeException("Could not extract port from the connection string.");
+        }
+
+        return Integer.parseInt(split[1]);
+    }
+    
+    public static String getCorridorConnectionString(int roomId)
+    {
+    	return corridorConnections.get(roomId);
+    }
+    
+    public static int getCorridorPort(int roomId)
+    {
+    	String[] split = corridorConnections.get(roomId).split(":");
         if (split.length != 2) {
             throw new RuntimeException("Could not extract port from the connection string.");
         }
