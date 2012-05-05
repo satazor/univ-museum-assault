@@ -49,10 +49,9 @@ public class CorridorClient implements ICorridorMessageConstants
         if (response.getType() == CRAWLED_OUT_TYPE) {
             return (boolean) response.getExtra();
         } else {
-            System.err.println("Unexpected message type sent by the server: " + response.getType());
-            System.exit(1);
-
-            return false;
+            //System.err.println("Unexpected message type sent by the server: " + response.getType());
+            //System.exit(1);
+            throw new ComException("Unexpected message type sent by the server: " + response.getType());
         }
 
     }
@@ -81,10 +80,9 @@ public class CorridorClient implements ICorridorMessageConstants
         if (response.getType() == CRAWLED_IN_TYPE) {
             return (boolean) response.getExtra();
         } else {
-            System.err.println("Unexpected message type sent by the server: " + response.getType());
-            System.exit(1);
-
-            return false;
+            //System.err.println("Unexpected message type sent by the server: " + response.getType());
+            //System.exit(1);
+            throw new ComException("Unexpected message type sent by the server: " + response.getType());
         }
     }
 
@@ -118,10 +116,9 @@ public class CorridorClient implements ICorridorMessageConstants
             } else if (response.getType() == WRONG_SHUTDOWN_PASSWORD_TYPE) {
                 return false;
             } else {
-                System.err.println("Unexpected message type sent by the server: " + response.getType());
-                System.exit(1);
-
-                return false;
+                //System.err.println("Unexpected message type sent by the server: " + response.getType());
+                //System.exit(1);
+                throw new ComException("Unexpected message type sent by the server: " + response.getType());
             }
         } catch (ShutdownException ex) {
             return true;

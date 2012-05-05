@@ -53,8 +53,9 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
             if (response.getType() == YOUR_NEEDED_TYPE) {
                 return (Integer) response.getExtra();
             } else {
-                System.err.println("Unexpected message type sent by the server: " + response.getType());
-                System.exit(1);
+                //System.err.println("Unexpected message type sent by the server: " + response.getType());
+                //System.exit(1);
+                throw new ComException("Unexpected message type sent by the server: " + response.getType());
             }
         }
     }
@@ -87,8 +88,9 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
             if (response.getType() == EXCURSION_PREPARED_TYPE) {
                 return (Integer) response.getExtra();
             } else {
-                System.err.println("Unexpected message type sent by the server: " + response.getType());
-                System.exit(1);
+                //System.err.println("Unexpected message type sent by the server: " + response.getType());
+                //System.exit(1);
+                throw new ComException("Unexpected message type sent by the server: " + response.getType());
             }
         }
     }
@@ -122,8 +124,9 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
             if (response.getType() == GOT_CANVAS_TYPE) {
                 return;
             } else {
-                System.err.println("Unexpected message type sent by the server: " + response.getType());
-                System.exit(1);
+                //System.err.println("Unexpected message type sent by the server: " + response.getType());
+                //System.exit(1);
+                throw new ComException("Unexpected message type sent by the server: " + response.getType());
             }
         }
     }

@@ -49,10 +49,9 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
         if (response.getType() == APPRAISED_SIT_TYPE) {
             return (Integer) response.getExtra();
         } else {
-            System.err.println("Unexpected message type sent by the server: " + response.getType());
-            System.exit(1);
-
-            return null;
+            //System.err.println("Unexpected message type sent by the server: " + response.getType());
+            //System.exit(1);
+            throw new ComException("Unexpected message type sent by the server: " + response.getType());
         }
     }
 
@@ -80,10 +79,9 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
         if (response.getType() == ASSAULT_PARTY_PREPARED_TYPE) {
             return (Integer) response.getExtra();
         } else {
-            System.err.println("Unexpected message type sent by the server: " + response.getType());
-            System.exit(1);
-
-            return null;
+            //System.err.println("Unexpected message type sent by the server: " + response.getType());
+            //System.exit(1);
+            throw new ComException("Unexpected message type sent by the server: " + response.getType());
         }
     }
 
@@ -107,8 +105,9 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
         Message response = this.con.readMessage();
 
         if (response.getType() != ASSAULT_PARTY_SENT_TYPE) {
-            System.err.println("Unexpected message type sent by the server: " + response.getType());
-            System.exit(1);
+            //System.err.println("Unexpected message type sent by the server: " + response.getType());
+            //System.exit(1);
+            throw new ComException("Unexpected message type sent by the server: " + response.getType());
         }
     }
 
@@ -134,10 +133,9 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
         if (response.getType() == TOOK_A_REST_TYPE) {
             return (Integer) response.getExtra();
         } else {
-            System.err.println("Unexpected message type sent by the server: " + response.getType());
-            System.exit(1);
-
-            return null;
+            //System.err.println("Unexpected message type sent by the server: " + response.getType());
+            //System.exit(1);
+            throw new ComException("Unexpected message type sent by the server: " + response.getType());
         }
     }
 
@@ -170,10 +168,9 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
             } else if (response.getType() == WRONG_SHUTDOWN_PASSWORD_TYPE) {
                 return false;
             } else {
-                System.err.println("Unexpected message type sent by the server: " + response.getType());
-                System.exit(1);
-
-                return false;
+                //System.err.println("Unexpected message type sent by the server: " + response.getType());
+                //System.exit(1);
+                throw new ComException("Unexpected message type sent by the server: " + response.getType());
             }
         } catch (ShutdownException ex) {
             return true;
@@ -199,8 +196,9 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
         Message response = this.con.readMessage();
 
         if (response.getType() != COLLECTED_CANVAS_TYPE) {
-            System.err.println("Unexpected message type sent by the server: " + response.getType());
-            System.exit(1);
+            //System.err.println("Unexpected message type sent by the server: " + response.getType());
+            //System.exit(1);
+            throw new ComException("Unexpected message type sent by the server: " + response.getType());
         }
     }
 
@@ -226,10 +224,9 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
         if (response.getType() == SUMMED_UP_RESULTS) {
             return (Integer) response.getExtra();
         } else {
-            System.err.println("Unexpected message type sent by the server: " + response.getType());
-            System.exit(1);
-
-            return null;
+            //System.err.println("Unexpected message type sent by the server: " + response.getType());
+            //System.exit(1);
+            throw new ComException("Unexpected message type sent by the server: " + response.getType());
         }
     }
 }
