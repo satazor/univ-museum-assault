@@ -18,26 +18,42 @@ public class Main
     public static void main(String[] args)
     {
         Random random = new Random();
+        Configuration configuration = new Configuration();
 
-        // Simulate all the thieves in this computer
-        int nrTotalThieves = Configuration.getNrThieves();
-        Thief[] thieves = new Thief[nrTotalThieves];
-        for (int x = 0; x < nrTotalThieves; x++) {
+        Integer thiefId = args.length > 0 ? Integer.parseInt(args[0]) : null;
+        SharedSiteThiefClient site;
+        Thief thief;
 
-            SharedSiteThiefClient site = new SharedSiteThiefClient(Configuration.getSharedThievesSiteConnectionString());
+        if (thiefId == null) {
+            // Simulate all the thieves in this computer
+            int nrTotalThieves = configuration.getNrThieves();
+            Thief[] thieves = new Thief[nrTotalThieves];
+            for (int x = 0; x < nrTotalThieves; x++) {
 
-            Thief thief = new Thief(x + 1, random.nextInt(Configuration.getMaxPowerPerThief() - 1) + 1, site);
-            thieves[x] = thief;
-            thieves[x].start();
-        }
+                site = new SharedSiteThiefClient(configuration.getSharedThievesSiteConnectionString());
 
-        // Wait for the thieves to join
-        for (int x = 0; x < nrTotalThieves; x++) {
+                thief = new Thief(x + 1, random.nextInt(configuration.getMaxPowerPerThief() - 1) + 1, site, configuration);
+                thieves[x] = thief;
+                thieves[x].start();
+            }
+
+            // Wait for the thieves to join
+            for (int x = 0; x < nrTotalThieves; x++) {
+                try {
+                    thieves[x].join();
+                } catch (InterruptedException e) {}
+            }
+        } else {
+            // Simulate the thief with the passed id
+            site = new SharedSiteThiefClient(configuration.getSharedThievesSiteConnectionString());
+            thief = new Thief(thiefId, random.nextInt(configuration.getMaxPowerPerThief() - 1) + 1, site, configuration);
+
+            thief.start();
+
+            // Wait for the thief to join
             try {
-                thieves[x].join();
+                thief.join();
             } catch (InterruptedException e) {}
         }
-
-        System.exit(0);
     }
 }

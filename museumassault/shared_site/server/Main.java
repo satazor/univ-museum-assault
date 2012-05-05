@@ -2,7 +2,6 @@ package museumassault.shared_site.server;
 
 import museumassault.common.Configuration;
 import museumassault.common.ServerCom;
-import museumassault.common.Team;
 
 /**
  *
@@ -17,15 +16,17 @@ public class Main
      */
     public static void main(String[] args)
     {
+        final Configuration configuration = new Configuration();
+
         // Initialize the teams
-        int nrTeams = Configuration.getNrTeams();
+        int nrTeams = configuration.getNrTeams();
         Team[] teams = new Team[nrTeams];
         for (int x = 0; x < nrTeams; x++) {
-            teams[x] = new Team(x + 1, Configuration.getNrThievesPerTeam());
+            teams[x] = new Team(x + 1, configuration.getNrThievesPerTeam());
         }
 
         // Initialize the shared site
-        final SharedSite site = new SharedSite(Configuration.getRoomIds(), teams, Configuration.getNrChiefs() > 1);
+        final SharedSite site = new SharedSite(configuration.getRoomIds(), teams, configuration.getNrChiefs() > 1);
 
         /**
          * Inline class to listen for the thieves requests.
@@ -34,7 +35,7 @@ public class Main
             @Override
             public void run() {
                 // Initialize the server connection
-                ServerCom con = new ServerCom(Configuration.getSharedThievesSitePort());
+                ServerCom con = new ServerCom(configuration.getSharedThievesSitePort());
                 con.start();
 
                 System.out.println("Now listening for thieves requests..");
@@ -59,7 +60,7 @@ public class Main
             public void run() {
 
                 // Initialize the server connection
-                ServerCom con = new ServerCom(Configuration.getSharedChiefsSitePort());
+                ServerCom con = new ServerCom(configuration.getSharedChiefsSitePort());
                 con.start();
 
                 System.out.println("Now listening for chiefs requests..");
@@ -76,9 +77,13 @@ public class Main
             }
         }
 
+        System.out.println("SharedSite");
+
+        // Start the thieves listener
         ThievesListener thievesListener = new ThievesListener();
         thievesListener.start();
 
+        // Start the chiefs listener
         ChiefsListener chiefsListener = new ChiefsListener();
         chiefsListener.start();
     }

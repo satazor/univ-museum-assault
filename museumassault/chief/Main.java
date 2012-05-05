@@ -16,27 +16,43 @@ public class Main
      */
     public static void main(String[] args)
     {
+        Configuration configuration = new Configuration();
 
-        // Simulate all the thieves in this computer
-        int nrTotalChiefs = Configuration.getNrChiefs();
-        Chief[] chiefs = new Chief[nrTotalChiefs];
-        for (int x = 0; x < nrTotalChiefs; x++) {
+        Integer chiefId = args.length > 0 ? Integer.parseInt(args[0]) : null;
+        SharedSiteChiefClient site;
+        Chief chief;
 
-            // Initialize the shared site client api for the chiefs
-            SharedSiteChiefClient site = new SharedSiteChiefClient(Configuration.getSharedChiefsSiteConnectionString());
+        if (chiefId == null) {
+            // Simulate all the chiefs in this computer
+            int nrTotalChiefs = configuration.getNrChiefs();
+            Chief[] chiefs = new Chief[nrTotalChiefs];
+            for (int x = 0; x < nrTotalChiefs; x++) {
 
-            Chief chief = new Chief(x + 1, site);
-            chiefs[x] = chief;
-            chiefs[x].start();
-        }
+                // Initialize the shared site client api for the chiefs
+                site = new SharedSiteChiefClient(configuration.getSharedChiefsSiteConnectionString());
 
-        // Wait for the chiefs to join
-        for (int x = 0; x < nrTotalChiefs; x++) {
+                chief = new Chief(x + 1, site);
+                chiefs[x] = chief;
+                chiefs[x].start();
+            }
+
+            // Wait for the chiefs to join
+            for (int x = 0; x < nrTotalChiefs; x++) {
+                try {
+                    chiefs[x].join();
+                } catch (InterruptedException e) {}
+            }
+        } else {
+            // Simulate the chief with the passed id
+            site = new SharedSiteChiefClient(configuration.getSharedThievesSiteConnectionString());
+            chief = new Chief(chiefId, site);
+
+            chief.start();
+
+            // Wait for the chief to join
             try {
-                chiefs[x].join();
+                chief.join();
             } catch (InterruptedException e) {}
         }
-
-        System.exit(0);
     }
 }

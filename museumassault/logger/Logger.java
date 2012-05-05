@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import museumassault.chief.Chief;
-import museumassault.common.Team;
+import museumassault.shared_site.server.Team;
 import museumassault.room.server.Room;
 import museumassault.thief.Thief;
 

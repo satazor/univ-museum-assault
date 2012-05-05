@@ -18,6 +18,7 @@ public class Corridor
     protected HashMap<Integer, Integer> thievesPositions = new HashMap<>();
     protected int maxDistanceBetweenThieves;
     protected int atTheRoom = 0;
+    protected int atTheCorridor = 0;
 
     /**
      * Class constructor.
@@ -84,6 +85,7 @@ public class Corridor
         }
 
         this.thievesPositions.clear();
+        this.atTheRoom = 0;
     }
 
     /**
@@ -97,11 +99,12 @@ public class Corridor
     public synchronized boolean crawlOut(int thiefId, int increment)
     {
         Integer currentPosition = (Integer) this.thievesPositions.get(thiefId);
+        Integer realPosition = currentPosition;
 
         if (currentPosition == null) {
             currentPosition = -1;
-        } else if (currentPosition == -1) {
-            throw new IllegalArgumentException("Thief already crawled out.");
+        } else if (currentPosition == -1 || currentPosition >= this.outwards.length) {
+            throw new IllegalStateException("Thief already crawled out.");
         }
 
         //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.CRAWLING_OUTWARDS);
@@ -173,6 +176,10 @@ public class Corridor
                     //System.out.println("[Thief #" + thiefId +"] Moved successfully to position #" + newPosition);
                 }
 
+                if (realPosition == null) {
+                    this.atTheCorridor++;
+                }
+
                 this.notifyAll();
                 try {
                     this.wait(5);  // Give the opportunity for other thieves to crawl (Thread.yeild() was not working as expected)
@@ -203,9 +210,11 @@ public class Corridor
     {
         Integer currentPosition = (Integer) this.thievesPositions.get(thiefId);
 
-        if (currentPosition != -1) {
+        if (currentPosition == null) {
+            throw new IllegalStateException("Thief didn't crawled out yet.");
+        } else if (currentPosition != -1) {
             if (currentPosition < this.outwards.length) {
-                throw new IllegalStateException("Thief didn't yet crawled out yet.");
+                throw new IllegalStateException("Thief didn't crawled out yet.");
             }
             if (currentPosition - this.outwards.length >= this.inwards.length) {
                 throw new IllegalStateException("Thief already crawled in.");
@@ -280,6 +289,13 @@ public class Corridor
                 } else {
                     this.thievesPositions.put(thiefId, newPosition + this.outwards.length);
                     //System.out.println("[Thief #" + thiefId +"] Moved successfully to position #" + newPosition);
+                }
+
+                if (ret) {
+                    this.atTheCorridor--;
+                    if (this.atTheCorridor <= 0) {
+                        this.clearPositions();
+                    }
                 }
 
                 this.notifyAll();

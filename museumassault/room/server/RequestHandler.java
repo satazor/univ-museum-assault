@@ -39,6 +39,7 @@ public class RequestHandler extends Thread implements IRoomMessageConstants
                 System.out.println("Handling message of type ROLL_A_CANVAS_TYPE..");
                 Boolean rolledCanvas = this.room.rollACanvas(fromClient.getOriginId());
                 toClient = new Message(CANVAS_ROLLED_TYPE, rolledCanvas);
+                System.out.println("Number of canvas in room: " + room.getNrCanvas());
                 break;
             default:
                 System.out.println("Handling message of type UNKNOWN_TYPE..");

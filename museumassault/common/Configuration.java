@@ -8,93 +8,103 @@ import java.util.List;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class Configuration
+public class Configuration implements IThievesConfiguration
 {
-    protected static int nrChiefs = 1;
-    protected static int nrThieves = 7;
-    protected static int nrTeams = 5;
-    protected static int nrThievesPerTeam = 3;
-    protected static int nrRooms = 5;
-    protected static int maxDistanceBetweenThieves = 1;
-    protected static int maxDistanceBetweenRoomAndOutside = 10;
-    protected static int maxPowerPerThief = 5;
-    protected static int maxCanvasInRoom = 20;
+    protected int nrChiefs = 1;
+    protected int nrThieves = 7;
+    protected int nrTeams = 5;
+    protected int nrThievesPerTeam = 3;
+    protected int nrRooms = 5;
+    protected int maxDistanceBetweenThieves = 1;
+    protected int maxDistanceBetweenRoomAndOutside = 10;
+    protected int maxPowerPerThief = 5;
+    protected int maxCanvasInRoom = 20;
 
-    protected static String sharedSiteThievesConnectionString = "localhost:11000";  // The server address must be equal to the line bellow
-    protected static String sharedSiteChiefsConnectionString = "localhost:11001";   // The server address must be equal to the line above
+    protected String sharedSiteThievesConnectionString = "localhost:11000";  // The server address must be equal to the line bellow
+    protected String sharedSiteChiefsConnectionString = "localhost:11001";   // The server address must be equal to the line above
 
-    protected static HashMap<Integer, String> roomConnections;
-    protected static HashMap<Integer, String> corridorConnections;
+    protected HashMap<Integer, String> roomConnections;
+    protected HashMap<Integer, String> corridorConnections;
+    protected HashMap<Integer, Integer> roomCorridorAssociations;
+
     /**
      * Constructor.
      */
     public Configuration()
     {
-        roomConnections = new HashMap<>();
-        roomConnections.put(1, "ip:port");
-        roomConnections.put(2, "ip:port");
-        roomConnections.put(3, "ip:port");
-        roomConnections.put(4, "ip:port");
-        roomConnections.put(5, "ip:port");
-        
-        corridorConnections = new HashMap<>();
-        corridorConnections.put(1, "ip:port");
-        corridorConnections.put(2, "ip:port");
-        corridorConnections.put(3, "ip:port");
-        corridorConnections.put(4, "ip:port");
-        corridorConnections.put(5, "ip:port");    
+        this.roomConnections = new HashMap<>();
+
+        this.roomConnections.put(1, "localhost:20000");
+        this.roomConnections.put(2, "localhost:20001");
+        this.roomConnections.put(3, "localhost:20002");
+        this.roomConnections.put(4, "localhost:20003");
+        this.roomConnections.put(5, "localhost:20004");
+
+        this.corridorConnections = new HashMap<>();
+        this.corridorConnections.put(1, "localhost:21000");
+        this.corridorConnections.put(2, "localhost:21001");
+        this.corridorConnections.put(3, "localhost:21002");
+        this.corridorConnections.put(4, "localhost:21003");
+        this.corridorConnections.put(5, "localhost:21004");
+
+        this.roomCorridorAssociations = new HashMap<>();
+        this.roomCorridorAssociations.put(1, 1);
+        this.roomCorridorAssociations.put(2, 2);
+        this.roomCorridorAssociations.put(3, 3);
+        this.roomCorridorAssociations.put(4, 4);
+        this.roomCorridorAssociations.put(5, 5);
     }
 
     /**
      *
      * @return
      */
-    public static int getMaxCanvasInRoom()
+    public int getMaxCanvasInRoom()
     {
-        return maxCanvasInRoom;
+        return this.maxCanvasInRoom;
     }
 
     /**
      *
      * @return
      */
-    public static int getMaxDistanceBetweenRoomAndOutside()
+    public int getMaxDistanceBetweenRoomAndOutside()
     {
-        return maxDistanceBetweenRoomAndOutside;
+        return this.maxDistanceBetweenRoomAndOutside;
     }
 
     /**
      *
      * @return
      */
-    public static int getMaxDistanceBetweenThieves()
+    public int getMaxDistanceBetweenThieves()
     {
-        return maxDistanceBetweenThieves;
+        return this.maxDistanceBetweenThieves;
     }
 
     /**
      *
      * @return
      */
-    public static int getMaxPowerPerThief()
+    public int getMaxPowerPerThief()
     {
-        return maxPowerPerThief;
+        return this.maxPowerPerThief;
     }
 
     /**
      *
      * @return
      */
-    public static int getNrChiefs()
+    public int getNrChiefs()
     {
-        return nrChiefs;
+        return this.nrChiefs;
     }
 
     /**
      *
      * @return
      */
-    public static int getNrThieves()
+    public int getNrThieves()
     {
         return nrThieves;
     }
@@ -103,16 +113,16 @@ public class Configuration
      *
      * @return
      */
-    public static int getNrRooms()
+    public int getNrRooms()
     {
-        return nrRooms;
+        return this.nrRooms;
     }
 
     /**
      *
      * @return
      */
-    public static List<Integer> getRoomIds()
+    public List<Integer> getRoomIds()
     {
         ArrayList<Integer> ids = new ArrayList(nrRooms);
 
@@ -127,45 +137,45 @@ public class Configuration
      *
      * @return
      */
-    public static int getNrTeams()
+    public int getNrTeams()
     {
-        return nrTeams;
+        return this.nrTeams;
     }
 
     /**
      *
      * @return
      */
-    public static int getNrThievesPerTeam()
+    public int getNrThievesPerTeam()
     {
-        return nrThievesPerTeam;
+        return this.nrThievesPerTeam;
     }
 
     /**
      *
      * @return
      */
-    public static String getSharedChiefsSiteConnectionString()
+    public String getSharedChiefsSiteConnectionString()
     {
-        return sharedSiteChiefsConnectionString;
+        return this.sharedSiteChiefsConnectionString;
     }
 
     /**
      *
      * @return
      */
-    public static String getSharedThievesSiteConnectionString()
+    public String getSharedThievesSiteConnectionString()
     {
-        return sharedSiteThievesConnectionString;
+        return this.sharedSiteThievesConnectionString;
     }
 
     /**
      *
      * @return
      */
-    public static int getSharedThievesSitePort()
+    public int getSharedThievesSitePort()
     {
-        String[] split = sharedSiteThievesConnectionString.split(":");
+        String[] split = this.sharedSiteThievesConnectionString.split(":");
         if (split.length != 2) {
             throw new RuntimeException("Could not extract port from the connection string.");
         }
@@ -177,67 +187,91 @@ public class Configuration
      *
      * @return
      */
-    public static int getSharedChiefsSitePort()
+    public int getSharedChiefsSitePort()
     {
-        String[] split = sharedSiteChiefsConnectionString.split(":");
+        String[] split = this.sharedSiteChiefsConnectionString.split(":");
         if (split.length != 2) {
             throw new RuntimeException("Could not extract port from the connection string.");
         }
 
         return Integer.parseInt(split[1]);
     }
-    
+
     /**
-     * 
+     *
      * @param roomId
-     * 
-     * @return 
+     *
+     * @return
      */
-    public static String getRoomConnectionString(int roomId)
+    @Override
+    public String getRoomConnectionString(int roomId)
     {
-        return roomConnections.get(roomId);
+        return this.roomConnections.get(roomId);
     }
-    
+
     /**
-     * 
+     *
      * @param roomId
-     * 
-     * @return 
+     *
+     * @return
      */
-    public static int getRoomPort(int roomId)
+    public Integer getRoomPort(int roomId)
     {
-        String[] split = roomConnections.get(roomId).split(":");
+        String connectionString = this.roomConnections.get(roomId);
+        if (connectionString == null) {
+            return null;
+        }
+
+        String[] split = connectionString.split(":");
         if (split.length != 2) {
             throw new RuntimeException("Could not extract port from the connection string.");
         }
 
         return Integer.parseInt(split[1]);
     }
-    
+
     /**
-     * 
+     *
      * @param roomId
-     * 
-     * @return 
+     *
+     * @return
      */
-    public static String getCorridorConnectionString(int roomId)
+    @Override
+    public String getCorridorConnectionString(int roomId)
     {
-        return corridorConnections.get(roomId);
+        return this.corridorConnections.get(roomId);
     }
-    
+
     /**
-     * 
+     *
      * @param roomId
-     * 
-     * @return 
+     *
+     * @return
      */
-    public static int getCorridorPort(int roomId)
+    public Integer getCorridorPort(int roomId)
     {
-        String[] split = corridorConnections.get(roomId).split(":");
+        String connectionString = this.corridorConnections.get(roomId);
+        if (connectionString == null) {
+            return null;
+        }
+
+        String[] split = connectionString.split(":");
         if (split.length != 2) {
             throw new RuntimeException("Could not extract port from the connection string.");
         }
 
         return Integer.parseInt(split[1]);
+    }
+
+    /**
+     *
+     * @param roomId
+     *
+     * @return
+     */
+    @Override
+    public Integer getRoomCorridorId(int roomId)
+    {
+        return (Integer) this.roomCorridorAssociations.get(roomId);
     }
 }

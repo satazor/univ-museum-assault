@@ -1,7 +1,6 @@
-package museumassault.common;
+package museumassault.shared_site.server;
 
 import java.util.LinkedList;
-import museumassault.room.server.Room;
 
 /**
  * Team class.

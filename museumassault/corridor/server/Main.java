@@ -18,22 +18,30 @@ public class Main
     public static void main(String[] args)
     {
         Random random = new Random();
+        Configuration configuration = new Configuration();
 
         // Read corridor id
         if (args.length < 1) {
-            throw new IllegalArgumentException("Please pass the corridor id as first argument.");
+            System.err.println("Please pass the corridor id as first argument.");
+            System.exit(1);
         }
 
         int corridorId = Integer.parseInt(args[0]);
 
-        // Initialize the corridor
-        Corridor corridor = new Corridor(corridorId, (random.nextInt(Configuration.getMaxDistanceBetweenRoomAndOutside() - 1) + 1), Configuration.getMaxDistanceBetweenThieves());
-
         // Initialize the server connection
-        // TODO: the port bellow should be read from the configuration
-        ServerCom con = new ServerCom(Configuration.getCorridorPort(corridorId));
+        Integer port = configuration.getCorridorPort(corridorId);
+        if (port == null) {
+            System.err.println("Unknown corridor id: " + corridorId + ".");
+            System.exit(1);
+        }
+
+        ServerCom con = new ServerCom(port);
         con.start();
 
+        // Initialize the corridor
+        Corridor corridor = new Corridor(corridorId, (random.nextInt(configuration.getMaxDistanceBetweenRoomAndOutside() - 1) + 1), configuration.getMaxDistanceBetweenThieves());
+
+        System.out.println("Corridor #" + corridorId);
         System.out.println("Now listening for thieves requests..");
 
         // Accept connections

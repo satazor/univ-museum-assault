@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import museumassault.common.Message;
 import museumassault.common.MessageRepository;
-import museumassault.common.Team;
 import museumassault.shared_site.IChiefMessageConstants;
 import museumassault.shared_site.IThiefMessageConstants;
 
@@ -121,6 +120,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
                 int nrRooms = this.roomIds.size();
                 for (int x = 0; x < nrRooms; x++) {
                     int roomId = this.roomIds.get(x);
+                    System.out.println(this.roomsCanvasStatus.get(roomId)+ " " + !this.roomsEngagedStatus.get(roomId));
                     if ((boolean) this.roomsCanvasStatus.get(roomId) && !this.roomsEngagedStatus.get(roomId)) {
                         this.roomsEngagedStatus.put(roomId, true);
                         return roomId;
@@ -173,8 +173,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
                 }
             }
 
-            // TODO: check this
-            //room.isBeingRobed(false);
+            this.roomsEngagedStatus.put(roomId, false);
 
             return null;
         }
@@ -287,8 +286,8 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
                     if (rolledCanvas) this.nrCollectedCanvas++;
 
                     int roomId = team.getAssignedRoomId();
-                    if ((boolean) this.roomsEngagedStatus.get(roomId) && !rolledCanvas) {
-                        this.roomsEngagedStatus.put(roomId, false);
+                    if ((boolean) this.roomsCanvasStatus.get(roomId) && !rolledCanvas) {
+                        this.roomsCanvasStatus.put(roomId, false);
                         this.nrRoomsToBeRobed--;
                     }
                 }
@@ -407,6 +406,10 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
             synchronized (repository) {
                 //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.OUTSIDE);
                 team.removeThief(thiefId);
+
+                if (!team.isBusy()) {
+                    this.roomsEngagedStatus.put(team.getAssignedRoomId(), false);
+                }
             }
 
             this.chiefRepository.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId));
