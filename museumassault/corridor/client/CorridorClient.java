@@ -91,34 +91,39 @@ public class CorridorClient implements ICorridorMessageConstants
      *
      * @return
      */
-    public boolean shutdown(String password) throws ComException, ShutdownException
+    public boolean shutdown(String password) throws ComException
     {
-        int nrAttempts = 0;
-        while (!this.con.open() && nrAttempts < 10) {                           // Try until the server responds
-            try {
-                Thread.sleep(this.random.nextInt(500) + 500);
-            } catch (InterruptedException e) {}
+        try {
+            int nrAttempts = 0;
+            while (!this.con.open() && nrAttempts < 10) {                           // Try until the server responds
+                try {
+                    Thread.sleep(this.random.nextInt(100) + 100);
+                } catch (InterruptedException e) {}
 
-            nrAttempts++;
-        }
+                nrAttempts++;
+            }
 
-        if (nrAttempts >= 10) {
-            System.out.println("Assumed that the server is shutted down.");
-        }
+            if (nrAttempts >= 10) {
+                System.out.println("Assumed that the server is shutted down.");
+                return true;
+            }
 
-        this.con.writeMessage(new Message(SHUTDOWN_TYPE, password));
+            this.con.writeMessage(new Message(SHUTDOWN_TYPE, password));
 
-        Message response = this.con.readMessage();
+            Message response = this.con.readMessage();
 
-        if (response.getType() == SHUTDOWN_COMPLETED_TYPE) {
+            if (response.getType() == SHUTDOWN_COMPLETED_TYPE) {
+                return true;
+            } else if (response.getType() == WRONG_SHUTDOWN_PASSWORD_TYPE) {
+                return false;
+            } else {
+                System.err.println("Unexpected message type sent by the server: " + response.getType());
+                System.exit(1);
+
+                return false;
+            }
+        } catch (ShutdownException ex) {
             return true;
-        } else if (response.getType() == WRONG_SHUTDOWN_PASSWORD_TYPE) {
-            return false;
-        } else {
-            System.err.println("Unexpected message type sent by the server: " + response.getType());
-            System.exit(1);
-
-            return false;
         }
     }
 }
