@@ -3,6 +3,8 @@ package museumassault.shared_site.client;
 import java.util.Random;
 import museumassault.common.ClientCom;
 import museumassault.common.Message;
+import museumassault.common.exception.ComException;
+import museumassault.common.exception.ShutdownException;
 import museumassault.shared_site.IChiefMessageConstants;
 
 /**
@@ -29,7 +31,7 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      *
      * @return the id of the room that should be robed or null if the chief should sit
      */
-    public Integer appraiseSit(int chiefId)
+    public Integer appraiseSit(int chiefId) throws ShutdownException, ComException
     {
         while (!this.con.open()) {                           // Try until the server responds
             try {
@@ -62,7 +64,7 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      *
      * @return returns the id of the assigned team or null if none is free
      */
-    public Integer prepareAssaultParty(int chiefId, int roomId)
+    public Integer prepareAssaultParty(int chiefId, int roomId) throws ShutdownException, ComException
     {
         while (!this.con.open()) {                           // Try until the server responds
             try {
@@ -92,7 +94,7 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      * @param chiefId the id of the chief
      * @param teamId  the team to be sent
      */
-    public void sendAssaultParty(int chiefId, int teamId)
+    public void sendAssaultParty(int chiefId, int teamId) throws ShutdownException, ComException
     {
         while (!this.con.open()) {                           // Try until the server responds
             try {
@@ -117,7 +119,7 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      *
      * @return the id of the thief that arrived or null if there is no remaining thieves
      */
-    public Integer takeARest(int chiefId)
+    public Integer takeARest(int chiefId) throws ShutdownException, ComException
     {
         while (!this.con.open()) {                           // Try until the server responds
             try {
@@ -140,12 +142,46 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
     }
 
     /**
+     * Shutdowns the server.
+     */
+    public boolean shutdown(String password) throws ShutdownException, ComException
+    {
+        int nrAttempts = 0;
+        while (!this.con.open() && nrAttempts < 10) {                           // Try until the server responds
+            try {
+                Thread.sleep(this.random.nextInt(500) + 500);
+            } catch (InterruptedException e) {}
+
+            nrAttempts++;
+        }
+
+        if (nrAttempts >= 10) {
+            System.out.println("Assumed that the server is shutted down.");
+        }
+
+        this.con.writeMessage(new Message(SHUTDOWN_TYPE, password));
+
+        Message response = this.con.readMessage();
+
+        if (response.getType() == SHUTDOWN_COMPLETED_TYPE) {
+            return true;
+        } else if (response.getType() == WRONG_SHUTDOWN_PASSWORD_TYPE) {
+            return false;
+        } else {
+            System.err.println("Unexpected message type sent by the server: " + response.getType());
+            System.exit(1);
+
+            return false;
+        }
+    }
+
+    /**
      * Collects the canvas of thief that arrived.
      *
      * @param chiefId the id of the chief
      * @param thiefId the id of the thief that handed the canvas
      */
-    public void collectCanvas(int chiefId, int thiefId)
+    public void collectCanvas(int chiefId, int thiefId) throws ShutdownException, ComException
     {
         while (!this.con.open()) {                           // Try until the server responds
             try {
@@ -170,7 +206,7 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      *
      * @return the total number of canvas stolen
      */
-    public Integer sumUpResults(int chiefId)
+    public Integer sumUpResults(int chiefId) throws ShutdownException, ComException
     {
         while (!this.con.open()) {                           // Try until the server responds
             try {

@@ -18,6 +18,4 @@ public interface IThiefMessageConstants
     public static final int EXCURSION_PREPARED_TYPE = 5;
     public static final int HAND_A_CANVAS_TYPE = 6;
     public static final int GOT_CANVAS_TYPE = 7;
-    
-    
 }

@@ -23,4 +23,7 @@ public interface IChiefMessageConstants
     public static final int COLLECTED_CANVAS_TYPE = 59;
     public static final int SUM_UP_RESULTS = 60;
     public static final int SUMMED_UP_RESULTS = 61;
+    public static final int SHUTDOWN_TYPE = 100;
+    public static final int SHUTDOWN_COMPLETED_TYPE = 101;
+    public static final int WRONG_SHUTDOWN_PASSWORD_TYPE = 102;
 }

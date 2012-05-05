@@ -3,6 +3,7 @@ package museumassault.room.server;
 import java.util.Random;
 import museumassault.common.Configuration;
 import museumassault.common.ServerCom;
+import museumassault.common.exception.ComException;
 
 /**
  *
@@ -40,19 +41,37 @@ public class Main
 
         // Initialize the server connection
         ServerCom con = new ServerCom(port);
-        con.start();
+        try {
+            con.start();
+        } catch (ComException ex) {
+            System.err.println(ex.getMessage());
+            System.exit(1);
+        }
 
         System.out.println("Room #" + roomId);
         System.out.println("Now listening for thieves requests..");
 
         // Accept connections
         while (true) {
-            ServerCom newCon = con.accept();
+            ServerCom newCon;
+
+            try {
+                 newCon = con.accept();
+            } catch (ComException ex) {
+                if (con.isEnded()) {
+                    break;
+                }
+
+                System.err.println(ex.getMessage());
+                continue;
+            }
 
             System.out.println("New connection accepted from a thief, creating thread to handle it..");
 
-            RequestHandler handler = new RequestHandler(newCon, room);
+            RequestHandler handler = new RequestHandler(newCon, room, configuration.getShutdownPassword());
             handler.start();
         }
+
+        System.exit(0);
     }
 }

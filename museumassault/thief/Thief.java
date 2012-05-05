@@ -1,6 +1,8 @@
 package museumassault.thief;
 
 import museumassault.common.IThievesConfiguration;
+import museumassault.common.exception.ComException;
+import museumassault.common.exception.ShutdownException;
 import museumassault.corridor.client.CorridorClient;
 import museumassault.room.client.RoomClient;
 import museumassault.shared_site.client.SharedSiteThiefClient;
@@ -67,38 +69,44 @@ public class Thief extends Thread
     @Override
     public void run()
     {
-        while (true) {
+        try {
+            while (true) {
 
-            this.teamId = this.site.amINeeded(this.id);
+                this.teamId = this.site.amINeeded(this.id);
 
-            // Prepare for excursion
-            Integer roomId = this.site.prepareExcursion(this.id, this.teamId);
-            System.out.println("Excursion to " + roomId);
-            System.out.println("[Thief #" + this.id + "] Started crawling in..");
+                // Prepare for excursion
+                Integer roomId = this.site.prepareExcursion(this.id, this.teamId);
+                System.out.println("Excursion to " + roomId);
+                System.out.println("[Thief #" + this.id + "] Started crawling in..");
 
-            Integer corridorId = this.configuration.getRoomCorridorId(roomId);
-            if (corridorId == null) {
-                System.err.println("Unknown corridor id sent by the server: " + corridorId);
-                return;
+                Integer corridorId = this.configuration.getRoomCorridorId(roomId);
+                if (corridorId == null) {
+                    System.err.println("Unknown corridor id sent by the server: " + corridorId);
+                    return;
+                }
+
+                CorridorClient corridor = new CorridorClient(this.configuration.getCorridorConnectionString(corridorId));
+                RoomClient room = new RoomClient(this.configuration.getRoomConnectionString(roomId));
+
+                // Crawl in
+                while (!corridor.crawlOut(this.id, this.power)) {}
+
+                //System.out.println("[Thief #" + this.id + "] Rolling canvas..");
+                boolean rolledCanvas = room.rollACanvas(this.id);
+
+                System.out.println("[Thief #" + this.id + "] Started crawling out..");
+
+                // Crawl out
+                while (!corridor.crawlIn(this.id, this.power)) {}
+
+                // Hand the canvas
+                System.out.println("[Thief #" + this.id + "] Handing canvas..");
+                this.site.handACanvas(this.id, this.teamId, rolledCanvas);
             }
-
-            CorridorClient corridor = new CorridorClient(this.configuration.getCorridorConnectionString(corridorId));
-            RoomClient room = new RoomClient(this.configuration.getRoomConnectionString(roomId));
-
-            // Crawl in
-            while (!corridor.crawlOut(this.id, this.power)) {}
-
-            //System.out.println("[Thief #" + this.id + "] Rolling canvas..");
-            boolean rolledCanvas = room.rollACanvas(this.id);
-
-            System.out.println("[Thief #" + this.id + "] Started crawling out..");
-
-            // Crawl out
-            while (!corridor.crawlIn(this.id, this.power)) {}
-
-            // Hand the canvas
-            System.out.println("[Thief #" + this.id + "] Handing canvas..");
-            this.site.handACanvas(this.id, this.teamId, rolledCanvas);
+        } catch (ShutdownException ex) {
+            System.err.println("Service was shutted down.");
+        } catch (ComException ex) {
+            System.err.println(ex.getMessage());
         }
     }
 }

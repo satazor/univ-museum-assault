@@ -2,6 +2,8 @@ package museumassault.common;
 
 import java.io.*;
 import java.net.*;
+import museumassault.common.exception.ComException;
+import museumassault.common.exception.ShutdownException;
 
 /**
  *
@@ -47,7 +49,7 @@ public class ClientCom
      *
      * @return
      */
-    public boolean open()
+    public boolean open() throws ComException, ShutdownException
     {
         boolean success = true;
         SocketAddress socketAddress = new InetSocketAddress(this.serverAddress, this.serverPort);
@@ -56,13 +58,15 @@ public class ClientCom
             this.socket = new Socket();
             this.socket.connect(socketAddress, this.timeout);
         } catch (UnknownHostException e) {
-            System.err.println("Unknown host provided: " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Unknown host provided: " + this.serverAddress + ":" + this.serverPort + ".");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Unknown host provided: " + this.serverAddress + ":" + this.serverPort + ".");
         } catch (NoRouteToHostException e) {
-            System.err.println("Unreachable host provided: " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Unreachable host provided: " + this.serverAddress + ":" + this.serverPort + ".");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Unreachable host provided: " + this.serverAddress + ":" + this.serverPort + ".");
         } catch (ConnectException e) {
             if (e.getMessage().equals("Connection refused")) {
                 success = false;
@@ -73,9 +77,10 @@ public class ClientCom
             System.out.println("Timeout exceeded when trying to connect to " + this.serverAddress + ":" + this.serverPort + ".");
             success = false;
         } catch (IOException e) {
-            System.err.println("Unknown error while connection to " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Unknown error while connection to " + this.serverAddress + ":" + this.serverPort + ".");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ShutdownException();
         }
 
         if (!success) {
@@ -85,17 +90,19 @@ public class ClientCom
         try {
             this.out = new ObjectOutputStream(this.socket.getOutputStream());
         } catch (IOException e) {
-            System.err.println("Unable to open output stream upon connecting to " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Unable to open output stream upon connecting to " + this.serverAddress + ":" + this.serverPort + ".");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Unable to open output stream upon connecting to " + this.serverAddress + ":" + this.serverPort + ".");
         }
 
         try {
             this.in = new ObjectInputStream(this.socket.getInputStream());
         } catch (IOException e) {
-            System.err.println("Unable to open output stream upon connecting to " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Unable to open output stream upon connecting to " + this.serverAddress + ":" + this.serverPort + ".");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Unable to open input stream upon connecting to " + this.serverAddress + ":" + this.serverPort + ".");
         }
 
         return success;
@@ -104,30 +111,33 @@ public class ClientCom
     /**
      *
      */
-    public void close()
+    public void close() throws ComException
     {
         try {
             this.in.close();
         } catch (IOException e) {
-            System.err.println("Unable to close input stream of connection to " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Unable to close input stream of connection to " + this.serverAddress + ":" + this.serverPort + ".");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Unable to close input stream of connection to " + this.serverAddress + ":" + this.serverPort + ".");
         }
 
         try {
             this.out.close();
         } catch (IOException e) {
-            System.err.println("Unable to close output stream of connection to " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Unable to close output stream of connection to " + this.serverAddress + ":" + this.serverPort + ".");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Unable to close output stream of connection to " + this.serverAddress + ":" + this.serverPort + ".");
         }
 
         try {
             this.socket.close();
         } catch (IOException e) {
-            System.err.println("Unable to close socket of connection to " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Unable to close socket of connection to " + this.serverAddress + ":" + this.serverPort + ".");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Unable to close socket of connection to " + this.serverAddress + ":" + this.serverPort + ".");
         }
     }
 
@@ -135,52 +145,62 @@ public class ClientCom
      *
      * @return
      */
-    public Message readMessage()
+    public Message readMessage() throws ComException, ShutdownException
     {
         Message fromServer = null;
 
         try {
             fromServer = (Message) this.in.readObject();
         } catch (InvalidClassException e) {
-            System.err.println("Unable to unserialize object sent by " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Unable to unserialize object sent by " + this.serverAddress + ":" + this.serverPort + ".");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Unable to unserialize object sent by " + this.serverAddress + ":" + this.serverPort + ".");
         } catch (IOException e) {
-            System.err.println("Error while reading from the input stream of connection to " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Error while reading from the input stream of connection to " + this.serverAddress + ":" + this.serverPort + ".");
+            //System.err.println("Did the server terminated?");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ShutdownException();
         } catch (ClassNotFoundException e) {
-            System.err.println("Object sent by " + this.serverAddress + ":" + this.serverPort + " is not of a known type.");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Object sent by " + this.serverAddress + ":" + this.serverPort + " is not of a known type.");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Object sent by " + this.serverAddress + ":" + this.serverPort + " is not of a known type.");
         } catch (Exception e) {
-            System.err.println("Cannot cast the object sent by " + this.serverAddress + ":" + this.serverPort + " to a Message.");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Cannot cast the object sent by " + this.serverAddress + ":" + this.serverPort + " to a Message.");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Cannot cast the object sent by " + this.serverAddress + ":" + this.serverPort + " to a Message.");
         }
 
         return fromServer;
     }
 
     /**
+     *
      * @param toServer
      */
-    public void writeMessage(Message toServer)
+    public void writeMessage(Message toServer) throws ShutdownException, ComException
     {
         try {
             this.out.writeObject(toServer);
         } catch (InvalidClassException e) {
-            System.err.println("Unable to serialize object to be sent " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Unable to serialize object to be sent " + this.serverAddress + ":" + this.serverPort + ".");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Unable to serialize object to be sent " + this.serverAddress + ":" + this.serverPort + ".");
         } catch (NotSerializableException e) {
-            System.err.println("Object to be sent to " + this.serverAddress + ":" + this.serverPort + " cannot be serialized.");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Object to be sent to " + this.serverAddress + ":" + this.serverPort + " cannot be serialized.");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            throw new ComException("Object to be sent to " + this.serverAddress + ":" + this.serverPort + " cannot be serialized.");
         } catch (IOException e) {
-            System.err.println("Error while writing to the output stream of connection to " + this.serverAddress + ":" + this.serverPort + ".");
-            e.printStackTrace(System.err);
-            System.exit(1);
+            //System.err.println("Error while writing to the output stream of connection to " + this.serverAddress + ":" + this.serverPort + ".");
+            //e.printStackTrace(System.err);
+            //System.exit(1);
+            //System.err.println("Did the server terminated?");
+            throw new ShutdownException();
         }
     }
 }

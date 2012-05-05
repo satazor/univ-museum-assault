@@ -15,4 +15,7 @@ public interface ICorridorMessageConstants
     public static final int CRAWLED_IN_TYPE = 2;
     public static final int CRAWL_OUT_TYPE = 3;
     public static final int CRAWLED_OUT_TYPE = 4;
+    public static final int SHUTDOWN_TYPE = 100;
+    public static final int SHUTDOWN_COMPLETED_TYPE = 101;
+    public static final int WRONG_SHUTDOWN_PASSWORD_TYPE = 102;
 }

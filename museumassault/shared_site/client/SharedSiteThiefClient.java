@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Random;
 import museumassault.common.ClientCom;
 import museumassault.common.Message;
+import museumassault.common.exception.ComException;
+import museumassault.common.exception.ShutdownException;
 import museumassault.shared_site.IThiefMessageConstants;
 
 /**
@@ -29,7 +31,7 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
      *
      * @return the id of the team in which this thief is needed
      */
-    public Integer amINeeded(int thiefId)
+    public Integer amINeeded(int thiefId) throws ShutdownException, ComException
     {
         while (true) {
 
@@ -66,7 +68,7 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
      *
      * @return the room assigned to the team
      */
-    public Integer prepareExcursion(int thiefId, int teamId)
+    public Integer prepareExcursion(int thiefId, int teamId) throws ShutdownException, ComException
     {
         while (true) {
 
@@ -87,8 +89,6 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
             } else {
                 System.err.println("Unexpected message type sent by the server: " + response.getType());
                 System.exit(1);
-
-                return null;
             }
         }
     }
@@ -100,7 +100,7 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
      * @param teamId       the team where that thief belongs
      * @param rolledCanvas true if a canvas was stolen, false otherwise
      */
-    public void handACanvas(int thiefId, int teamId, boolean rolledCanvas)
+    public void handACanvas(int thiefId, int teamId, boolean rolledCanvas) throws ShutdownException, ComException
     {
         while (true) {
 
@@ -124,8 +124,6 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
             } else {
                 System.err.println("Unexpected message type sent by the server: " + response.getType());
                 System.exit(1);
-
-                return;
             }
         }
     }

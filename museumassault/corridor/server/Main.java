@@ -3,6 +3,7 @@ package museumassault.corridor.server;
 import java.util.Random;
 import museumassault.common.Configuration;
 import museumassault.common.ServerCom;
+import museumassault.common.exception.ComException;
 
 /**
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
@@ -36,7 +37,13 @@ public class Main
         }
 
         ServerCom con = new ServerCom(port);
-        con.start();
+
+        try {
+            con.start();
+        } catch (ComException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
 
         // Initialize the corridor
         Corridor corridor = new Corridor(corridorId, (random.nextInt(configuration.getMaxDistanceBetweenRoomAndOutside() - 1) + 1), configuration.getMaxDistanceBetweenThieves());
@@ -46,12 +53,24 @@ public class Main
 
         // Accept connections
         while (true) {
-            ServerCom newCon = con.accept();
+            ServerCom newCon;
+
+            try {
+                newCon = con.accept();
+            } catch (ComException e) {
+                if (con.isEnded()) {
+                    break;
+                }
+                System.err.println(e.getMessage());
+                continue;
+            }
 
             System.out.println("New connection accepted from a thief, creating thread to handle it..");
 
-            RequestHandler handler = new RequestHandler(newCon, corridor);
+            RequestHandler handler = new RequestHandler(newCon, corridor, configuration.getShutdownPassword());
             handler.start();
         }
+
+        System.exit(0);
     }
 }

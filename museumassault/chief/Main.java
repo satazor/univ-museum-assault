@@ -31,7 +31,7 @@ public class Main
                 // Initialize the shared site client api for the chiefs
                 site = new SharedSiteChiefClient(configuration.getSharedChiefsSiteConnectionString());
 
-                chief = new Chief(x + 1, site);
+                chief = new Chief(x + 1, site, configuration);
                 chiefs[x] = chief;
                 chiefs[x].start();
             }
@@ -45,7 +45,7 @@ public class Main
         } else {
             // Simulate the chief with the passed id
             site = new SharedSiteChiefClient(configuration.getSharedThievesSiteConnectionString());
-            chief = new Chief(chiefId, site);
+            chief = new Chief(chiefId, site, configuration);
 
             chief.start();
 

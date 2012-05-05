@@ -19,6 +19,7 @@ public class Configuration implements IThievesConfiguration
     protected int maxDistanceBetweenRoomAndOutside = 10;
     protected int maxPowerPerThief = 5;
     protected int maxCanvasInRoom = 20;
+    protected String shutdownPassword = "12345";
 
     protected String sharedSiteThievesConnectionString = "localhost:11000";  // The server address must be equal to the line bellow
     protected String sharedSiteChiefsConnectionString = "localhost:11001";   // The server address must be equal to the line above
@@ -237,9 +238,9 @@ public class Configuration implements IThievesConfiguration
      * @return
      */
     @Override
-    public String getCorridorConnectionString(int roomId)
+    public String getCorridorConnectionString(int corridorId)
     {
-        return this.corridorConnections.get(roomId);
+        return this.corridorConnections.get(corridorId);
     }
 
     /**
@@ -273,5 +274,14 @@ public class Configuration implements IThievesConfiguration
     public Integer getRoomCorridorId(int roomId)
     {
         return (Integer) this.roomCorridorAssociations.get(roomId);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getShutdownPassword()
+    {
+        return this.shutdownPassword;
     }
 }

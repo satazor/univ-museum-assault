@@ -120,7 +120,6 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
                 int nrRooms = this.roomIds.size();
                 for (int x = 0; x < nrRooms; x++) {
                     int roomId = this.roomIds.get(x);
-                    System.out.println(this.roomsCanvasStatus.get(roomId)+ " " + !this.roomsEngagedStatus.get(roomId));
                     if ((boolean) this.roomsCanvasStatus.get(roomId) && !this.roomsEngagedStatus.get(roomId)) {
                         this.roomsEngagedStatus.put(roomId, true);
                         return roomId;
