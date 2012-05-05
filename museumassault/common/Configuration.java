@@ -21,6 +21,8 @@ public class Configuration implements IThievesConfiguration
     protected int maxCanvasInRoom = 20;
     protected String shutdownPassword = "12345";
 
+    protected ArrayList<Integer> roomIds;
+
     protected String sharedSiteThievesConnectionString = "localhost:11000";  // The server address must be equal to the line bellow
     protected String sharedSiteChiefsConnectionString = "localhost:11001";   // The server address must be equal to the line above
 
@@ -34,6 +36,11 @@ public class Configuration implements IThievesConfiguration
     public Configuration()
     {
         this.roomConnections = new HashMap<>();
+
+        this.roomIds = new ArrayList(nrRooms);
+        for (int x = 0; x < this.nrRooms; x++) {
+            this.roomIds.add(x + 1);
+        }
 
         this.roomConnections.put(1, "localhost:20000");
         this.roomConnections.put(2, "localhost:20001");
@@ -125,13 +132,7 @@ public class Configuration implements IThievesConfiguration
      */
     public List<Integer> getRoomIds()
     {
-        ArrayList<Integer> ids = new ArrayList(nrRooms);
-
-        for (int x = 0; x < nrRooms; x++) {
-            ids.add(x + 1);
-        }
-
-        return ids;
+        return this.roomIds;
     }
 
     /**

@@ -10,6 +10,7 @@ import museumassault.corridor.ICorridorMessageConstants;
 /**
  *
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
+ * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class CorridorClient implements ICorridorMessageConstants
 {
