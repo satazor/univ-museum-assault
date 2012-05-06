@@ -113,6 +113,7 @@ public class CorridorClient implements ICorridorMessageConstants
             this.con.writeMessage(new Message(SHUTDOWN_TYPE, password));
 
             Message response = this.con.readMessage();
+            this.con.close();
 
             if (response.getType() == SHUTDOWN_COMPLETED_TYPE) {
                 return true;

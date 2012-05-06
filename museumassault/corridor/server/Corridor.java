@@ -182,18 +182,19 @@ public class Corridor
                 if (newPosition >= this.outwards.length) {
                     ret = true;
                     this.thievesPositions.put(thiefId, -1);
+                    this.setCorridorDetails();
                     this.logger.setThiefStatus(thiefId, LoggerClient.THIEF_STATUS.AT_ROOM_ENTRANCE);
                     //System.out.println("[Thief #" + thiefId +"] Moved successfully outside the outwards corridor");
                 } else {
                     this.thievesPositions.put(thiefId, newPosition);
+                    this.setCorridorDetails();
+                    this.logger.setThiefStatus(thiefId, LoggerClient.THIEF_STATUS.CRAWLING_OUTWARDS);
                     //System.out.println("[Thief #" + thiefId +"] Moved successfully to position #" + newPosition);
                 }
 
                 if (realPosition == null) {
                     this.atTheCorridor++;
                 }
-
-                this.setCorridorDetails();
 
                 this.notifyAll();
                 try {
@@ -300,9 +301,12 @@ public class Corridor
                 if (newPosition >= this.inwards.length) {
                     ret = true;
                     this.thievesPositions.put(thiefId, this.getTotalPositions());
+                    this.setCorridorDetails();
                     //System.out.println("[Thief #" + thiefId +"] Moved successfully outside the inwards corridor");
                 } else {
                     this.thievesPositions.put(thiefId, newPosition + this.outwards.length);
+                    this.setCorridorDetails();
+                    this.logger.setThiefStatus(thiefId, LoggerClient.THIEF_STATUS.CRAWLING_INWARDS);
                     //System.out.println("[Thief #" + thiefId +"] Moved successfully to position #" + newPosition);
                 }
 
@@ -312,8 +316,6 @@ public class Corridor
                         this.clearPositions();
                     }
                 }
-
-                this.setCorridorDetails();
 
                 this.notifyAll();
                 try {
