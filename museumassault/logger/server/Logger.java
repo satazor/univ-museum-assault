@@ -309,12 +309,12 @@ public class Logger implements ILoggerStatusConstants
                         } else {
                             this.writeBuff.write(String.format("%-3s", thievesIds.get(y)));
                             THIEF_STATUS status = this.thievesStatus.get(thievesIds.get(y));
-                            if (status == THIEF_STATUS.AT_ROOM_ENTRANCE || status == THIEF_STATUS.AT_ROOM_EXIT || status == THIEF_STATUS.AT_A_ROOM || roomDetails == null) {
+                            if ((status != THIEF_STATUS.CRAWLING_INWARDS && status != THIEF_STATUS.CRAWLING_OUTWARDS)) {
                                 this.writeBuff.write(String.format("%-3s", "-"));
                             } else if (roomDetails != null) {
                                 CorridorDetails corridorDetails = this.corridorsDetails.get(roomDetails.getCorridorId());
                                 Integer position = corridorDetails.getThiefPosition(thievesIds.get(y));
-                                this.writeBuff.write(String.format("%-3s", position != null ? position : "-"));
+                                this.writeBuff.write(String.format("%-3s", position != null? position : "-"));
                             }
                         }
                     }

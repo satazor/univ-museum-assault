@@ -53,7 +53,12 @@ public class CorridorDetails implements Serializable
      */
     public Integer getThiefPosition(int thiefId)
     {
-        return this.positions.get(thiefId);
+        Integer pos = this.positions.get(thiefId);
+        if (pos == null || pos == -1 || pos > this.getTotalPositions()) {
+            return null;
+        }
+
+        return pos;
     }
 
     /**
