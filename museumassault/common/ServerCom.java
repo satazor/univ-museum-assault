@@ -51,6 +51,14 @@ public class ServerCom
         this.timeout = timeout;
     }
 
+    /**
+     *
+     * @return
+     */
+    public int getServerPort()
+    {
+        return this.serverPort;
+    }
 
     /**
      *

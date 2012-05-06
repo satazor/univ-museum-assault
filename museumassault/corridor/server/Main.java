@@ -53,7 +53,7 @@ public class Main
         Corridor corridor = new Corridor(corridorId, (random.nextInt(configuration.getMaxDistanceBetweenRoomAndOutside() - 1) + 1), configuration.getMaxDistanceBetweenThieves(), logger);
 
         System.out.println("Corridor #" + corridorId);
-        System.out.println("Now listening for thieves requests..");
+        System.out.println("Now listening for thieves requests in port " + con.getServerPort() + "..");
 
         // Accept connections
         while (true) {

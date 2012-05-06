@@ -33,7 +33,7 @@ public class Main
         }
 
         System.out.println("Logger");
-        System.out.println("Now listening for requests..");
+        System.out.println("Now listening for requests in port " + configuration.getLoggerPort() + "..");
 
         // Accept connections
         while (true) {

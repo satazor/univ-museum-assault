@@ -14,6 +14,7 @@ public class ClientCom
     protected Socket socket = null;
     protected String serverAddress = null;
     protected int serverPort;
+    protected String connectionString;
 
     protected int timeout = 10;
     protected ObjectInputStream in = null;
@@ -34,6 +35,7 @@ public class ClientCom
 
         this.serverAddress = split[0];
         this.serverPort = Integer.parseInt(split[1]);
+        this.connectionString = connectionString;
     }
 
     /**
@@ -45,6 +47,15 @@ public class ClientCom
         this.timeout = timeout;
     }
 
+    /**
+     *
+     * @return
+     */
+    public String getConnectionString()
+    {
+        return this.connectionString;
+    }
+    
     /**
      *
      * @return

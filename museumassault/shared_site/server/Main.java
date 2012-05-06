@@ -63,7 +63,7 @@ public class Main
                     return;
                 }
 
-                System.out.println("Now listening for thieves requests..");
+                System.out.println("Now listening for thieves requests in " + this.con.getServerPort() + "..");
 
                 // Accept connections
                 while (true) {
@@ -117,7 +117,7 @@ public class Main
                     return;
                 }
 
-                System.out.println("Now listening for chiefs requests..");
+                System.out.println("Now listening for chiefs requests in port " + this.con.getServerPort() + "..");
 
                 // Initialize the server
                 while (true) {

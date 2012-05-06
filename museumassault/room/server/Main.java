@@ -54,7 +54,7 @@ public class Main
         }
 
         System.out.println("Room #" + roomId);
-        System.out.println("Now listening for thieves requests..");
+        System.out.println("Now listening for thieves requests in port " + con.getServerPort() + "..");
 
         // Accept connections
         while (true) {
