@@ -13,7 +13,7 @@ public class CorridorDetails implements Serializable
 
     protected int corridorId;
     protected HashMap<Integer, Integer> positions;
-    private int totalPositions;
+    protected Integer totalPositions;
 
     /**
      *
@@ -34,6 +34,7 @@ public class CorridorDetails implements Serializable
     {
         this.corridorId = corridorId;
         this.positions = new HashMap<>();
+        this.totalPositions = null;
     }
 
     /**
@@ -65,7 +66,7 @@ public class CorridorDetails implements Serializable
      *
      * @return
      */
-    public int getTotalPositions()
+    public Integer getTotalPositions()
     {
         return this.totalPositions;
     }

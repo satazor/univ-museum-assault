@@ -324,8 +324,9 @@ public class Logger implements ILoggerStatusConstants
                 length = this.roomIds.size();
                 for (int x = 0; x < length; x++) {
                     roomDetails = this.roomsDetails.get(this.roomIds.get(x));
+                    Integer totalPositions = this.corridorsDetails.get(roomDetails.getCorridorId()).getTotalPositions();
                     this.writeBuff.write(String.format("%-4s", roomDetails.getRoomId()));
-                    this.writeBuff.write(String.format("%-5s", this.corridorsDetails.get(roomDetails.getCorridorId()).getTotalPositions() / 2));
+                    this.writeBuff.write(String.format("%-5s", totalPositions != null ? totalPositions / 2 : "-"));
                     this.writeBuff.write(String.format("%-5s", roomDetails.getNrCanvas() == null ? "-" : roomDetails.getNrCanvas()));
                 }
 
