@@ -56,6 +56,9 @@ public class RoomClient implements IRoomMessageConstants
     }
 
     /**
+     * Shutdowns the server.
+     *
+     * @param password
      *
      * @return
      */

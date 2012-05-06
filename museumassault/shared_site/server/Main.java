@@ -3,6 +3,7 @@ package museumassault.shared_site.server;
 import museumassault.common.Configuration;
 import museumassault.common.ServerCom;
 import museumassault.common.exception.ComException;
+import museumassault.logger.client.LoggerClient;
 
 /**
  *
@@ -26,8 +27,11 @@ public class Main
             teams[x] = new Team(x + 1, configuration.getNrThievesPerTeam());
         }
 
+        // Initialize the logger client
+        LoggerClient logger = new LoggerClient(configuration.getLoggerConnectionString());
+
         // Initialize the shared site
-        final SharedSite site = new SharedSite(configuration.getRoomIds(), teams, configuration.getNrChiefs() > 1);
+        final SharedSite site = new SharedSite(configuration.getRoomIds(), teams, logger, configuration.getNrChiefs() > 1);
 
         /**
          * Inline class to listen for the thieves requests.

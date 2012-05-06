@@ -119,7 +119,6 @@ public class Team
         return newArray;
     }
 
-
     /**
      * Get the room that was assigned for the team.
      *

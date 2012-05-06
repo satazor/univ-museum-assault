@@ -5,6 +5,7 @@ import museumassault.common.Configuration;
 import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
 import museumassault.corridor.client.CorridorClient;
+import museumassault.logger.client.LoggerClient;
 import museumassault.room.client.RoomClient;
 import museumassault.shared_site.client.SharedSiteChiefClient;
 
@@ -85,7 +86,8 @@ public class Chief extends Thread
 
             }
 
-            System.out.println("[Chief] Total canvas collected: " + this.site.sumUpResults(this.id));
+            int totalCanvas = this.site.sumUpResults(this.id);
+            System.out.println("[Chief] Total canvas collected: " + totalCanvas);
 
             // Shutdown the services
             String shutdownPassword = this.configuration.getShutdownPassword();
@@ -101,6 +103,8 @@ public class Chief extends Thread
                 roomClient.shutdown(shutdownPassword);
             }
 
+            LoggerClient loggerClient = new LoggerClient(this.configuration.getLoggerConnectionString());
+            loggerClient.shutdown(this.configuration.getShutdownPassword(), totalCanvas);
         } catch (ShutdownException ex) {
             System.err.println("Service was shutted down.");
         } catch (ComException ex) {

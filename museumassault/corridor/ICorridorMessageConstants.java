@@ -4,7 +4,7 @@ package museumassault.corridor;
  * IThievesMessageConstants interface.
  *
  * This interfaces exposes all the message type constants related to the content
- * negotiation between a corridor and a thief.
+ * negotiation between a corridor and thief & chief.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */

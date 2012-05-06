@@ -44,6 +44,12 @@ public class Main
                 } catch (InterruptedException e) {}
             }
         } else {
+
+            if (!configuration.getThiefIds().contains(thiefId)) {
+                System.err.println("Invalid thief id.");
+                System.exit(1);
+            }
+
             // Simulate the thief with the passed id
             site = new SharedSiteThiefClient(configuration.getSharedThievesSiteConnectionString());
             thief = new Thief(thiefId, random.nextInt(configuration.getMaxPowerPerThief() - 1) + 1, site, configuration);

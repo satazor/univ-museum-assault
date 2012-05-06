@@ -1,31 +1,32 @@
-package museumassault.corridor.server;
+package museumassault.logger.server;
 
+import java.util.HashMap;
 import museumassault.common.Message;
 import museumassault.common.ServerCom;
 import museumassault.common.exception.ComException;
-import museumassault.corridor.ICorridorMessageConstants;
+import museumassault.logger.ILoggerMessageConstants;
 
 /**
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class RequestHandler extends Thread implements ICorridorMessageConstants
+public class RequestHandler extends Thread implements ILoggerMessageConstants
 {
     protected ServerCom con;
-    protected Corridor corridor;
+    protected Logger logger;
     protected String shutdownPassword;
 
     /**
      * Constructor
      *
      * @param con
-     * @param corridor
+     * @param logger
      * @param shutdownPassword
      */
-    public RequestHandler(ServerCom con, Corridor corridor, String shutdownPassword)
+    public RequestHandler(ServerCom con, Logger logger, String shutdownPassword)
     {
         this.con = con;
-        this.corridor = corridor;
+        this.logger = logger;
         this.shutdownPassword = shutdownPassword;
     }
 
@@ -39,27 +40,28 @@ public class RequestHandler extends Thread implements ICorridorMessageConstants
             Message fromClient = this.con.readMessage();
             Message toClient;
 
-            Boolean ret;
-
             switch (fromClient.getType()) {
-                case CRAWL_IN_TYPE:
-                    System.out.println("Handling message of type CRAWL_IN_TYPE..");
-                    ret = this.corridor.crawlIn(fromClient.getOriginId(), (Integer) fromClient.getExtra());
-                    toClient = new Message(CRAWLED_IN_TYPE, ret);
+                case SET_CHIEF_STATUS_TYPE:
+                    System.out.println("Handling message of type SET_CHIEF_STATUS_TYPE..");
+                    this.logger.setChiefStatus(fromClient.getOriginId(), (Logger.CHIEF_STATUS) fromClient.getExtra());
+                    toClient = new Message(STATUS_UPDATED_TYPE);
                     break;
-                case CRAWL_OUT_TYPE:
-                    System.out.println("Handling message of type CRAWL_OUT_TYPE..");
-                    ret = this.corridor.crawlOut(fromClient.getOriginId(), (Integer) fromClient.getExtra());
-                    toClient = new Message(CRAWLED_OUT_TYPE, ret);
+                case SET_THIEF_STATUS_TYPE:
+                    System.out.println("Handling message of type SET_THIEF_STATUS_TYPE..");
+                    this.logger.setThiefStatus(fromClient.getOriginId(), (Logger.THIEF_STATUS) fromClient.getExtra());
+                    toClient = new Message(STATUS_UPDATED_TYPE);
                     break;
                 case SHUTDOWN_TYPE:
                     System.out.println("Handling message of type SHUTDOWN_TYPE..");
+                    HashMap<String, Object> extra = (HashMap<String, Object>) fromClient.getExtra();
 
-                    if (((String) fromClient.getExtra()).equals(this.shutdownPassword)) {
+                    if (((String) extra.get("password")).equals(this.shutdownPassword)) {
                         toClient = new Message(SHUTDOWN_COMPLETED_TYPE);
+                        this.logger.terminateLog((Integer) extra.get("total_canvas"));
                     } else {
                         toClient = new Message(WRONG_SHUTDOWN_PASSWORD_TYPE);
                     }
+
                     break;
                 default:
                     System.out.println("Handling message of type UNKNOWN_TYPE..");
@@ -76,8 +78,8 @@ public class RequestHandler extends Thread implements ICorridorMessageConstants
                 System.out.println("Shutting down..");
                 this.con.end();
             }
-        } catch (ComException e) {
-            System.err.println(e.getMessage());
+        } catch (ComException ex) {
+            System.err.println(ex.getMessage());
         }
     }
 }

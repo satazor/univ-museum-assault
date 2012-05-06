@@ -87,6 +87,9 @@ public class CorridorClient implements ICorridorMessageConstants
     }
 
     /**
+     * Shutdowns the server.
+     *
+     * @param password
      *
      * @return
      */

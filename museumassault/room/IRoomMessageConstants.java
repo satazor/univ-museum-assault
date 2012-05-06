@@ -4,7 +4,7 @@ package museumassault.room;
  * IRoomMessageConstants interface.
  *
  * This interfaces exposes all the message type constants related to the content
- * negotiation between a corridor and a thief.
+ * negotiation between a room and a thief & chief.
  *
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  * @author Andre Cruz <andremiguelcruz@ua.pt>

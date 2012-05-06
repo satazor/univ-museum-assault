@@ -40,6 +40,9 @@ public class MuseumAssault
             case "chief":
                 museumassault.chief.Main.main(newArgs);
                 break;
+            case "logger":
+                museumassault.logger.server.Main.main(newArgs);
+                break;
             case "shared-site":
                 museumassault.shared_site.server.Main.main(newArgs);
                 break;

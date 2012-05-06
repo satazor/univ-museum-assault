@@ -36,7 +36,7 @@ public class Main
             System.err.println("Unknown room id: " + roomId + ".");
             System.exit(1);
         }
-        // Initialize the corridor
+        // Initialize the room
         Room room = new Room(roomId, random.nextInt(configuration.getMaxCanvasInRoom()), roomId);
 
         // Initialize the server connection

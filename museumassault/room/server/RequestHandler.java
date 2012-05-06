@@ -21,6 +21,7 @@ public class RequestHandler extends Thread implements IRoomMessageConstants
      *
      * @param con
      * @param room
+     * @param shutdownPassword
      */
     public RequestHandler(ServerCom con, Room room, String shutdownPassword)
     {
@@ -47,14 +48,14 @@ public class RequestHandler extends Thread implements IRoomMessageConstants
                     System.out.println("Number of canvas in room: " + room.getNrCanvas());
                     break;
                 case SHUTDOWN_TYPE:
-                        System.out.println("Handling message of type SHUTDOWN_TYPE..");
+                    System.out.println("Handling message of type SHUTDOWN_TYPE..");
 
-                        if (((String) fromClient.getExtra()).equals(this.shutdownPassword)) {
-                            toClient = new Message(SHUTDOWN_COMPLETED_TYPE);
-                        } else {
-                            toClient = new Message(WRONG_SHUTDOWN_PASSWORD_TYPE);
-                        }
-                        break;
+                    if (((String) fromClient.getExtra()).equals(this.shutdownPassword)) {
+                        toClient = new Message(SHUTDOWN_COMPLETED_TYPE);
+                    } else {
+                        toClient = new Message(WRONG_SHUTDOWN_PASSWORD_TYPE);
+                    }
+                    break;
                 default:
                     System.out.println("Handling message of type UNKNOWN_TYPE..");
                     toClient = new Message(UNKNOWN_TYPE);

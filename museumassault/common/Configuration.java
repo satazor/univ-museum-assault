@@ -19,12 +19,16 @@ public class Configuration implements IThievesConfiguration
     protected int maxDistanceBetweenRoomAndOutside = 10;
     protected int maxPowerPerThief = 5;
     protected int maxCanvasInRoom = 20;
+    protected String logFileName = "log.txt";
     protected String shutdownPassword = "12345";
 
+    protected ArrayList<Integer> thiefIds;
+    protected ArrayList<Integer> chiefIds;
     protected ArrayList<Integer> roomIds;
 
     protected String sharedSiteThievesConnectionString = "localhost:11000";  // The server address must be equal to the line bellow
     protected String sharedSiteChiefsConnectionString = "localhost:11001";   // The server address must be equal to the line above
+    protected String loggerConnectionString = "localhost:15000";
 
     protected HashMap<Integer, String> roomConnections;
     protected HashMap<Integer, String> corridorConnections;
@@ -36,6 +40,21 @@ public class Configuration implements IThievesConfiguration
     public Configuration()
     {
         this.roomConnections = new HashMap<>();
+
+        this.roomIds = new ArrayList(nrRooms);
+        for (int x = 0; x < this.nrRooms; x++) {
+            this.roomIds.add(x + 1);
+        }
+
+        this.chiefIds = new ArrayList(nrRooms);
+        for (int x = 0; x < this.nrChiefs; x++) {
+            this.chiefIds.add(x + 1);
+        }
+
+        this.thiefIds = new ArrayList(nrRooms);
+        for (int x = 0; x < this.nrThieves; x++) {
+            this.thiefIds.add(x + 1);
+        }
 
         this.roomIds = new ArrayList(nrRooms);
         for (int x = 0; x < this.nrRooms; x++) {
@@ -106,6 +125,24 @@ public class Configuration implements IThievesConfiguration
     public int getNrChiefs()
     {
         return this.nrChiefs;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<Integer> getChiefIds()
+    {
+        return this.chiefIds;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<Integer> getThiefIds()
+    {
+        return this.thiefIds;
     }
 
     /**
@@ -281,8 +318,40 @@ public class Configuration implements IThievesConfiguration
      *
      * @return
      */
+    public String getLoggerConnectionString()
+    {
+        return this.loggerConnectionString;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getLoggerPort()
+    {
+        String[] split = this.loggerConnectionString.split(":");
+        if (split.length != 2) {
+            throw new RuntimeException("Could not extract port from the connection string.");
+        }
+
+        return Integer.parseInt(split[1]);
+    }
+
+
+    /**
+     *
+     * @return
+     */
     public String getShutdownPassword()
     {
         return this.shutdownPassword;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getLogFileName() {
+        return this.logFileName;
     }
 }

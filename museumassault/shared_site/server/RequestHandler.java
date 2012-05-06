@@ -27,7 +27,9 @@ public class RequestHandler extends Thread implements IChiefMessageConstants, IT
      * Constructor
      *
      * @param con
+     * @param type
      * @param site
+     * @param shutdownPassword
      */
     public RequestHandler(ServerCom con, REQUEST_TYPE type, SharedSite site, String shutdownPassword)
     {

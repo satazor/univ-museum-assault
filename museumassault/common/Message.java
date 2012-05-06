@@ -15,7 +15,7 @@ public class Message implements Serializable
 
     protected int type;
     protected int originId;
-    protected Object extra;
+    protected Object extra = null;
 
     /**
      * Class constructor.

@@ -43,6 +43,12 @@ public class Main
                 } catch (InterruptedException e) {}
             }
         } else {
+
+            if (!configuration.getChiefIds().contains(chiefId)) {
+                System.err.println("Invalid chief id.");
+                System.exit(1);
+            }
+            
             // Simulate the chief with the passed id
             site = new SharedSiteChiefClient(configuration.getSharedThievesSiteConnectionString());
             chief = new Chief(chiefId, site, configuration);

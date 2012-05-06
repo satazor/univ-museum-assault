@@ -141,6 +141,10 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
 
     /**
      * Shutdowns the server.
+     *
+     * @param password
+     *
+     * @return
      */
     public boolean shutdown(String password) throws ComException
     {
