@@ -4,6 +4,7 @@ import java.util.Random;
 import museumassault.common.Configuration;
 import museumassault.common.ServerCom;
 import museumassault.common.exception.ComException;
+import museumassault.logger.client.LoggerClient;
 
 /**
  *
@@ -36,10 +37,14 @@ public class Main
             System.err.println("Unknown room id: " + roomId + ".");
             System.exit(1);
         }
-        // Initialize the room
-        Room room = new Room(roomId, random.nextInt(configuration.getMaxCanvasInRoom()), roomId);
 
-        // Initialize the server connection
+        // Initialize the logger
+        LoggerClient logger = new LoggerClient(configuration.getLoggerConnectionString());
+
+        // Initialize the room
+        Room room = new Room(roomId, random.nextInt(configuration.getMaxCanvasInRoom()), configuration.getRoomCorridorId(roomId), logger);
+
+        // Start accepting for requests
         ServerCom con = new ServerCom(port);
         try {
             con.start();

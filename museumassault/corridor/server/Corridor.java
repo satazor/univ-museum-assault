@@ -1,6 +1,8 @@
 package museumassault.corridor.server;
 
 import java.util.HashMap;
+import museumassault.logger.CorridorDetails;
+import museumassault.logger.client.LoggerClient;
 
 /**
  * Corridor class.
@@ -19,6 +21,7 @@ public class Corridor
     protected int maxDistanceBetweenThieves;
     protected int atTheRoom = 0;
     protected int atTheCorridor = 0;
+    protected LoggerClient logger;
 
     /**
      * Class constructor.
@@ -26,7 +29,7 @@ public class Corridor
      * @param distance                  the distance from the outside to the room
      * @param maxDistanceBetweenThieves max allowed distance between positions
      */
-    public Corridor(int id, int distance, int maxDistanceBetweenThieves)
+    public Corridor(int id, int distance, int maxDistanceBetweenThieves, LoggerClient logger)
     {
         if (maxDistanceBetweenThieves <= 0) {
             throw new IllegalArgumentException("The max distance between thieves must be greater than zero.");
@@ -36,6 +39,17 @@ public class Corridor
         this.inwards = new Integer[distance];
         this.outwards = new Integer[distance];
         this.maxDistanceBetweenThieves = maxDistanceBetweenThieves;
+        this.logger = logger;
+
+        this.setCorridorDetails();
+    }
+
+    /**
+     *
+     */
+    protected final void setCorridorDetails()
+    {
+        this.logger.setCorridorDetails(new CorridorDetails(this.id, this.getTotalPositions(), this.thievesPositions));
     }
 
     /**
@@ -103,11 +117,10 @@ public class Corridor
 
         if (currentPosition == null) {
             currentPosition = -1;
+            this.logger.setThiefStatus(thiefId, LoggerClient.THIEF_STATUS.CRAWLING_OUTWARDS);
         } else if (currentPosition == -1 || currentPosition >= this.outwards.length) {
             throw new IllegalStateException("Thief already crawled out.");
         }
-
-        //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.CRAWLING_OUTWARDS);
 
         int newPosition = -1;
         //System.out.println("[Thief #" + thiefId +"] Crawl out from " + currentPosition + " with increment " + increment);
@@ -169,7 +182,7 @@ public class Corridor
                 if (newPosition >= this.outwards.length) {
                     ret = true;
                     this.thievesPositions.put(thiefId, -1);
-                    //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_ROOM_ENTRANCE);
+                    this.logger.setThiefStatus(thiefId, LoggerClient.THIEF_STATUS.AT_ROOM_ENTRANCE);
                     //System.out.println("[Thief #" + thiefId +"] Moved successfully outside the outwards corridor");
                 } else {
                     this.thievesPositions.put(thiefId, newPosition);
@@ -179,6 +192,8 @@ public class Corridor
                 if (realPosition == null) {
                     this.atTheCorridor++;
                 }
+
+                this.setCorridorDetails();
 
                 this.notifyAll();
                 try {
@@ -220,9 +235,9 @@ public class Corridor
                 throw new IllegalStateException("Thief already crawled in.");
             }
             currentPosition -= this.outwards.length;
+        } else {
+            this.logger.setThiefStatus(thiefId, LoggerClient.THIEF_STATUS.CRAWLING_INWARDS);
         }
-
-        //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.CRAWLING_INWARDS);
 
         int newPosition = -1;
         //System.out.println("[Thief #" + thiefId +"] Crawl in from " + currentPosition + " with increment " + increment);
@@ -297,6 +312,8 @@ public class Corridor
                         this.clearPositions();
                     }
                 }
+
+                this.setCorridorDetails();
 
                 this.notifyAll();
                 try {

@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import museumassault.logger.*;
-import museumassault.room.server.Room;
-import museumassault.shared_site.server.Team;
 
 /**
  * Logger class.
@@ -47,12 +45,12 @@ public class Logger implements ILoggerStatusConstants
      * @param roomIds the rooms ids
      * @param corridorIds the corridor ids
      */
-    public void Logger(String fileName, List<Integer> chiefIds, List<Integer> thiefIds,
-            List<Integer> teamIds, List<Integer> roomIds, List<Integer> corridorIds)
+    public Logger(String fileName, List<Integer> chiefIds, List<Integer> thiefIds,
+            List<Integer> teamIds, List<Integer> roomIds, List<Integer> corridorIds, int teamsMaxCapacity)
     {
         this.fileName = fileName;
         this.thiefIds = thiefIds;
-        this.chiefIds = thiefIds;
+        this.chiefIds = chiefIds;
         this.teamIds = teamIds;
         this.roomIds = roomIds;
         this.corridorIds = corridorIds;
@@ -65,22 +63,29 @@ public class Logger implements ILoggerStatusConstants
         length = thiefIds.size();
         for (int x = 0; x < length; x++) {
             this.thievesStatus.put(thiefIds.get(x), THIEF_STATUS.OUTSIDE);
-            this.thievesDetails.put(thiefIds.get(x), new ThiefDetails(thiefIds.get(x), 1));
+            this.thievesDetails.put(thiefIds.get(x), new ThiefDetails(thiefIds.get(x), null));
         }
 
         length = teamIds.size();
         for (int x = 0; x < length; x++) {
-            this.teamsDetails.put(teamIds.get(x), new TeamDetails(teamIds.get(x), 4));
+            this.teamsDetails.put(teamIds.get(x), new TeamDetails(teamIds.get(x), teamsMaxCapacity));
         }
 
         length = roomIds.size();
         for (int x = 0; x < length; x++) {
-            this.roomsDetails.put(roomIds.get(x), new RoomDetails(roomIds.get(x), 5, 20));
+            this.roomsDetails.put(roomIds.get(x), new RoomDetails(roomIds.get(x), 5, null));
         }
 
         length = corridorIds.size();
         for (int x = 0; x < length; x++) {
             this.corridorsDetails.put(roomIds.get(x), new CorridorDetails(corridorIds.get(x)));
+        }
+
+        try {
+            this.fileWriter = new FileWriter(fileName);
+            this.writeBuff = new BufferedWriter(fileWriter, 51200);   // Write to log each 50kb
+        } catch (IOException e) {
+            System.err.println("Unable to write to log file " + fileName);
         }
 
         this.writeHeader();
@@ -196,7 +201,7 @@ public class Logger implements ILoggerStatusConstants
     /**
      * Write the log header to the buffer.
      */
-    protected synchronized void writeHeader()
+    protected final synchronized void writeHeader()
     {
         if (this.writeBuff != null) {
             try {
@@ -267,7 +272,7 @@ public class Logger implements ILoggerStatusConstants
     /**
      * Writes the current state to the buffer.
      */
-    protected synchronized void writeToLog()
+    protected final synchronized void writeToLog()
     {
         if (this.writeBuff != null) {
             try {
@@ -279,7 +284,8 @@ public class Logger implements ILoggerStatusConstants
                 length = this.thiefIds.size();
                 for (int x = 0; x < length; x++) {
                     this.writeBuff.write(String.format("%-6s", this.statusToStr(this.thievesStatus.get(this.thiefIds.get(x)))));
-                    this.writeBuff.write(String.format("%-6s", 1)); // TODO: power..
+                    Integer power = this.thievesDetails.get(this.thiefIds.get(x)).getPower();
+                    this.writeBuff.write(String.format("%-6s", power != null ? power : "-"));
                 }
 
                 this.writeBuff.newLine();
@@ -303,13 +309,12 @@ public class Logger implements ILoggerStatusConstants
                         } else {
                             this.writeBuff.write(String.format("%-3s", thievesIds.get(y)));
                             THIEF_STATUS status = this.thievesStatus.get(thievesIds.get(y));
-                            if (status == THIEF_STATUS.AT_ROOM_ENTRANCE || status == THIEF_STATUS.AT_ROOM_EXIT || roomDetails == null) {
+                            if (status == THIEF_STATUS.AT_ROOM_ENTRANCE || status == THIEF_STATUS.AT_ROOM_EXIT || status == THIEF_STATUS.AT_A_ROOM || roomDetails == null) {
                                 this.writeBuff.write(String.format("%-3s", "-"));
-                            }
-                            if (roomDetails != null) {
+                            } else if (roomDetails != null) {
                                 CorridorDetails corridorDetails = this.corridorsDetails.get(roomDetails.getCorridorId());
                                 Integer position = corridorDetails.getThiefPosition(thievesIds.get(y));
-                                this.writeBuff.write(String.format("%-3s", position));
+                                this.writeBuff.write(String.format("%-3s", position != null ? position : "-"));
                             }
                         }
                     }
@@ -321,7 +326,7 @@ public class Logger implements ILoggerStatusConstants
                     roomDetails = this.roomsDetails.get(this.roomIds.get(x));
                     this.writeBuff.write(String.format("%-4s", roomDetails.getRoomId()));
                     this.writeBuff.write(String.format("%-5s", this.corridorsDetails.get(roomDetails.getCorridorId()).getTotalPositions() / 2));
-                    this.writeBuff.write(String.format("%-5s", roomDetails.getNrCanvas()));
+                    this.writeBuff.write(String.format("%-5s", roomDetails.getNrCanvas() == null ? "-" : roomDetails.getNrCanvas()));
                 }
 
                 this.writeBuff.newLine();
@@ -340,7 +345,6 @@ public class Logger implements ILoggerStatusConstants
      */
     protected String statusToStr(CHIEF_STATUS status)
     {
-
         switch (status) {
             case PLANNING_THE_HEIST:
                 return "PLTH";

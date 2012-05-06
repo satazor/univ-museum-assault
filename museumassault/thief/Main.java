@@ -2,6 +2,7 @@ package museumassault.thief;
 
 import java.util.Random;
 import museumassault.common.Configuration;
+import museumassault.logger.client.LoggerClient;
 import museumassault.shared_site.client.SharedSiteThiefClient;
 
 /**
@@ -22,6 +23,7 @@ public class Main
 
         Integer thiefId = args.length > 0 ? Integer.parseInt(args[0]) : null;
         SharedSiteThiefClient site;
+        LoggerClient logger;
         Thief thief;
 
         if (thiefId == null) {
@@ -31,8 +33,9 @@ public class Main
             for (int x = 0; x < nrTotalThieves; x++) {
 
                 site = new SharedSiteThiefClient(configuration.getSharedThievesSiteConnectionString());
+                logger = new LoggerClient(configuration.getLoggerConnectionString());
 
-                thief = new Thief(x + 1, random.nextInt(configuration.getMaxPowerPerThief() - 1) + 1, site, configuration);
+                thief = new Thief(x + 1, random.nextInt(configuration.getMaxPowerPerThief() - 1) + 1, site, logger, configuration);
                 thieves[x] = thief;
                 thieves[x].start();
             }
@@ -52,7 +55,8 @@ public class Main
 
             // Simulate the thief with the passed id
             site = new SharedSiteThiefClient(configuration.getSharedThievesSiteConnectionString());
-            thief = new Thief(thiefId, random.nextInt(configuration.getMaxPowerPerThief() - 1) + 1, site, configuration);
+            logger = new LoggerClient(configuration.getLoggerConnectionString());
+            thief = new Thief(thiefId, random.nextInt(configuration.getMaxPowerPerThief() - 1) + 1, site, logger, configuration);
 
             thief.start();
 

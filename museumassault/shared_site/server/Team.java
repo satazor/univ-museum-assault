@@ -1,6 +1,7 @@
 package museumassault.shared_site.server;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Team class.
@@ -16,7 +17,7 @@ public class Team
     protected int id;
     protected int nrThieves;
     protected int nrBusyThieves = 0;
-    protected int roomId;
+    protected Integer roomId;
     protected LinkedList<Integer> thiefIds = new LinkedList<>();
 
     /**
@@ -69,6 +70,10 @@ public class Team
      */
     public void addThief(int thiefId)
     {
+        if (this.isFull()) {
+            throw new IllegalStateException("Team is full.");
+        }
+        
         if (!this.thiefIds.contains(thiefId)) {
             this.thiefIds.push(thiefId);
 
@@ -104,19 +109,13 @@ public class Team
     }
 
     /**
-     * Get the thieves currently in the team.
+     * Get the thief ids currently in the team.
      *
      * @return the array of ids of the thieves currently present
      */
-    public int[] getThiefs()
+    public List<Integer> getThiefIds()
     {
-        int length = this.thiefIds.size();
-        int[] newArray = new int[length];
-        for (int x = 0; x < length; x++) {
-            newArray[x] = thiefIds.get(x);
-        }
-
-        return newArray;
+        return this.thiefIds;
     }
 
     /**
@@ -124,7 +123,7 @@ public class Team
      *
      * @return the assigned room
      */
-    public int getAssignedRoomId()
+    public Integer getAssignedRoomId()
     {
         return this.roomId;
     }
@@ -160,6 +159,14 @@ public class Team
     }
 
     /**
+     * Checks if the team is full
+     */
+    public boolean isFull()
+    {
+        return this.thiefIds.size() == this.getCapacity();
+    }
+
+    /**
      * Sets the busy state of the team.
      *
      * A team is busy if it has thieves that are robbing a room.
@@ -169,11 +176,6 @@ public class Team
     protected void isBusy(boolean busy)
     {
         if (!busy) this.nrBusyThieves = 0;
-
-        // TODO: check this
-        /*if (this.room != null) {
-            this.room.isBeingRobed(busy);
-        }*/
 
         this.beingPrepared = busy;
         this.busy = busy;

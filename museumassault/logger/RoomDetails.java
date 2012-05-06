@@ -12,14 +12,14 @@ public class RoomDetails implements Serializable
 
     protected int roomId;
     protected int corridorId;
-    protected int nrCanvas;
+    protected Integer nrCanvas;
 
     /**
      *
      * @param roomId
      * @param nrCanvas
      */
-    public RoomDetails(int roomId, int corridorId, int nrCanvas)
+    public RoomDetails(int roomId, int corridorId, Integer nrCanvas)
     {
         this.roomId = roomId;
         this.corridorId = corridorId;
@@ -48,7 +48,7 @@ public class RoomDetails implements Serializable
      *
      * @return
      */
-    public int getNrCanvas()
+    public Integer getNrCanvas()
     {
         return this.nrCanvas;
     }

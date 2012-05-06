@@ -4,6 +4,8 @@ import museumassault.common.IThievesConfiguration;
 import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
 import museumassault.corridor.client.CorridorClient;
+import museumassault.logger.ThiefDetails;
+import museumassault.logger.client.LoggerClient;
 import museumassault.room.client.RoomClient;
 import museumassault.shared_site.client.SharedSiteThiefClient;
 
@@ -21,7 +23,7 @@ public class Thief extends Thread
     protected int teamId;
     protected int power;
     protected IThievesConfiguration configuration;
-
+    protected LoggerClient logger;
     /**
      * Class constructor.
      *
@@ -30,7 +32,7 @@ public class Thief extends Thread
      * @param site          the site where the thieves will concentrate (exterior)
      * @param configuration the configuration so that a thief can extract the room/corridor addresses
      */
-    public Thief(int id, int power, SharedSiteThiefClient site, IThievesConfiguration configuration)
+    public Thief(int id, int power, SharedSiteThiefClient site, LoggerClient logger, IThievesConfiguration configuration)
     {
         if (power <= 0) {
             throw new IllegalArgumentException("Thief power must be greater then zero.");
@@ -39,6 +41,7 @@ public class Thief extends Thread
         this.id = id;
         this.power = power;
         this.site = site;
+        this.logger = logger;
         this.configuration = configuration;
     }
 
@@ -70,6 +73,9 @@ public class Thief extends Thread
     public void run()
     {
         try {
+            // Set the thief details in the logger
+            this.logger.setThiefDetails(new ThiefDetails(this.id, this.power));
+
             while (true) {
 
                 this.teamId = this.site.amINeeded(this.id);

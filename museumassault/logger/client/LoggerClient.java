@@ -6,9 +6,7 @@ import museumassault.common.ClientCom;
 import museumassault.common.Message;
 import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
-import museumassault.logger.ILoggerMessageConstants;
-import museumassault.logger.ILoggerStatusConstants;
-import museumassault.logger.ThiefDetails;
+import museumassault.logger.*;
 
 
 /**
@@ -39,6 +37,61 @@ public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConst
      */
     public void setChiefStatus(int chiefId, CHIEF_STATUS status)
     {
+        this.setStatus(new Message(SET_CHIEF_STATUS_TYPE, chiefId, status));
+    }
+
+    /**
+     *
+     * @param thiefId
+     * @param status
+     */
+    public void setThiefStatus(int thiefId, THIEF_STATUS status)
+    {
+        this.setStatus(new Message(SET_THIEF_STATUS_TYPE, thiefId, status));
+    }
+
+    /**
+     *
+     * @param details
+     */
+    public void setThiefDetails(ThiefDetails details)
+    {
+        this.setDetails(new Message(SET_THIEF_DETAILS_TYPE, details));
+    }
+
+    /**
+     *
+     * @param details
+     */
+    public void setTeamDetails(TeamDetails details)
+    {
+        this.setDetails(new Message(SET_TEAM_DETAILS_TYPE, details));
+    }
+
+    /**
+     *
+     * @param details
+     */
+    public void setRoomDetails(RoomDetails details)
+    {
+        this.setDetails(new Message(SET_ROOM_DETAILS_TYPE, details));
+    }
+
+    /**
+     *
+     * @param details
+     */
+    public void setCorridorDetails(CorridorDetails details)
+    {
+        this.setDetails(new Message(SET_CORRIDOR_DETAILS_TYPE, details));
+    }
+
+    /**
+     *
+     * @param message
+     */
+    protected void setStatus(Message message)
+    {
         try {
             while (!this.con.open()) {                           // Try until the server responds
                 try {
@@ -47,7 +100,7 @@ public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConst
                 }
             }
 
-            this.con.writeMessage(new Message(SET_CHIEF_STATUS_TYPE, chiefId, status));
+            this.con.writeMessage(message);
 
             Message response = this.con.readMessage();
             this.con.close();
@@ -66,10 +119,9 @@ public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConst
 
     /**
      *
-     * @param chiefId
-     * @param status
+     * @param message
      */
-    public void setThiefStatus(int thiefId, THIEF_STATUS status/*, ThiefDetails details*/)
+    protected void setDetails(Message message)
     {
         try {
             while (!this.con.open()) {                           // Try until the server responds
@@ -79,12 +131,12 @@ public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConst
                 }
             }
 
-            this.con.writeMessage(new Message(SET_THIEF_STATUS_TYPE, thiefId, status));
+            this.con.writeMessage(message);
 
             Message response = this.con.readMessage();
             this.con.close();
 
-            if (response.getType() != STATUS_UPDATED_TYPE) {
+            if (response.getType() != DETAILS_UPDATED_TYPE) {
                 //System.err.println("Unexpected message type sent by the server: " + response.getType());
                 //System.exit(1);
                 throw new ComException("Unexpected message type sent by the server: " + response.getType());

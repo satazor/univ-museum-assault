@@ -11,14 +11,14 @@ public class ThiefDetails implements Serializable
     private static final long serialVersionUID = 1000L;
 
     protected int thiefId;
-    protected int power;
+    protected Integer power;
 
     /**
      *
      * @param thiefId
      * @param power
      */
-    public ThiefDetails(int thiefId, int power)
+    public ThiefDetails(int thiefId, Integer power)
     {
         this.thiefId = thiefId;
         this.power = power;
@@ -37,7 +37,7 @@ public class ThiefDetails implements Serializable
      *
      * @return
      */
-    public int getPower()
+    public Integer getPower()
     {
         return power;
     }

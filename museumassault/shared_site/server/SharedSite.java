@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import museumassault.common.Message;
 import museumassault.common.MessageRepository;
+import museumassault.logger.TeamDetails;
 import museumassault.logger.client.LoggerClient;
 import museumassault.shared_site.IChiefMessageConstants;
 import museumassault.shared_site.IThiefMessageConstants;
@@ -162,8 +163,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
 
                     this.teams[x].isBeingPrepared(true);
                     this.teams[x].setAssignedRoomId(roomId);
-                    // TODO: check this
-                    //room.getCorridor().clearPositions();
+                    this.setTeamDetails(this.teams[x]);
 
                     int nrThieves = this.teams[x].getCapacity();
                     for (int y = 0; y < nrThieves; y++) {
@@ -397,6 +397,10 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
                 team = (Team) this.teamsHash.get(teamId);
                 team.addThief(thiefId);
 
+                if (team.isFull()) {
+                    this.setTeamDetails(team);
+                }
+                
                 try {
                     repository.wait();
                 } catch (InterruptedException ex) {}
@@ -438,5 +442,14 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
                 this.chiefRepository.notify();
             }
         }
+    }
+
+    /**
+     *
+     * @param team
+     */
+    protected void setTeamDetails(Team team)
+    {
+        this.logger.setTeamDetails(new TeamDetails(team.getId(), team.getCapacity(), team.getAssignedRoomId(), team.getThiefIds()));
     }
 }

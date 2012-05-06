@@ -1,5 +1,8 @@
 package museumassault.room.server;
 
+import museumassault.logger.RoomDetails;
+import museumassault.logger.client.LoggerClient;
+
 /**
  * Room class.
  *
@@ -13,6 +16,7 @@ public class Room
     protected int id;
     protected int nrCanvas;
     protected int corridorId;
+    protected LoggerClient logger;
 
     /**
      * Class constructor.
@@ -22,11 +26,22 @@ public class Room
      * @param corridor the corridor that leads to the room
      * @param logger   the logger to log the program state
      */
-    public Room(int id, int nrCanvas, int corridorId)
+    public Room(int id, int nrCanvas, int corridorId, LoggerClient logger)
     {
         this.id = id;
         this.nrCanvas = nrCanvas;
         this.corridorId = corridorId;
+        this.logger = logger;
+
+        this.setRoomDetails();
+    }
+
+    /**
+     *
+     */
+    protected final void setRoomDetails()
+    {
+        this.logger.setRoomDetails(new RoomDetails(this.id, this.corridorId, this.nrCanvas));
     }
 
     /**
@@ -70,7 +85,7 @@ public class Room
     {
         boolean rolledCanvas;
 
-        //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_A_ROOM);
+        this.logger.setThiefStatus(thiefId, LoggerClient.THIEF_STATUS.AT_A_ROOM);
 
         if (this.nrCanvas > 0) {
             this.nrCanvas--;
@@ -79,7 +94,8 @@ public class Room
             rolledCanvas = false;
         }
 
-        //this.logger.setThiefStatus(thiefId, Logger.THIEF_STATUS.AT_ROOM_EXIT);
+        this.setRoomDetails();
+        this.logger.setThiefStatus(thiefId, LoggerClient.THIEF_STATUS.AT_ROOM_EXIT);
 
         return rolledCanvas;
     }

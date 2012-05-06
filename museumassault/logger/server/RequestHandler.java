@@ -4,7 +4,7 @@ import java.util.HashMap;
 import museumassault.common.Message;
 import museumassault.common.ServerCom;
 import museumassault.common.exception.ComException;
-import museumassault.logger.ILoggerMessageConstants;
+import museumassault.logger.*;
 
 /**
  *
@@ -50,6 +50,26 @@ public class RequestHandler extends Thread implements ILoggerMessageConstants
                     System.out.println("Handling message of type SET_THIEF_STATUS_TYPE..");
                     this.logger.setThiefStatus(fromClient.getOriginId(), (Logger.THIEF_STATUS) fromClient.getExtra());
                     toClient = new Message(STATUS_UPDATED_TYPE);
+                    break;
+                case SET_THIEF_DETAILS_TYPE:
+                    System.out.println("Handling message of type SET_THIEF_DETAILS_TYPE..");
+                    this.logger.setThiefDetails((ThiefDetails) fromClient.getExtra());
+                    toClient = new Message(DETAILS_UPDATED_TYPE);
+                    break;
+                case SET_ROOM_DETAILS_TYPE:
+                    System.out.println("Handling message of type SET_ROOM_DETAILS_TYPE..");
+                    this.logger.setRoomDetails((RoomDetails) fromClient.getExtra());
+                    toClient = new Message(DETAILS_UPDATED_TYPE);
+                    break;
+                case SET_CORRIDOR_DETAILS_TYPE:
+                    System.out.println("Handling message of type SET_CORRIDOR_DETAILS_TYPE..");
+                    this.logger.setCorridorDetails((CorridorDetails) fromClient.getExtra());
+                    toClient = new Message(DETAILS_UPDATED_TYPE);
+                    break;
+                case SET_TEAM_DETAILS_TYPE:
+                    System.out.println("Handling message of type SET_TEAM_DETAILS_TYPE..");
+                    this.logger.setTeamDetails((TeamDetails) fromClient.getExtra());
+                    toClient = new Message(DETAILS_UPDATED_TYPE);
                     break;
                 case SHUTDOWN_TYPE:
                     System.out.println("Handling message of type SHUTDOWN_TYPE..");

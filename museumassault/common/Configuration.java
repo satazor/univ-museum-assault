@@ -19,12 +19,14 @@ public class Configuration implements IThievesConfiguration
     protected int maxDistanceBetweenRoomAndOutside = 10;
     protected int maxPowerPerThief = 5;
     protected int maxCanvasInRoom = 20;
-    protected String logFileName = "log.txt";
+    protected String logFileName = "../log.txt";
     protected String shutdownPassword = "12345";
 
     protected ArrayList<Integer> thiefIds;
     protected ArrayList<Integer> chiefIds;
     protected ArrayList<Integer> roomIds;
+    protected ArrayList<Integer> corridorIds;
+    protected ArrayList<Integer> teamIds;
 
     protected String sharedSiteThievesConnectionString = "localhost:11000";  // The server address must be equal to the line bellow
     protected String sharedSiteChiefsConnectionString = "localhost:11001";   // The server address must be equal to the line above
@@ -41,24 +43,34 @@ public class Configuration implements IThievesConfiguration
     {
         this.roomConnections = new HashMap<>();
 
-        this.roomIds = new ArrayList(nrRooms);
+        this.roomIds = new ArrayList(this.nrRooms);
         for (int x = 0; x < this.nrRooms; x++) {
             this.roomIds.add(x + 1);
         }
 
-        this.chiefIds = new ArrayList(nrRooms);
+        this.chiefIds = new ArrayList(this.nrChiefs);
         for (int x = 0; x < this.nrChiefs; x++) {
             this.chiefIds.add(x + 1);
         }
 
-        this.thiefIds = new ArrayList(nrRooms);
+        this.thiefIds = new ArrayList(this.nrThieves);
         for (int x = 0; x < this.nrThieves; x++) {
             this.thiefIds.add(x + 1);
         }
 
-        this.roomIds = new ArrayList(nrRooms);
+        this.roomIds = new ArrayList(this.nrRooms);
         for (int x = 0; x < this.nrRooms; x++) {
             this.roomIds.add(x + 1);
+        }
+
+        this.corridorIds = new ArrayList(this.nrRooms);
+        for (int x = 0; x < this.nrRooms; x++) {
+            this.corridorIds.add(x + 1);
+        }
+
+        this.teamIds = new ArrayList(this.nrTeams);
+        for (int x = 0; x < this.nrTeams; x++) {
+            this.teamIds.add(x + 1);
         }
 
         this.roomConnections.put(1, "localhost:20000");
@@ -176,9 +188,27 @@ public class Configuration implements IThievesConfiguration
      *
      * @return
      */
+    public List<Integer> getCorridorIds()
+    {
+        return this.corridorIds;
+    }
+
+    /**
+     *
+     * @return
+     */
     public int getNrTeams()
     {
         return this.nrTeams;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<Integer> getTeamIds()
+    {
+        return this.teamIds;
     }
 
     /**

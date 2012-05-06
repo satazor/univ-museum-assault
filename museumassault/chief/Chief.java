@@ -22,6 +22,7 @@ public class Chief extends Thread
     protected SharedSiteChiefClient site;
     protected int id;
     protected Configuration configuration;
+    protected LoggerClient logger;
 
     /**
      * Class constructor.
@@ -29,10 +30,11 @@ public class Chief extends Thread
      * @param id   the id of the chief
      * @param site the chief control site (exterior)
      */
-    public Chief(int id, SharedSiteChiefClient site, Configuration configuration)
+    public Chief(int id, SharedSiteChiefClient site, LoggerClient logger, Configuration configuration)
     {
         this.id = id;
         this.site = site;
+        this.logger = logger;
         this.configuration = configuration;
     }
 
@@ -103,8 +105,7 @@ public class Chief extends Thread
                 roomClient.shutdown(shutdownPassword);
             }
 
-            LoggerClient loggerClient = new LoggerClient(this.configuration.getLoggerConnectionString());
-            loggerClient.shutdown(this.configuration.getShutdownPassword(), totalCanvas);
+            this.logger.shutdown(this.configuration.getShutdownPassword(), totalCanvas);
         } catch (ShutdownException ex) {
             System.err.println("Service was shutted down.");
         } catch (ComException ex) {

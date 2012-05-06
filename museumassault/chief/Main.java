@@ -1,6 +1,7 @@
 package museumassault.chief;
 
 import museumassault.common.Configuration;
+import museumassault.logger.client.LoggerClient;
 import museumassault.shared_site.client.SharedSiteChiefClient;
 
 /**
@@ -20,6 +21,7 @@ public class Main
 
         Integer chiefId = args.length > 0 ? Integer.parseInt(args[0]) : null;
         SharedSiteChiefClient site;
+        LoggerClient logger;
         Chief chief;
 
         if (chiefId == null) {
@@ -30,8 +32,9 @@ public class Main
 
                 // Initialize the shared site client api for the chiefs
                 site = new SharedSiteChiefClient(configuration.getSharedChiefsSiteConnectionString());
+                logger = new LoggerClient(configuration.getLoggerConnectionString());
 
-                chief = new Chief(x + 1, site, configuration);
+                chief = new Chief(x + 1, site, logger, configuration);
                 chiefs[x] = chief;
                 chiefs[x].start();
             }
@@ -48,10 +51,12 @@ public class Main
                 System.err.println("Invalid chief id.");
                 System.exit(1);
             }
-            
+
             // Simulate the chief with the passed id
             site = new SharedSiteChiefClient(configuration.getSharedThievesSiteConnectionString());
-            chief = new Chief(chiefId, site, configuration);
+            logger = new LoggerClient(configuration.getLoggerConnectionString());
+
+            chief = new Chief(chiefId, site, logger, configuration);
 
             chief.start();
 

@@ -19,8 +19,9 @@ public class Main
     {
         Configuration configuration = new Configuration();
 
-        // Initialize the logger
-        Logger logger = new Logger(configuration.getLogFileName());
+        // Initialize the loggerList<Integer> chiefIds, List<Integer> thiefIds,
+        Logger logger = new Logger(configuration.getLogFileName(), configuration.getChiefIds(),
+                configuration.getThiefIds(), configuration.getTeamIds(), configuration.getRoomIds(), configuration.getCorridorIds(), configuration.getNrThievesPerTeam());
 
         // Initialize the server connection
         ServerCom con = new ServerCom(configuration.getLoggerPort());

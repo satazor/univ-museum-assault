@@ -4,6 +4,7 @@ import java.util.Random;
 import museumassault.common.Configuration;
 import museumassault.common.ServerCom;
 import museumassault.common.exception.ComException;
+import museumassault.logger.client.LoggerClient;
 
 /**
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
@@ -45,8 +46,11 @@ public class Main
             System.exit(1);
         }
 
+        // Initialize the logger
+        LoggerClient logger = new LoggerClient(configuration.getLoggerConnectionString());
+
         // Initialize the corridor
-        Corridor corridor = new Corridor(corridorId, (random.nextInt(configuration.getMaxDistanceBetweenRoomAndOutside() - 1) + 1), configuration.getMaxDistanceBetweenThieves());
+        Corridor corridor = new Corridor(corridorId, (random.nextInt(configuration.getMaxDistanceBetweenRoomAndOutside() - 1) + 1), configuration.getMaxDistanceBetweenThieves(), logger);
 
         System.out.println("Corridor #" + corridorId);
         System.out.println("Now listening for thieves requests..");
