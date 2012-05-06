@@ -15,7 +15,7 @@ import java.util.LinkedList;
  */
 public class MessageRepository
 {
-    HashMap<Integer, LinkedList<Message>> messages = new HashMap<>();
+    HashMap<Integer, LinkedList<Message>> messages = new HashMap<Integer, LinkedList<Message>>();
 
     /**
      * Reads a message from the broker.
@@ -76,7 +76,7 @@ public class MessageRepository
         LinkedList<Message> messagesList = this.messages.get(message.getType());
 
         if (messagesList == null) {
-            messagesList = new LinkedList<>();
+            messagesList = new LinkedList<Message>();
             this.messages.put(message.getType(), messagesList);
         }
 

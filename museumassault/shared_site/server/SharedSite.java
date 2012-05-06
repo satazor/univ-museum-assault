@@ -31,12 +31,12 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
     protected final MessageRepository thievesRepository = new MessageRepository();
 
     protected List<Integer> roomIds;
-    protected HashMap<Integer, Boolean> roomsEngagedStatus = new HashMap<>();
-    protected HashMap<Integer, Boolean> roomsCanvasStatus = new HashMap<>();
+    protected HashMap<Integer, Boolean> roomsEngagedStatus = new HashMap<Integer, Boolean>();
+    protected HashMap<Integer, Boolean> roomsCanvasStatus = new HashMap<Integer, Boolean>();
 
     protected Team[] teams;
-    protected HashMap<Integer, Team> teamsHash = new HashMap<>();
-    protected HashMap<Integer, MessageRepository> teamsRepository = new HashMap<>();
+    protected HashMap<Integer, Team> teamsHash = new HashMap<Integer, Team>();
+    protected HashMap<Integer, MessageRepository> teamsRepository = new HashMap<Integer, MessageRepository>();
 
     protected int nrRoomsToBeRobed;
     protected int nrCollectedCanvas = 0;
@@ -400,7 +400,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
                 if (team.isFull()) {
                     this.setTeamDetails(team);
                 }
-                
+
                 try {
                     repository.wait();
                 } catch (InterruptedException ex) {}
@@ -430,7 +430,7 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
         synchronized (this.chiefRepository) {
 
             this.chiefRepository.writeMessage(new Message(THIEF_ARRIVE_ACTION, thiefId, teamId));
-            HashMap <String, Object> extra = new HashMap<>();
+            HashMap <String, Object> extra = new HashMap<String, Object>();
             extra.put("teamId", team.getId());
             extra.put("rolledCanvas", rolledCanvas);
 

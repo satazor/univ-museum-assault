@@ -47,7 +47,7 @@ public class CorridorClient implements ICorridorMessageConstants
         this.con.close();
 
         if (response.getType() == CRAWLED_OUT_TYPE) {
-            return (boolean) response.getExtra();
+            return (Boolean) response.getExtra();
         } else {
             //System.err.println("Unexpected message type sent by the server: " + response.getType());
             //System.exit(1);
@@ -78,7 +78,7 @@ public class CorridorClient implements ICorridorMessageConstants
         this.con.close();
 
         if (response.getType() == CRAWLED_IN_TYPE) {
-            return (boolean) response.getExtra();
+            return (Boolean) response.getExtra();
         } else {
             //System.err.println("Unexpected message type sent by the server: " + response.getType());
             //System.exit(1);

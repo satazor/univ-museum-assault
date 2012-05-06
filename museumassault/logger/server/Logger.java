@@ -19,12 +19,12 @@ import museumassault.logger.*;
  */
 public class Logger implements ILoggerStatusConstants
 {
-    protected HashMap<Integer, CHIEF_STATUS> chiefsStatus = new HashMap<>();
-    protected HashMap<Integer, THIEF_STATUS> thievesStatus = new HashMap<>();
-    protected HashMap<Integer, ThiefDetails> thievesDetails = new HashMap<>();
-    protected HashMap<Integer, RoomDetails> roomsDetails = new HashMap<>();
-    protected HashMap<Integer, CorridorDetails> corridorsDetails = new HashMap<>();
-    protected HashMap<Integer, TeamDetails> teamsDetails = new HashMap<>();
+    protected HashMap<Integer, CHIEF_STATUS> chiefsStatus = new HashMap<Integer, CHIEF_STATUS>();
+    protected HashMap<Integer, THIEF_STATUS> thievesStatus = new HashMap<Integer, THIEF_STATUS>();
+    protected HashMap<Integer, ThiefDetails> thievesDetails = new HashMap<Integer, ThiefDetails>();
+    protected HashMap<Integer, RoomDetails> roomsDetails = new HashMap<Integer, RoomDetails>();
+    protected HashMap<Integer, CorridorDetails> corridorsDetails = new HashMap<Integer, CorridorDetails>();
+    protected HashMap<Integer, TeamDetails> teamsDetails = new HashMap<Integer, TeamDetails>();
 
     protected List<Integer> chiefIds;
     protected List<Integer> thiefIds;

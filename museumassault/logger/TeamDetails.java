@@ -27,7 +27,7 @@ public class TeamDetails implements Serializable
         this.teamId = teamId;
         this.capacity = capacity;
         this.assignedRoomId = null;
-        this.thiefIds = new ArrayList<>();
+        this.thiefIds = new ArrayList<Integer>();
     }
 
     /**

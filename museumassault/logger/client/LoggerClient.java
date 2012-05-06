@@ -173,7 +173,7 @@ public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConst
                 return true;
             }
 
-            HashMap<String, Object> extra = new HashMap<>();
+            HashMap<String, Object> extra = new HashMap<String, Object>();
             extra.put("password", password);
             extra.put("total_canvas", totalCanvas);
 

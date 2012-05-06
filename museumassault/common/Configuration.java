@@ -41,7 +41,7 @@ public class Configuration implements IThievesConfiguration
      */
     public Configuration()
     {
-        this.roomConnections = new HashMap<>();
+        this.roomConnections = new HashMap<Integer, String>();
 
         this.roomIds = new ArrayList(this.nrRooms);
         for (int x = 0; x < this.nrRooms; x++) {
@@ -79,14 +79,14 @@ public class Configuration implements IThievesConfiguration
         this.roomConnections.put(4, "localhost:20003");
         this.roomConnections.put(5, "localhost:20004");
 
-        this.corridorConnections = new HashMap<>();
+        this.corridorConnections = new HashMap<Integer, String>();
         this.corridorConnections.put(1, "localhost:21000");
         this.corridorConnections.put(2, "localhost:21001");
         this.corridorConnections.put(3, "localhost:21002");
         this.corridorConnections.put(4, "localhost:21003");
         this.corridorConnections.put(5, "localhost:21004");
 
-        this.roomCorridorAssociations = new HashMap<>();
+        this.roomCorridorAssociations = new HashMap<Integer, Integer>();
         this.roomCorridorAssociations.put(1, 1);
         this.roomCorridorAssociations.put(2, 2);
         this.roomCorridorAssociations.put(3, 3);

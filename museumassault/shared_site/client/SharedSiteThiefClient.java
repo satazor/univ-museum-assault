@@ -113,7 +113,7 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
                 }
             }
 
-            HashMap<String, Object> extra = new HashMap<>();
+            HashMap<String, Object> extra = new HashMap<String, Object>();
             extra.put("rolledCanvas", rolledCanvas);
             extra.put("teamId", teamId);
             this.con.writeMessage(new Message(HAND_A_CANVAS_TYPE, thiefId, extra));

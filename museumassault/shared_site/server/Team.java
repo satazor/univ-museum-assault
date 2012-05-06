@@ -18,7 +18,7 @@ public class Team
     protected int nrThieves;
     protected int nrBusyThieves = 0;
     protected Integer roomId;
-    protected LinkedList<Integer> thiefIds = new LinkedList<>();
+    protected LinkedList<Integer> thiefIds = new LinkedList<Integer>();
 
     /**
      * Class constructor.
@@ -73,7 +73,7 @@ public class Team
         if (this.isFull()) {
             throw new IllegalStateException("Team is full.");
         }
-        
+
         if (!this.thiefIds.contains(thiefId)) {
             this.thiefIds.push(thiefId);
 

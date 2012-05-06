@@ -47,7 +47,7 @@ public class RoomClient implements IRoomMessageConstants
         this.con.close();
 
         if (response.getType() == CANVAS_ROLLED_TYPE) {
-            return (boolean) response.getExtra();
+            return (Boolean) response.getExtra();
         } else {
             //System.err.println("Unexpected message type sent by the server: " + response.getType());
             //System.exit(1);

@@ -33,7 +33,7 @@ public class CorridorDetails implements Serializable
     public CorridorDetails(int corridorId)
     {
         this.corridorId = corridorId;
-        this.positions = new HashMap<>();
+        this.positions = new HashMap<Integer, Integer>();
         this.totalPositions = null;
     }
 

@@ -17,7 +17,7 @@ public class Corridor
     protected Integer[] inwards;
     protected Integer[] outwards;
 
-    protected HashMap<Integer, Integer> thievesPositions = new HashMap<>();
+    protected HashMap<Integer, Integer> thievesPositions = new HashMap<Integer, Integer>();
     protected int maxDistanceBetweenThieves;
     protected int atTheRoom = 0;
     protected int atTheCorridor = 0;

@@ -68,7 +68,7 @@ public class RequestHandler extends Thread implements IChiefMessageConstants, IT
                     case HAND_A_CANVAS_TYPE:
                         System.out.println("Handling message of type HAND_A_CANVAS_TYPE..");
                         HashMap<String, Object> extra = (HashMap<String, Object>) fromClient.getExtra();
-                        this.site.handACanvas(fromClient.getOriginId(), (Integer) extra.get("teamId"), (boolean) extra.get("rolledCanvas"));
+                        this.site.handACanvas(fromClient.getOriginId(), (Integer) extra.get("teamId"), (Boolean) extra.get("rolledCanvas"));
                         toClient = new Message(GOT_CANVAS_TYPE);
                         break;
                     default:
