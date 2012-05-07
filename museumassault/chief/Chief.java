@@ -85,31 +85,40 @@ public class Chief extends Thread
                     System.out.println("[Chief #" + this.id + "] Collecting canvas of thief #" + thiefId + "..");
                     this.site.collectCanvas(this.id, thiefId);
                 }
-
             }
 
             int totalCanvas = this.site.sumUpResults(this.id);
             System.out.println("[Chief #" + this.id + "] Total canvas collected: " + totalCanvas);
 
-            // Shutdown the services
-            String shutdownPassword = this.configuration.getShutdownPassword();
-            this.site.shutdown(shutdownPassword);
-
-            List<Integer> ids = this.configuration.getRoomIds();
-            int nrRooms = ids.size();
-            for (int x = 0; x < nrRooms; x++) {
-                CorridorClient corridorClient = new CorridorClient(this.configuration.getCorridorConnectionString(this.configuration.getRoomCorridorId(ids.get(x))));
-                corridorClient.shutdown(shutdownPassword);
-
-                RoomClient roomClient = new RoomClient(this.configuration.getRoomConnectionString(ids.get(x)));
-                roomClient.shutdown(shutdownPassword);
-            }
-
-            this.logger.shutdown(this.configuration.getShutdownPassword(), totalCanvas);
+            this.shutdownServices(totalCanvas);
         } catch (ShutdownException ex) {
             System.err.println("Service was shutted down.");
         } catch (ComException ex) {
             System.err.println(ex.getMessage());
         }
+    }
+
+    /**
+     * Shutdowns all the servers.
+     *
+     * @param totalCanvas the total canvas stolen
+     */
+    protected void shutdownServices(int totalCanvas) throws ComException
+    {
+        // Shutdown the services
+        String shutdownPassword = this.configuration.getShutdownPassword();
+        this.site.shutdown(shutdownPassword);
+
+        List<Integer> ids = this.configuration.getRoomIds();
+        int nrRooms = ids.size();
+        for (int x = 0; x < nrRooms; x++) {
+            CorridorClient corridorClient = new CorridorClient(this.configuration.getCorridorConnectionString(this.configuration.getRoomCorridorId(ids.get(x))));
+            corridorClient.shutdown(shutdownPassword);
+
+            RoomClient roomClient = new RoomClient(this.configuration.getRoomConnectionString(ids.get(x)));
+            roomClient.shutdown(shutdownPassword);
+        }
+
+        this.logger.shutdown(this.configuration.getShutdownPassword(), totalCanvas);
     }
 }
