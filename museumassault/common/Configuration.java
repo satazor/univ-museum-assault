@@ -23,17 +23,14 @@ public class Configuration implements IThievesConfiguration
     protected int maxCanvasInRoom = 20;
     protected String logFileName = "log.txt";
     protected String shutdownPassword = "12345";
-
     protected ArrayList<Integer> thiefIds;
     protected ArrayList<Integer> chiefIds;
     protected ArrayList<Integer> roomIds;
     protected ArrayList<Integer> corridorIds;
     protected ArrayList<Integer> teamIds;
-
     protected String sharedSiteThievesConnectionString = "localhost:11000";  // The server address must be equal to the line bellow
     protected String sharedSiteChiefsConnectionString = "localhost:11001";   // The server address must be equal to the line above
     protected String loggerConnectionString = "localhost:15000";
-
     protected HashMap<Integer, String> roomConnections;
     protected HashMap<Integer, String> corridorConnections;
     protected HashMap<Integer, Integer> roomCorridorAssociations;
@@ -127,6 +124,7 @@ public class Configuration implements IThievesConfiguration
 
     /**
      * Get the maximum thief power.
+     *
      * @return
      */
     public int getMaxPowerPerThief()
@@ -393,7 +391,6 @@ public class Configuration implements IThievesConfiguration
         return Integer.parseInt(split[1]);
     }
 
-
     /**
      * Gets the password that allows the shutdown of the various servers.
      *
@@ -409,7 +406,8 @@ public class Configuration implements IThievesConfiguration
      *
      * @return
      */
-    public String getLogFileName() {
+    public String getLogFileName()
+    {
         return this.logFileName;
     }
 }
