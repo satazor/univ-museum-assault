@@ -211,8 +211,6 @@ public class ServerCom
      * @return the message read
      *
      * @throws ComException if an error ocurred while reading
-     *
-     * @return
      */
     public Message readMessage() throws ComException
     {
@@ -251,7 +249,7 @@ public class ServerCom
     /**
      * Writes a message to the client.
      *
-     * @param toServer The message
+     * @param toClient The message
      *
      * @throws ComException if an error ocurred while writing
      */

@@ -131,7 +131,7 @@ public class Team
     /**
      * Set the assigned room for the team.
      *
-     * @param room the room to be assigned
+     * @param id the room id to be assigned
      */
     public void setAssignedRoomId(int id)
     {

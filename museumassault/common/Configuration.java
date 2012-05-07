@@ -341,9 +341,9 @@ public class Configuration implements IThievesConfiguration
      *
      * @return
      */
-    public Integer getCorridorPort(int roomId)
+    public Integer getCorridorPort(int corridorId)
     {
-        String connectionString = this.corridorConnections.get(roomId);
+        String connectionString = this.corridorConnections.get(corridorId);
         if (connectionString == null) {
             return null;
         }

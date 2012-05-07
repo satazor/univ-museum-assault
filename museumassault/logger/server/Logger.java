@@ -112,7 +112,7 @@ public class Logger implements ILoggerStatusConstants
     /**
      * Logs a change of a thief status.
      *
-     * @param details the thief details
+     * @param thiefId the thief id
      * @param status the status to be logged
      */
     public synchronized void setThiefStatus(int thiefId, THIEF_STATUS status)

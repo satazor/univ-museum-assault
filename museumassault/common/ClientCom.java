@@ -25,7 +25,6 @@ public class ClientCom
      * Constructor.
      *
      * @param connectionString
-     * @param timeout
      */
     public ClientCom(String connectionString)
     {

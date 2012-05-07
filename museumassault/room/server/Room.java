@@ -21,10 +21,10 @@ public class Room
     /**
      * Class constructor.
      *
-     * @param id       the id of the room
-     * @param nrCanvas the number of canvas the room has initially
-     * @param corridor the corridor that leads to the room
-     * @param logger   the logger to log the program state
+     * @param id         the id of the room
+     * @param nrCanvas   the number of canvas the room has initially
+     * @param corridorId the corridor that leads to the room
+     * @param logger     the logger to log the program state
      */
     public Room(int id, int nrCanvas, int corridorId, LoggerClient logger)
     {

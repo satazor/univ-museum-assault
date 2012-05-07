@@ -15,8 +15,6 @@ import museumassault.shared_site.IThiefMessageConstants;
  * This class implements the chief control site and the thieves concentration site
  * interfaces.
  *
- * @see ChiefControlSite
- * @see ThievesConcentrationSite
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class SharedSite implements IChiefMessageConstants, IThiefMessageConstants

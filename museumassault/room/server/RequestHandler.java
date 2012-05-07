@@ -23,7 +23,7 @@ public class RequestHandler extends Thread implements IRoomMessageConstants
      * Constructor.
      *
      * @param con              The server con
-     * @param logger           The logger monitor
+     * @param room             The room monitor
      * @param shutdownPassword The shutdown password
      */
     public RequestHandler(ServerCom con, Room room, String shutdownPassword)

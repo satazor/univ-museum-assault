@@ -20,7 +20,7 @@ public class Message implements Serializable
     /**
      * Class constructor.
      *
-     * @param action   the action to be performed
+     * @param type     the message type
      * @param originId the id of the sender
      * @param extra    an object with aditional information
      */
@@ -34,8 +34,8 @@ public class Message implements Serializable
     /**
      * Class constructor.
      *
-     * @param action   the action to be performed
-     * @param extra    an object with aditional information
+     * @param type  the message type
+     * @param extra an object with aditional information
      */
     public Message(int type, Object extra)
     {
@@ -46,7 +46,7 @@ public class Message implements Serializable
     /**
      * Class constructor.
      *
-     * @param action   the action to be performed
+     * @param type     the message type
      * @param originId the id of the sender
      */
     public Message(int type, int originId)
@@ -58,7 +58,7 @@ public class Message implements Serializable
     /**
      * Class constructor.
      *
-     * @param action the action to be performed
+     * @param type the message type
      */
     public Message(int type)
     {
