@@ -7,7 +7,8 @@ import museumassault.common.exception.ComException;
 import museumassault.logger.client.LoggerClient;
 
 /**
- *
+ * Room main class.
+ * 
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */

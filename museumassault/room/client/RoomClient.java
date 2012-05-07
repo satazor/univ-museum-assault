@@ -8,8 +8,10 @@ import museumassault.common.exception.ShutdownException;
 import museumassault.room.IRoomMessageConstants;
 
 /**
+ * RoomClient class.
+ * This class allows access to a room service.
+ * It encapsulates all the communication logic.
  *
- * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class RoomClient implements IRoomMessageConstants
@@ -19,6 +21,8 @@ public class RoomClient implements IRoomMessageConstants
 
     /**
      * Constructor.
+     *
+     * @param connectionString the server connection string
      */
     public RoomClient(String connectionString)
     {
@@ -58,9 +62,11 @@ public class RoomClient implements IRoomMessageConstants
     /**
      * Shutdowns the server.
      *
-     * @param password
+     * @param password the password
      *
-     * @return
+     * @return true if it was shutted down, false otherwise (password failed)
+     *
+     * @throws ComException if an error occured in the communication
      */
     public boolean shutdown(String password) throws ComException
     {

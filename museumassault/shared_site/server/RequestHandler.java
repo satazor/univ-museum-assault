@@ -8,6 +8,9 @@ import museumassault.shared_site.IChiefMessageConstants;
 import museumassault.shared_site.IThiefMessageConstants;
 
 /**
+ * Shared site server request handler class.
+ * Every request is handled by this class.
+ * It interprets a message and responds with an appropriate message.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -24,12 +27,12 @@ public class RequestHandler extends Thread implements IChiefMessageConstants, IT
     };
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param con
-     * @param type
-     * @param site
-     * @param shutdownPassword
+     * @param con              The server con
+     * @param type             The type (chief or thief)
+     * @param site             The shared site monitor
+     * @param shutdownPassword The shutdown password
      */
     public RequestHandler(ServerCom con, REQUEST_TYPE type, SharedSite site, String shutdownPassword)
     {

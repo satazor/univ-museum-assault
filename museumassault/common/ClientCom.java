@@ -6,6 +6,7 @@ import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
 
 /**
+ * ClientCom class.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -21,6 +22,7 @@ public class ClientCom
     protected ObjectOutputStream out = null;
 
     /**
+     * Constructor.
      *
      * @param connectionString
      * @param timeout
@@ -39,8 +41,9 @@ public class ClientCom
     }
 
     /**
+     * Set the connection timeout.
      *
-     * @param timeout
+     * @param timeout The timeout value in miliseconds
      */
     public void setTimeout(int timeout)
     {
@@ -48,17 +51,22 @@ public class ClientCom
     }
 
     /**
+     * Gets the client connection string.
      *
-     * @return
+     * @return The connection string
      */
     public String getConnectionString()
     {
         return this.connectionString;
     }
-    
+
     /**
+     * Opens the connection to the server.
      *
-     * @return
+     * @return true if the connection was successful, false otherwise
+
+     * @throws ComException if an error ocurred while connecting
+     * @throws ShutdownException if the server is or was shutted down
      */
     public boolean open() throws ComException, ShutdownException
     {
@@ -120,7 +128,9 @@ public class ClientCom
     }
 
     /**
+     * Closes the connection to the server.
      *
+     * @throws ComException if an error ocurred while connecting
      */
     public void close() throws ComException
     {
@@ -153,8 +163,12 @@ public class ClientCom
     }
 
     /**
+     * Reads a message from the server.
      *
-     * @return
+     * @return the message read
+     *
+     * @throws ComException if an error ocurred while reading
+     * @throws ShutdownException if the server is or was shutted down
      */
     public Message readMessage() throws ComException, ShutdownException
     {
@@ -189,8 +203,12 @@ public class ClientCom
     }
 
     /**
+     * Writes a message to the server.
      *
-     * @param toServer
+     * @param toServer The message
+     *
+     * @throws ComException if an error ocurred while writing
+     * @throws ShutdownException if the server is or was shutted down
      */
     public void writeMessage(Message toServer) throws ShutdownException, ComException
     {

@@ -8,12 +8,12 @@ import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
 import museumassault.logger.*;
 
-
 /**
  * LoggerClient class.
+ * This class allows access to a logger service.
+ * It encapsulates all the communication logic.
  *
- * This client is different from others in the sense that no exception are thrown
- * in the set status functions.
+ * This client is different from others in the sense that no exceptions are thrown (except for the shutdown).
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -151,10 +151,12 @@ public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConst
     /**
      * Shutdowns the server.
      *
-     * @param password
-     * @param totalCanvas
+     * @param password    the password
+     * @param totalCanvas the total of canvas stolen
      *
-     * @return
+     * @return true if it was shutted down, false otherwise (password failed)
+     *
+     * @throws ComException if an error occured in the communication
      */
     public boolean shutdown(String password, int totalCanvas) throws ComException
     {

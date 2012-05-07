@@ -6,6 +6,9 @@ import museumassault.common.exception.ComException;
 import museumassault.room.IRoomMessageConstants;
 
 /**
+ * Room server request handler class.
+ * Every request is handled by this class.
+ * It interprets a message and responds with an appropriate message.
  *
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  * @author Andre Cruz <andremiguelcruz@ua.pt>
@@ -17,11 +20,11 @@ public class RequestHandler extends Thread implements IRoomMessageConstants
     protected String shutdownPassword;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param con
-     * @param room
-     * @param shutdownPassword
+     * @param con              The server con
+     * @param logger           The logger monitor
+     * @param shutdownPassword The shutdown password
      */
     public RequestHandler(ServerCom con, Room room, String shutdownPassword)
     {

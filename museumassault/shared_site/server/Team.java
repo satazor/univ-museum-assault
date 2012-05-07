@@ -159,7 +159,9 @@ public class Team
     }
 
     /**
-     * Checks if the team is full
+     * Checks if the team is full.
+     *
+     * @return true if is full, false otherwise
      */
     public boolean isFull()
     {

@@ -3,6 +3,8 @@ package museumassault.logger;
 import java.io.Serializable;
 
 /**
+ * ThiefDetails class.
+ * This class has the details of a team in order to be saved into the log.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -14,6 +16,7 @@ public class ThiefDetails implements Serializable
     protected Integer power;
 
     /**
+     * Constructor.
      *
      * @param thiefId
      * @param power
@@ -25,6 +28,7 @@ public class ThiefDetails implements Serializable
     }
 
     /**
+     * Get the thief id.
      *
      * @return
      */
@@ -34,6 +38,7 @@ public class ThiefDetails implements Serializable
     }
 
     /**
+     * Get the thief power.
      *
      * @return
      */

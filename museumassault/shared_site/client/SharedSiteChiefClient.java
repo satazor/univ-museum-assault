@@ -8,6 +8,9 @@ import museumassault.common.exception.ShutdownException;
 import museumassault.shared_site.IChiefMessageConstants;
 
 /**
+ * SharedSiteChiefClient class.
+ * This class allows access from a chief to a shared site service.
+ * It encapsulates all the communication logic.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -18,6 +21,8 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
 
     /**
      * Constructor.
+     *
+     * @param connectionString the server connection string
      */
     public SharedSiteChiefClient(String connectionString)
     {
@@ -142,9 +147,11 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
     /**
      * Shutdowns the server.
      *
-     * @param password
+     * @param password the password
      *
-     * @return
+     * @return true if it was shutted down, false otherwise (password failed)
+     *
+     * @throws ComException if an error occured in the communication
      */
     public boolean shutdown(String password) throws ComException
     {

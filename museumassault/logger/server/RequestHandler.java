@@ -7,6 +7,9 @@ import museumassault.common.exception.ComException;
 import museumassault.logger.*;
 
 /**
+ * Logger server request handler class.
+ * Every request is handled by this class.
+ * It interprets a message and responds with an appropriate message.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -17,11 +20,11 @@ public class RequestHandler extends Thread implements ILoggerMessageConstants
     protected String shutdownPassword;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param con
-     * @param logger
-     * @param shutdownPassword
+     * @param con              The server con
+     * @param logger           The logger monitor
+     * @param shutdownPassword The shutdown password
      */
     public RequestHandler(ServerCom con, Logger logger, String shutdownPassword)
     {

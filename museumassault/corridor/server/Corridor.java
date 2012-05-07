@@ -45,7 +45,7 @@ public class Corridor
     }
 
     /**
-     *
+     * Sets the corridor details into the logger.
      */
     protected final void setCorridorDetails()
     {
@@ -76,6 +76,7 @@ public class Corridor
      * Get the position of a thief.
      *
      * @param thiefId the thief id
+     * 
      * @return the thief position within the corridor
      */
     public Integer getThiefPosition(int thiefId)
@@ -108,7 +109,7 @@ public class Corridor
      * @param thiefId   the id of the thief that is moving
      * @param increment the number of positions the thief is attempting to crawl
      *
-     * @return True if the thief arrived the room entrance, false otherwise
+     * @return true if the thief arrived the room entrance, false otherwise
      */
     public synchronized boolean crawlOut(int thiefId, int increment)
     {
@@ -220,7 +221,7 @@ public class Corridor
      * @param thiefId   the id of the thief that is moving
      * @param increment the number of positions the thief is attempting to crawl
      *
-     * @return True if the thief arrived the outside entrance, false otherwise
+     * @return true if the thief arrived the outside entrance, false otherwise
      */
     public synchronized boolean crawlIn(int thiefId, int increment)
     {

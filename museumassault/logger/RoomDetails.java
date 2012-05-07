@@ -3,6 +3,8 @@ package museumassault.logger;
 import java.io.Serializable;
 
 /**
+ * RoomDetails class.
+ * This class has the details of a room in order to be saved into the log.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -15,8 +17,10 @@ public class RoomDetails implements Serializable
     protected Integer nrCanvas;
 
     /**
+     * Constructor.
      *
      * @param roomId
+     * @param corridorId
      * @param nrCanvas
      */
     public RoomDetails(int roomId, int corridorId, Integer nrCanvas)
@@ -27,6 +31,7 @@ public class RoomDetails implements Serializable
     }
 
     /**
+     * Get the room id.
      *
      * @return
      */
@@ -36,6 +41,7 @@ public class RoomDetails implements Serializable
     }
 
     /**
+     * Get the corridor id associated with this room.
      *
      * @return
      */
@@ -45,7 +51,8 @@ public class RoomDetails implements Serializable
     }
 
     /**
-     *
+     * Get the number of canvas the room still has.
+     * 
      * @return
      */
     public Integer getNrCanvas()

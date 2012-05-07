@@ -9,6 +9,10 @@ import museumassault.common.exception.ShutdownException;
 import museumassault.shared_site.IThiefMessageConstants;
 
 /**
+ * SharedSiteChiefClient class.
+ * This class allows access from a thief to a shared site service.
+ * It encapsulates all the communication logic.
+ *
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  */
 public class SharedSiteThiefClient implements IThiefMessageConstants
@@ -18,6 +22,8 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
 
     /**
      * Constructor.
+     *
+     * @param connectionString the server connection string
      */
     public SharedSiteThiefClient(String connectionString)
     {

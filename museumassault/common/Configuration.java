@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Configuration class.
+ * This class contains all the project settings.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -28,9 +30,9 @@ public class Configuration implements IThievesConfiguration
     protected ArrayList<Integer> corridorIds;
     protected ArrayList<Integer> teamIds;
 
-    protected String sharedSiteThievesConnectionString = "192.168.8.171:20000";  // The server address must be equal to the line bellow
-    protected String sharedSiteChiefsConnectionString = "192.168.8.171:20001";   // The server address must be equal to the line above
-    protected String loggerConnectionString = "192.168.8.180:20000";
+    protected String sharedSiteThievesConnectionString = "192.168.8.171:22210";  // The server address must be equal to the line bellow
+    protected String sharedSiteChiefsConnectionString = "192.168.8.171:22211";   // The server address must be equal to the line above
+    protected String loggerConnectionString = "192.168.8.180:22210";
 
     protected HashMap<Integer, String> roomConnections;
     protected HashMap<Integer, String> corridorConnections;
@@ -73,18 +75,18 @@ public class Configuration implements IThievesConfiguration
             this.teamIds.add(x + 1);
         }
 
-        this.roomConnections.put(1, "192.168.8.175:20000");
-        this.roomConnections.put(2, "192.168.8.175:20001");
-        this.roomConnections.put(3, "192.168.8.176:20000");
-        this.roomConnections.put(4, "192.168.8.177:20000");
-        this.roomConnections.put(5, "192.168.8.178:20000");
+        this.roomConnections.put(1, "192.168.8.175:22210");
+        this.roomConnections.put(2, "192.168.8.175:22211");
+        this.roomConnections.put(3, "192.168.8.176:22210");
+        this.roomConnections.put(4, "192.168.8.177:22210");
+        this.roomConnections.put(5, "192.168.8.178:22210");
 
         this.corridorConnections = new HashMap<Integer, String>();
-        this.corridorConnections.put(1, "192.168.8.175:20002");
-        this.corridorConnections.put(2, "192.168.8.175:20003");
-        this.corridorConnections.put(3, "192.168.8.176:20001");
-        this.corridorConnections.put(4, "192.168.8.177:20001");
-        this.corridorConnections.put(5, "192.168.8.178:20001");
+        this.corridorConnections.put(1, "192.168.8.175:22212");
+        this.corridorConnections.put(2, "192.168.8.175:22213");
+        this.corridorConnections.put(3, "192.168.8.176:22211");
+        this.corridorConnections.put(4, "192.168.8.177:22211");
+        this.corridorConnections.put(5, "192.168.8.178:22211");
 
         this.roomCorridorAssociations = new HashMap<Integer, Integer>();
         this.roomCorridorAssociations.put(1, 1);
@@ -95,6 +97,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the maximum number of canvas in a room.
      *
      * @return
      */
@@ -104,6 +107,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the maximum distance between the room and the exterior.
      *
      * @return
      */
@@ -113,6 +117,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the maximum distance between two thieves in a corridor.
      *
      * @return
      */
@@ -122,7 +127,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
-     *
+     * Get the maximum thief power.
      * @return
      */
     public int getMaxPowerPerThief()
@@ -131,6 +136,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the number of chiefs.
      *
      * @return
      */
@@ -140,6 +146,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the chief ids.
      *
      * @return
      */
@@ -149,15 +156,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
-     *
-     * @return
-     */
-    public List<Integer> getThiefIds()
-    {
-        return this.thiefIds;
-    }
-
-    /**
+     * Get the number of thieves.
      *
      * @return
      */
@@ -167,6 +166,17 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the thief ids.
+     *
+     * @return
+     */
+    public List<Integer> getThiefIds()
+    {
+        return this.thiefIds;
+    }
+
+    /**
+     * Ge the number of rooms.
      *
      * @return
      */
@@ -176,6 +186,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the room ids.
      *
      * @return
      */
@@ -185,6 +196,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the corridor ids.
      *
      * @return
      */
@@ -194,6 +206,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the number of teams.
      *
      * @return
      */
@@ -203,6 +216,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the team ids.
      *
      * @return
      */
@@ -212,6 +226,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the number of thieves per team.
      *
      * @return
      */
@@ -221,6 +236,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the connection string of the shared site for chiefs.
      *
      * @return
      */
@@ -230,6 +246,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the connection string of the shared site for thieves.
      *
      * @return
      */
@@ -239,20 +256,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
-     *
-     * @return
-     */
-    public int getSharedThievesSitePort()
-    {
-        String[] split = this.sharedSiteThievesConnectionString.split(":");
-        if (split.length != 2) {
-            throw new RuntimeException("Could not extract port from the connection string.");
-        }
-
-        return Integer.parseInt(split[1]);
-    }
-
-    /**
+     * Get the port number of the shared site for chiefs.
      *
      * @return
      */
@@ -267,8 +271,24 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Get the port number of the shared site for thieves.
      *
-     * @param roomId
+     * @return
+     */
+    public int getSharedThievesSitePort()
+    {
+        String[] split = this.sharedSiteThievesConnectionString.split(":");
+        if (split.length != 2) {
+            throw new RuntimeException("Could not extract port from the connection string.");
+        }
+
+        return Integer.parseInt(split[1]);
+    }
+
+    /**
+     * Gets the connection string of a room.
+     *
+     * @param roomId the room id
      *
      * @return
      */
@@ -279,8 +299,9 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Gets the port number of a room.
      *
-     * @param roomId
+     * @param roomId the room id
      *
      * @return
      */
@@ -301,7 +322,9 @@ public class Configuration implements IThievesConfiguration
 
     /**
      *
-     * @param roomId
+     * Gets the connection string of a corridor.
+     *
+     * @param corridorId the corridor id
      *
      * @return
      */
@@ -312,8 +335,9 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Gets the port number of a corridor.
      *
-     * @param roomId
+     * @param corridorId the corridor id
      *
      * @return
      */
@@ -333,8 +357,9 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Gets the corridor id that is associated with a room
      *
-     * @param roomId
+     * @param roomId the room id
      *
      * @return
      */
@@ -345,6 +370,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Gets the logger connection string.
      *
      * @return
      */
@@ -354,6 +380,7 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
+     * Gets the logger port number.
      *
      * @return
      */
@@ -369,6 +396,7 @@ public class Configuration implements IThievesConfiguration
 
 
     /**
+     * Gets the password that allows the shutdown of the various servers.
      *
      * @return
      */
@@ -378,7 +406,8 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
-     *
+     * Gets the log file name.
+     * 
      * @return
      */
     public String getLogFileName() {

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
+ * CorridorDetails class.
+ * This class has the details of a corridor in order to be saved into the log.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -16,8 +18,11 @@ public class CorridorDetails implements Serializable
     protected Integer totalPositions;
 
     /**
+     * Constructor.
      *
      * @param corridorId
+     * @param totalPositions
+     * @param positions
      */
     public CorridorDetails(int corridorId, int totalPositions, HashMap<Integer, Integer> positions)
     {
@@ -27,6 +32,7 @@ public class CorridorDetails implements Serializable
     }
 
     /**
+     * Constructor.
      *
      * @param corridorId
      */
@@ -38,6 +44,7 @@ public class CorridorDetails implements Serializable
     }
 
     /**
+     * Get the corridor id.
      *
      * @return
      */
@@ -47,8 +54,9 @@ public class CorridorDetails implements Serializable
     }
 
     /**
+     * Get a thief position.
      *
-     * @param thiefId
+     * @param thiefId the thief id
      *
      * @return
      */
@@ -63,7 +71,8 @@ public class CorridorDetails implements Serializable
     }
 
     /**
-     *
+     * Get the total number of positions.
+     * 
      * @return
      */
     public Integer getTotalPositions()

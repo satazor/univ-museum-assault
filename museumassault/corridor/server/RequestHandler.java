@@ -6,6 +6,9 @@ import museumassault.common.exception.ComException;
 import museumassault.corridor.ICorridorMessageConstants;
 
 /**
+ * Corridor server request handler class.
+ * Every request is handled by this class.
+ * It interprets a message and responds with an appropriate message.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -16,11 +19,11 @@ public class RequestHandler extends Thread implements ICorridorMessageConstants
     protected String shutdownPassword;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param con
-     * @param corridor
-     * @param shutdownPassword
+     * @param con              The server con
+     * @param corridor         The corridor monitor
+     * @param shutdownPassword The shutdown password
      */
     public RequestHandler(ServerCom con, Corridor corridor, String shutdownPassword)
     {

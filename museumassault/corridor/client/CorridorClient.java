@@ -8,6 +8,9 @@ import museumassault.common.exception.ShutdownException;
 import museumassault.corridor.ICorridorMessageConstants;
 
 /**
+ * CorridorClient class.
+ * This class allows access to a corridor service.
+ * It encapsulates all the communication logic.
  *
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  * @author Andre Cruz <andremiguelcruz@ua.pt>
@@ -19,6 +22,8 @@ public class CorridorClient implements ICorridorMessageConstants
 
     /**
      * Constructor.
+     *
+     * @param connectionString the server connection string
      */
     public CorridorClient(String connectionString)
     {
@@ -26,11 +31,12 @@ public class CorridorClient implements ICorridorMessageConstants
     }
 
     /**
+     * Moves the thief towards the room.
      *
-     * @param thiefId
-     * @param increment
+     * @param thiefId   the id of the thief that is moving
+     * @param increment the number of positions the thief is attempting to crawl
      *
-     * @return
+     * @return true if the thief arrived the room entrance, false otherwise
      */
     public boolean crawlOut(int thiefId, int increment) throws ShutdownException, ComException
     {
@@ -57,11 +63,12 @@ public class CorridorClient implements ICorridorMessageConstants
     }
 
     /**
+     * Moves the thief towards the outside.
      *
-     * @param thiefId
-     * @param increment
+     * @param thiefId   the id of the thief that is moving
+     * @param increment the number of positions the thief is attempting to crawl
      *
-     * @return
+     * @return true if the thief arrived the outside entrance, false otherwise
      */
     public boolean crawlIn(int thiefId, int increment) throws ShutdownException, ComException
     {
@@ -89,9 +96,11 @@ public class CorridorClient implements ICorridorMessageConstants
     /**
      * Shutdowns the server.
      *
-     * @param password
+     * @param password the password
      *
-     * @return
+     * @return true if it was shutted down, false otherwise (password failed)
+     *
+     * @throws ComException if an error occured in the communication
      */
     public boolean shutdown(String password) throws ComException
     {

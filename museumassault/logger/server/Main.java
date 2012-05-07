@@ -5,6 +5,7 @@ import museumassault.common.ServerCom;
 import museumassault.common.exception.ComException;
 
 /**
+ * Logger main class.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */

@@ -5,6 +5,7 @@ import museumassault.logger.client.LoggerClient;
 import museumassault.shared_site.client.SharedSiteChiefClient;
 
 /**
+ * Chief main class.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */

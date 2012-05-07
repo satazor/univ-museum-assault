@@ -6,6 +6,7 @@ import museumassault.common.exception.ComException;
 import museumassault.logger.client.LoggerClient;
 
 /**
+ * Shared site main class.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */

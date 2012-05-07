@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * TeamDetails class.
+ * This class has the details of a team in order to be saved into the log.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -18,6 +20,7 @@ public class TeamDetails implements Serializable
     protected List<Integer> thiefIds;
 
     /**
+     * Constructor.
      *
      * @param teamId
      * @param capacity
@@ -31,10 +34,12 @@ public class TeamDetails implements Serializable
     }
 
     /**
+     * Constructor.
      *
      * @param teamId
      * @param capacity
      * @param assignedRoomId
+     * @param thiefIds
      */
     public TeamDetails(int teamId, int capacity, int assignedRoomId, List<Integer> thiefIds)
     {
@@ -45,6 +50,7 @@ public class TeamDetails implements Serializable
     }
 
     /**
+     * Get the team id.
      *
      * @return
      */
@@ -54,6 +60,7 @@ public class TeamDetails implements Serializable
     }
 
     /**
+     * Get the team capacity.
      *
      * @return
      */
@@ -63,6 +70,7 @@ public class TeamDetails implements Serializable
     }
 
     /**
+     * Get the current assigned room.
      *
      * @return
      */
@@ -72,6 +80,7 @@ public class TeamDetails implements Serializable
     }
 
     /**
+     * Get the thief ids currently in the team.
      *
      * @return
      */

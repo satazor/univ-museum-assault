@@ -310,7 +310,6 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
                     int roomId = team.getAssignedRoomId();
                     if ((boolean) this.roomsCanvasStatus.get(roomId) && !rolledCanvas) {
                         this.roomsCanvasStatus.put(roomId, false);
-                        System.out.println("this.nrRoomsToBeRobed " + this.nrRoomsToBeRobed +  " " + roomId);
                         this.nrRoomsToBeRobed--;
                     }
                 }

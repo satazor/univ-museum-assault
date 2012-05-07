@@ -6,7 +6,8 @@ import museumassault.logger.client.LoggerClient;
 import museumassault.shared_site.client.SharedSiteThiefClient;
 
 /**
- *
+ * Thief main class.
+ * 
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class Main

@@ -8,6 +8,7 @@ import java.net.SocketException;
 import museumassault.common.exception.ComException;
 
 /**
+ * ServerCom class.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
@@ -23,8 +24,9 @@ public class ServerCom
     protected ObjectOutputStream out = null;
 
     /**
+     * Constructor.
      *
-     * @param serverPort
+     * @param serverPort the server port
      */
     public ServerCom(int serverPort)
     {
@@ -32,9 +34,10 @@ public class ServerCom
     }
 
     /**
+     * Constructor.
      *
-     * @param serverPort
-     * @param serverSocket
+     * @param serverPort   the server port
+     * @param serverSocket the server socket
      */
     public ServerCom(int serverPort, ServerSocket serverSocket)
     {
@@ -43,8 +46,9 @@ public class ServerCom
     }
 
     /**
+     * Set the connection timeout.
      *
-     * @param timeout
+     * @param timeout The timeout value in miliseconds
      */
     public void setTimeout(int timeout)
     {
@@ -52,8 +56,9 @@ public class ServerCom
     }
 
     /**
+     * Get the server port number
      *
-     * @return
+     * @return the server port
      */
     public int getServerPort()
     {
@@ -61,7 +66,9 @@ public class ServerCom
     }
 
     /**
+     * Starts the server.
      *
+     * @throws ComException if an error ocurred while opening
      */
     public void start() throws ComException
     {
@@ -81,7 +88,9 @@ public class ServerCom
     }
 
     /**
+     * Shutdowns the server.
      *
+     * @throws ComException if an error ocurred while ending
      */
     public void end() throws ComException
     {
@@ -98,8 +107,9 @@ public class ServerCom
     }
 
     /**
+     * Check if the server is shutted down.
      *
-     * @return
+     * @return true if it is, false otherwise
      */
     public boolean isEnded()
     {
@@ -107,8 +117,11 @@ public class ServerCom
     }
 
     /**
+     * Accepts a new client connection.
      *
-     * @return
+     * @return the server con to deal with it
+     *
+     * @throws ComException if an error ocurred
      */
     public ServerCom accept() throws ComException
     {
@@ -151,7 +164,9 @@ public class ServerCom
     }
 
     /**
+     * Closes the client connection.
      *
+     * @throws ComException if an error ocurred while closing
      */
     public void close() throws ComException
     {
@@ -191,6 +206,11 @@ public class ServerCom
     }
 
     /**
+     * Reads a message from the client.
+     *
+     * @return the message read
+     *
+     * @throws ComException if an error ocurred while reading
      *
      * @return
      */
@@ -229,8 +249,11 @@ public class ServerCom
     }
 
     /**
+     * Writes a message to the client.
      *
-     * @param toClient
+     * @param toServer The message
+     *
+     * @throws ComException if an error ocurred while writing
      */
     public void writeMessage(Message toClient) throws ComException
     {

@@ -1,7 +1,9 @@
 package museumassault.logger;
 
 /**
- *
+ * ILoggerStatusConstants interface.
+ * This interface has all the chief/thief statuses.
+ * 
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public interface ILoggerStatusConstants
