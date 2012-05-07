@@ -56,40 +56,40 @@ public class Chief extends Thread
     {
         try {
             while (true) {
-                System.out.println("[Chief] Appraising sit..");
+                System.out.println("[Chief #" + this.id + "] Appraising sit..");
                 Integer roomId = this.site.appraiseSit(this.id);
 
                 if (roomId != null) {
 
-                    System.out.println("[Chief] There is still rooms to rob, preparing assault to room #" + roomId + "..");
+                    System.out.println("[Chief #" + this.id + "] There is still rooms to rob, preparing assault to room #" + roomId + "..");
 
                     Integer teamId = this.site.prepareAssaultParty(this.id, roomId);
                     if (teamId != null) {
-                        System.out.println("[Chief] Sending party #" + teamId + "..");
+                        System.out.println("[Chief #" + this.id + "] Sending party #" + teamId + "..");
                         this.site.sendAssaultParty(this.id, teamId);
-                        System.out.println("[Chief] Party #" + teamId + " sent..");
+                        System.out.println("[Chief #" + this.id + "] Party #" + teamId + " sent..");
                         continue;
                     } else {
-                        System.out.println("[Chief] Preparation of assault to #" + roomId + " aborted, no teams available..");
+                        System.out.println("[Chief #" + this.id + "] Preparation of assault to #" + roomId + " aborted, no teams available..");
                     }
                 }
 
-                System.out.println("[Chief] Taking a rest waiting for thieves..");
+                System.out.println("[Chief #" + this.id + "] Taking a rest waiting for thieves..");
                 Integer thiefId = this.site.takeARest(this.id);
                 if (thiefId == null) {
                     if (roomId == null) {
                         break;
                     }
                 } else {
-                    System.out.println("[Chief] Arrived thief #" + thiefId + "..");
-                    System.out.println("[Chief] Collecting canvas of thief #" + thiefId + "..");
+                    System.out.println("[Chief #" + this.id + "] Arrived thief #" + thiefId + "..");
+                    System.out.println("[Chief #" + this.id + "] Collecting canvas of thief #" + thiefId + "..");
                     this.site.collectCanvas(this.id, thiefId);
                 }
 
             }
 
             int totalCanvas = this.site.sumUpResults(this.id);
-            System.out.println("[Chief] Total canvas collected: " + totalCanvas);
+            System.out.println("[Chief #" + this.id + "] Total canvas collected: " + totalCanvas);
 
             // Shutdown the services
             String shutdownPassword = this.configuration.getShutdownPassword();
