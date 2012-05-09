@@ -30,9 +30,9 @@ public class Configuration implements IThievesConfiguration
     protected ArrayList<Integer> corridorIds;
     protected ArrayList<Integer> teamIds;
 
-    protected String sharedSiteThievesConnectionString = "192.168.8.171:20000";  // The server address must be equal to the line bellow
-    protected String sharedSiteChiefsConnectionString = "192.168.8.171:20001";   // The server address must be equal to the line above
-    protected String loggerConnectionString = "192.168.8.180:20000";
+    protected String sharedSiteThievesConnectionString = "192.168.8.171:22210";  // The server address must be equal to the line bellow
+    protected String sharedSiteChiefsConnectionString = "192.168.8.171:22211";   // The server address must be equal to the line above
+    protected String loggerConnectionString = "192.168.8.180:22210";
 
     protected HashMap<Integer, String> roomConnections;
     protected HashMap<Integer, String> corridorConnections;
@@ -74,18 +74,18 @@ public class Configuration implements IThievesConfiguration
         }
 
         this.roomConnections = new HashMap<Integer, String>();
-        this.roomConnections.put(1, "192.168.8.175:20000");
-        this.roomConnections.put(2, "192.168.8.175:20001");
-        this.roomConnections.put(3, "192.168.8.176:20000");
-        this.roomConnections.put(4, "192.168.8.177:20000");
-        this.roomConnections.put(5, "192.168.8.178:20000");
+        this.roomConnections.put(1, "192.168.8.175:22210");
+        this.roomConnections.put(2, "192.168.8.175:22211");
+        this.roomConnections.put(3, "192.168.8.176:22210");
+        this.roomConnections.put(4, "192.168.8.177:22210");
+        this.roomConnections.put(5, "192.168.8.178:22210");
 
         this.corridorConnections = new HashMap<Integer, String>();
-        this.corridorConnections.put(1, "192.168.8.175:20002");
-        this.corridorConnections.put(2, "192.168.8.175:20003");
-        this.corridorConnections.put(3, "192.168.8.176:20001");
-        this.corridorConnections.put(4, "192.168.8.177:20001");
-        this.corridorConnections.put(5, "192.168.8.178:20001");
+        this.corridorConnections.put(1, "192.168.8.175:22212");
+        this.corridorConnections.put(2, "192.168.8.175:22213");
+        this.corridorConnections.put(3, "192.168.8.176:22211");
+        this.corridorConnections.put(4, "192.168.8.177:22211");
+        this.corridorConnections.put(5, "192.168.8.178:22211");
 
         this.roomCorridorAssociations = new HashMap<Integer, Integer>();
         this.roomCorridorAssociations.put(1, 1);
