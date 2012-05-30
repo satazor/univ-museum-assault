@@ -6,6 +6,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import museumassault.common.Configuration;
 import museumassault.common.IShutdownHandler;
 import museumassault.logger.client.LoggerClient;
@@ -18,7 +20,8 @@ import museumassault.logger.client.LoggerClient;
  */
 public class Main
 {
-    public static Registry registry;    // Registry must be static so it won't get GC'ed
+    protected static Registry registry;    // Registry must be static so it won't get GC'ed
+    protected static boolean shutdown = false;
 
     /**
      * Program entry point.
@@ -27,7 +30,7 @@ public class Main
      */
     public static void main(String[] args)
     {
-        Random random = new Random();
+        final Random random = new Random();
         Configuration configuration = new Configuration();
 
         // Read room id.
@@ -55,8 +58,10 @@ public class Main
         RoomAdapter roomAdapter = new RoomAdapter(room, configuration.getShutdownPassword(), new IShutdownHandler() {
             @Override
             public void onShutdown() {
-                System.out.println("Exiting..");
-                System.exit(1);
+                shutdown = true;
+                synchronized (random) {
+                    random.notify();
+                }
             }
         });
 
@@ -77,12 +82,6 @@ public class Main
         // Get the RMI registry for the given host & ports and start to listen.
         try {
             registry = LocateRegistry.createRegistry(port);
-            
-            // Wait until the registry is created.. (this is ugly but works).
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {}
-
             registry.bind(IRoom.RMI_NAME_ENTRY, roomAdapterInt);
         } catch (Exception e) {
             System.err.println("Error while attempting to initialize the server: " + e.getMessage());
@@ -90,5 +89,27 @@ public class Main
         }
 
         System.out.println("Now listening for requests in port " + port + "..");
+
+        // Wait until we receive the shutdown.
+        do {
+            synchronized (random) {
+                try {
+                    random.wait();
+                } catch (InterruptedException ex) {}
+            }
+        } while (!shutdown);
+
+        System.out.println("Exiting..");
+
+        // Gracefully stop RMI.
+        try {
+            registry.unbind(IRoom.RMI_NAME_ENTRY);
+
+            UnicastRemoteObject.unexportObject(roomAdapter, true);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        System.exit(1);
     }
 }

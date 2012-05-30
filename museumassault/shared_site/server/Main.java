@@ -16,8 +16,9 @@ import museumassault.logger.client.LoggerClient;
  */
 public class Main
 {
-    public static Registry thievesRegistry;    // Registry must be static so it won't get GC'ed
-    public static Registry chiefsRegistry;    // Registry must be static so it won't get GC'ed
+    protected static Registry thievesRegistry;    // Registry must be static so it won't get GC'ed
+    protected static Registry chiefsRegistry;    // Registry must be static so it won't get GC'ed
+    protected static boolean shutdown = false;
 
     /**
      * Program entry point.
@@ -26,7 +27,8 @@ public class Main
      */
     public static void main(String[] args)
     {
-        final Configuration configuration = new Configuration();
+        Configuration configuration = new Configuration();
+        final Object object = new Object();
 
         // Initialize the teams.
         int nrTeams = configuration.getNrTeams();
@@ -43,8 +45,10 @@ public class Main
         SharedSiteChiefsAdapter chiefsSharedSiteAdapter = new SharedSiteChiefsAdapter(site, configuration.getShutdownPassword(), new IShutdownHandler() {
             @Override
             public void onShutdown() {
-                System.out.println("Exiting..");
-                System.exit(1);
+                shutdown = true;
+                synchronized (object) {
+                    object.notify();
+                }
             }
         });
         SharedSiteThievesAdapter thievesSharedSiteAdapter = new SharedSiteThievesAdapter(site);
@@ -56,10 +60,10 @@ public class Main
 
         // Initialize the remote objects.
         IChiefsControlSite chiefsSharedSite = null;
-        IThievesConcentrationSite thievesConcentrationSite = null;
+        IThievesConcentrationSite thievesSharedSiteS = null;
         try {
             chiefsSharedSite = (IChiefsControlSite) UnicastRemoteObject.exportObject(chiefsSharedSiteAdapter, 0);
-            thievesConcentrationSite = (IThievesConcentrationSite) UnicastRemoteObject.exportObject(thievesSharedSiteAdapter, 0);
+            thievesSharedSiteS = (IThievesConcentrationSite) UnicastRemoteObject.exportObject(thievesSharedSiteAdapter, 0);
         } catch (RemoteException e) {
             System.err.println("Unable to initialize remote objects: " + e.getMessage());
             System.exit(1);
@@ -67,14 +71,19 @@ public class Main
 
         // Get the RMI registry for the given host & ports and start to listen.
         try {
-            chiefsRegistry = LocateRegistry.createRegistry(configuration.getSharedThievesSitePort());
+            chiefsRegistry = LocateRegistry.createRegistry(configuration.getSharedChiefsSitePort());
+            chiefsRegistry.bind(IChiefsControlSite.RMI_NAME_ENTRY, chiefsSharedSite);
+        } catch (Exception e) {
+            System.err.println("Error while attempting to initialize the server: " + e.getMessage());
+            System.exit(1);
+        }
 
-            // Wait until the registry is created.. (this is ugly but works).
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {}
+        System.out.println("Now listening for chiefs requests in port " + configuration.getSharedChiefsSitePort() + "..");
 
-            chiefsRegistry.bind(IThievesConcentrationSite.RMI_NAME_ENTRY, thievesConcentrationSite);
+
+        try {
+            thievesRegistry = LocateRegistry.createRegistry(configuration.getSharedThievesSitePort());
+            thievesRegistry.bind(IThievesConcentrationSite.RMI_NAME_ENTRY, thievesSharedSiteS);
         } catch (Exception e) {
             System.err.println("Error while attempting to initialize the server: " + e.getMessage());
             System.exit(1);
@@ -82,20 +91,28 @@ public class Main
 
         System.out.println("Now listening for thieves requests in " + configuration.getSharedThievesSitePort() + "..");
 
+        // Wait until we receive the shutdown.
+        do {
+            synchronized (object) {
+                try {
+                    object.wait();
+                } catch (InterruptedException ex) {}
+            }
+        } while (!shutdown);
+
+        System.out.println("Exiting..");
+
+        // Gracefully stop RMI.
         try {
-            thievesRegistry = LocateRegistry.createRegistry(configuration.getSharedChiefsSitePort());
+            thievesRegistry.unbind(IThievesConcentrationSite.RMI_NAME_ENTRY);
+            chiefsRegistry.unbind(IChiefsControlSite.RMI_NAME_ENTRY);
 
-            // Wait until the registry is created.. (this is ugly but works).
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {}
-
-            thievesRegistry.bind(IChiefsControlSite.RMI_NAME_ENTRY, chiefsSharedSite);
+            UnicastRemoteObject.unexportObject(chiefsSharedSiteAdapter, true);
+            UnicastRemoteObject.unexportObject(thievesSharedSiteAdapter, true);
         } catch (Exception e) {
-            System.err.println("Error while attempting to initialize the server: " + e.getMessage());
-            System.exit(1);
+            System.err.println(e.getMessage());
         }
 
-        System.out.println("Now listening for chiefs requests in port " + configuration.getSharedChiefsSitePort() + "..");
+        System.exit(1);
     }
 }

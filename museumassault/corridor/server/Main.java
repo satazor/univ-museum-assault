@@ -16,7 +16,8 @@ import museumassault.logger.client.LoggerClient;
  */
 public class Main
 {
-    public static Registry registry;    // Registry must be static so it won't get GC'ed
+    protected static Registry registry;    // Registry must be static so it won't get GC'ed
+    protected static boolean shutdown = false;
 
     /**
      * Program entry point.
@@ -25,7 +26,7 @@ public class Main
      */
     public static void main(String[] args)
     {
-        Random random = new Random();
+        final Random random = new Random();
         Configuration configuration = new Configuration();
 
         // Read corridor id
@@ -53,8 +54,10 @@ public class Main
         CorridorAdapter corridorAdapter = new CorridorAdapter(corridor, configuration.getShutdownPassword(), new IShutdownHandler() {
             @Override
             public void onShutdown() {
-                System.out.println("Exiting..");
-                System.exit(1);
+                shutdown = true;
+                synchronized (random) {
+                    random.notify();
+                }
             }
         });
 
@@ -88,5 +91,27 @@ public class Main
         }
 
         System.out.println("Now listening for requests in port " + port + "..");
+
+        // Wait until we receive the shutdown.
+        do {
+            synchronized (random) {
+                try {
+                    random.wait();
+                } catch (InterruptedException ex) {}
+            }
+        } while (!shutdown);
+
+        System.out.println("Exiting..");
+        
+        // Gracefully stop RMI.
+        try {
+            registry.unbind(ICorridor.RMI_NAME_ENTRY);
+
+            UnicastRemoteObject.unexportObject(corridorAdapter, true);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        System.exit(1);
     }
 }
