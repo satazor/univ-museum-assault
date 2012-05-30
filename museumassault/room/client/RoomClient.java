@@ -1,11 +1,11 @@
 package museumassault.room.client;
 
-import java.util.Random;
-import museumassault.common.ClientCom;
-import museumassault.common.Message;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
-import museumassault.room.IRoomMessageConstants;
+import museumassault.room.server.IRoom;
 
 /**
  * RoomClient class.
@@ -14,10 +14,11 @@ import museumassault.room.IRoomMessageConstants;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class RoomClient implements IRoomMessageConstants
+public class RoomClient
 {
-    protected ClientCom con;
-    protected Random random = new Random();
+    protected IRoom room = null;
+    protected String host;
+    protected int port;
 
     /**
      * Constructor.
@@ -27,7 +28,23 @@ public class RoomClient implements IRoomMessageConstants
      */
     public RoomClient(String host, int port)
     {
-        this.con = new ClientCom(host, port);
+        this.host = host;
+        this.port = port;
+    }
+
+    /**
+     * Initializes the RMI connection.
+     */
+    protected void initialize() throws ComException
+    {
+        if (this.room == null) {
+            try {
+                Registry registry = LocateRegistry.getRegistry(this.host, this.port);
+                this.room = (IRoom) registry.lookup(IRoom.RMI_NAME_ENTRY);
+            } catch (Exception e) {
+                throw new ComException("Unable to connect to remote server: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -39,24 +56,12 @@ public class RoomClient implements IRoomMessageConstants
      */
     public boolean rollACanvas(int thiefId) throws ShutdownException, ComException
     {
-        while (!this.con.open()) {                           // Try until the server responds
-            try {
-                Thread.sleep(this.random.nextInt(500) + 500);
-            } catch (InterruptedException e) {
-            }
-        }
+        this.initialize();
 
-        this.con.writeMessage(new Message(ROLL_A_CANVAS_TYPE, thiefId));
-
-        Message response = this.con.readMessage();
-        this.con.close();
-
-        if (response.getType() == CANVAS_ROLLED_TYPE) {
-            return (Boolean) response.getExtra();
-        } else {
-            //System.err.println("Unexpected message type sent by the server: " + response.getType());
-            //System.exit(1);
-            throw new ComException("Unexpected message type sent by the server: " + response.getType());
+        try {
+            return this.room.rollACanvas(thiefId);
+        } catch (RemoteException e) {
+            throw new ShutdownException();
         }
     }
 
@@ -71,36 +76,11 @@ public class RoomClient implements IRoomMessageConstants
      */
     public boolean shutdown(String password) throws ComException
     {
+        this.initialize();
+
         try {
-            int nrAttempts = 0;
-            while (!this.con.open() && nrAttempts < 10) {                           // Try until the server responds
-                try {
-                    Thread.sleep(this.random.nextInt(100) + 100);
-                } catch (InterruptedException e) {}
-
-                nrAttempts++;
-            }
-
-            if (nrAttempts >= 10) {
-                System.out.println("Assumed that the server is shutted down.");
-                return true;
-            }
-
-            this.con.writeMessage(new Message(SHUTDOWN_TYPE, password));
-
-            Message response = this.con.readMessage();
-            this.con.close();
-
-            if (response.getType() == SHUTDOWN_COMPLETED_TYPE) {
-                return true;
-            } else if (response.getType() == WRONG_SHUTDOWN_PASSWORD_TYPE) {
-                return false;
-            } else {
-                //System.err.println("Unexpected message type sent by the server: " + response.getType());
-                //System.exit(1);
-                throw new ComException("Unexpected message type sent by the server: " + response.getType());
-            }
-        } catch (ShutdownException ex) {
+            return this.room.shutdown(password);
+        } catch(RemoteException e) {
             return true;
         }
     }

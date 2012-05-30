@@ -1,5 +1,7 @@
 package museumassault.shared_site.server;
 
+import museumassault.common.IShutdownHandler;
+
 /**
  * SharedSiteChiefsAdapter class.
  *
@@ -11,7 +13,7 @@ package museumassault.shared_site.server;
 public class SharedSiteChiefsAdapter implements IChiefsControlSite
 {
     protected SharedSite site;
-    protected ShutdownHandler shutdownHandler;
+    protected IShutdownHandler shutdownHandler;
     protected String shutdownPassword;
 
     /**
@@ -19,7 +21,7 @@ public class SharedSiteChiefsAdapter implements IChiefsControlSite
      *
      * @param site The shared site
      */
-    public SharedSiteChiefsAdapter(SharedSite site, String shutdownPassword, ShutdownHandler shutdownHandler)
+    public SharedSiteChiefsAdapter(SharedSite site, String shutdownPassword, IShutdownHandler shutdownHandler)
     {
         this.site = site;
         this.shutdownPassword = shutdownPassword;
@@ -111,16 +113,5 @@ public class SharedSiteChiefsAdapter implements IChiefsControlSite
         }
 
         return false;
-    }
-
-    /**
-     * Interface that exposes the shutdown handler.
-     */
-    public interface ShutdownHandler
-    {
-        /**
-         * Executes the following function on shutdown.
-         */
-        public void onShutdown();
     }
 }

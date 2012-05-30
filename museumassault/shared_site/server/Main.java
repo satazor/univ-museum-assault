@@ -6,6 +6,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import museumassault.common.Configuration;
+import museumassault.common.IShutdownHandler;
 import museumassault.logger.client.LoggerClient;
 
 /**
@@ -36,7 +37,7 @@ public class Main
 
         // Initialize the shared site & adapters.
         SharedSite site = new SharedSite(configuration.getRoomIds(), teams, logger, configuration.getNrChiefs() > 1);
-        SharedSiteChiefsAdapter chiefsSharedSiteAdapter = new SharedSiteChiefsAdapter(site, configuration.getShutdownPassword(), new SharedSiteChiefsAdapter.ShutdownHandler() {
+        SharedSiteChiefsAdapter chiefsSharedSiteAdapter = new SharedSiteChiefsAdapter(site, configuration.getShutdownPassword(), new IShutdownHandler() {
             @Override
             public void onShutdown() {
                 System.exit(1);
@@ -61,7 +62,6 @@ public class Main
         }
 
         // Get the RMI registry for the given host & ports and start to listen.
-
         Registry registry;
 
         try {

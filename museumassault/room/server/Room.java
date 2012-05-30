@@ -37,7 +37,7 @@ public class Room
     }
 
     /**
-     *
+     * Sets the room details into the logger.
      */
     protected final void setRoomDetails()
     {
