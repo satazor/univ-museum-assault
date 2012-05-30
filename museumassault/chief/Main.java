@@ -32,8 +32,8 @@ public class Main
             for (int x = 0; x < nrTotalChiefs; x++) {
 
                 // Initialize the shared site client api for the chiefs
-                site = new SharedSiteChiefClient(configuration.getSharedChiefsSiteConnectionString());
-                logger = new LoggerClient(configuration.getLoggerConnectionString());
+                site = new SharedSiteChiefClient(configuration.getSharedChiefsSiteHost(), configuration.getSharedChiefsSitePort());
+                logger = new LoggerClient(configuration.getLoggerHost(), configuration.getLoggerPort());
 
                 chief = new Chief(x + 1, site, logger, configuration);
                 chiefs[x] = chief;
@@ -54,9 +54,8 @@ public class Main
             }
 
             // Simulate the chief with the passed id
-            site = new SharedSiteChiefClient(configuration.getSharedThievesSiteConnectionString());
-            logger = new LoggerClient(configuration.getLoggerConnectionString());
-
+            site = new SharedSiteChiefClient(configuration.getSharedChiefsSiteHost(), configuration.getSharedChiefsSitePort());
+            logger = new LoggerClient(configuration.getLoggerHost(), configuration.getLoggerPort());
             chief = new Chief(chiefId, site, logger, configuration);
 
             chief.start();

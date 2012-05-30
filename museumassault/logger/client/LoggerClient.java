@@ -24,10 +24,13 @@ public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConst
 
     /**
      * Constructor.
+     *
+     * @param host the server host
+     * @param port the server port
      */
-    public LoggerClient(String connectionString)
+    public LoggerClient(String host, int port)
     {
-        this.con = new ClientCom(connectionString);
+        this.con = new ClientCom(host, port);
     }
 
     /**

@@ -235,23 +235,23 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
-     * Get the connection string of the shared site for chiefs.
+     * Get the host of the shared site for chiefs.
      *
      * @return
      */
-    public String getSharedChiefsSiteConnectionString()
+    public String getSharedChiefsSiteHost()
     {
-        return this.sharedSiteChiefsConnectionString;
+        return this.extractHost(this.sharedSiteChiefsConnectionString);
     }
 
     /**
-     * Get the connection string of the shared site for thieves.
+     * Get the host of the shared site for thieves.
      *
      * @return
      */
-    public String getSharedThievesSiteConnectionString()
+    public String getSharedThievesSiteHost()
     {
-        return this.sharedSiteThievesConnectionString;
+        return this.extractHost(this.sharedSiteThievesConnectionString);
     }
 
     /**
@@ -261,12 +261,7 @@ public class Configuration implements IThievesConfiguration
      */
     public int getSharedChiefsSitePort()
     {
-        String[] split = this.sharedSiteChiefsConnectionString.split(":");
-        if (split.length != 2) {
-            throw new RuntimeException("Could not extract port from the connection string.");
-        }
-
-        return Integer.parseInt(split[1]);
+        return this.extractPort(this.sharedSiteChiefsConnectionString);
     }
 
     /**
@@ -276,25 +271,25 @@ public class Configuration implements IThievesConfiguration
      */
     public int getSharedThievesSitePort()
     {
-        String[] split = this.sharedSiteThievesConnectionString.split(":");
-        if (split.length != 2) {
-            throw new RuntimeException("Could not extract port from the connection string.");
-        }
-
-        return Integer.parseInt(split[1]);
+        return this.extractPort(this.sharedSiteThievesConnectionString);
     }
 
     /**
-     * Gets the connection string of a room.
+     * Gets the host of a given room.
      *
      * @param roomId the room id
      *
      * @return
      */
     @Override
-    public String getRoomConnectionString(int roomId)
+    public String getRoomHost(int roomId)
     {
-        return this.roomConnections.get(roomId);
+       String connectionString = this.roomConnections.get(roomId);
+        if (connectionString == null) {
+            return null;
+        }
+
+        return this.extractHost(connectionString);
     }
 
     /**
@@ -304,42 +299,44 @@ public class Configuration implements IThievesConfiguration
      *
      * @return
      */
+    @Override
     public Integer getRoomPort(int roomId)
     {
-        String connectionString = this.roomConnections.get(roomId);
+       String connectionString = this.roomConnections.get(roomId);
         if (connectionString == null) {
             return null;
         }
 
-        String[] split = connectionString.split(":");
-        if (split.length != 2) {
-            throw new RuntimeException("Could not extract port from the connection string.");
-        }
-
-        return Integer.parseInt(split[1]);
+        return this.extractPort(connectionString);
     }
 
     /**
      *
-     * Gets the connection string of a corridor.
+     * Gets the host of a given corridor.
      *
      * @param corridorId the corridor id
      *
      * @return
      */
     @Override
-    public String getCorridorConnectionString(int corridorId)
+    public String getCorridorHost(int corridorId)
     {
-        return this.corridorConnections.get(corridorId);
+        String connectionString = this.corridorConnections.get(corridorId);
+        if (connectionString == null) {
+            return null;
+        }
+
+        return this.extractHost(connectionString);
     }
 
     /**
-     * Gets the port number of a corridor.
+     * Gets the port of a given corridor.
      *
      * @param corridorId the corridor id
      *
      * @return
      */
+    @Override
     public Integer getCorridorPort(int corridorId)
     {
         String connectionString = this.corridorConnections.get(corridorId);
@@ -347,12 +344,7 @@ public class Configuration implements IThievesConfiguration
             return null;
         }
 
-        String[] split = connectionString.split(":");
-        if (split.length != 2) {
-            throw new RuntimeException("Could not extract port from the connection string.");
-        }
-
-        return Integer.parseInt(split[1]);
+        return this.extractPort(connectionString);
     }
 
     /**
@@ -369,13 +361,13 @@ public class Configuration implements IThievesConfiguration
     }
 
     /**
-     * Gets the logger connection string.
+     * Gets the logger host.
      *
      * @return
      */
-    public String getLoggerConnectionString()
+    public String getLoggerHost()
     {
-        return this.loggerConnectionString;
+        return this.extractHost(this.loggerConnectionString);
     }
 
     /**
@@ -385,12 +377,7 @@ public class Configuration implements IThievesConfiguration
      */
     public int getLoggerPort()
     {
-        String[] split = this.loggerConnectionString.split(":");
-        if (split.length != 2) {
-            throw new RuntimeException("Could not extract port from the connection string.");
-        }
-
-        return Integer.parseInt(split[1]);
+        return this.extractPort(this.loggerConnectionString);
     }
 
 
@@ -411,5 +398,39 @@ public class Configuration implements IThievesConfiguration
      */
     public String getLogFileName() {
         return this.logFileName;
+    }
+
+    /**
+     * Extracts the host of a given connection string.
+     *
+     * @param connectionString the connection string
+     *
+     * @return the host
+     */
+    protected String extractHost(String connectionString)
+    {
+        String[] split = connectionString.split(":");
+        if (split.length < 1) {
+            throw new RuntimeException("Could not extract host from the connection string.");
+        }
+
+        return split[0];
+    }
+
+    /**
+     * Extracts the port of a given connection string.
+     *
+     * @param connectionString the connection string
+     *
+     * @return the port
+     */
+    protected int extractPort(String connectionString)
+    {
+        String[] split = connectionString.split(":");
+        if (split.length < 2) {
+            throw new RuntimeException("Could not extract port from the connection string.");
+        }
+
+        return Integer.parseInt(split[1]);
     }
 }

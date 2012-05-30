@@ -22,11 +22,12 @@ public class RoomClient implements IRoomMessageConstants
     /**
      * Constructor.
      *
-     * @param connectionString the server connection string
+     * @param host the server host
+     * @param port the server port
      */
-    public RoomClient(String connectionString)
+    public RoomClient(String host, int port)
     {
-        this.con = new ClientCom(connectionString);
+        this.con = new ClientCom(host, port);
     }
 
     /**

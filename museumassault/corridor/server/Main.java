@@ -47,7 +47,7 @@ public class Main
         }
 
         // Initialize the logger
-        LoggerClient logger = new LoggerClient(configuration.getLoggerConnectionString());
+        LoggerClient logger = new LoggerClient(configuration.getLoggerHost(), configuration.getLoggerPort());
 
         // Initialize the corridor
         Corridor corridor = new Corridor(corridorId, (random.nextInt(configuration.getMaxDistanceBetweenRoomAndOutside() - 1) + 1), configuration.getMaxDistanceBetweenThieves(), logger);

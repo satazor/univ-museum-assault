@@ -10,22 +10,40 @@ package museumassault.common;
 public interface IThievesConfiguration
 {
     /**
-     * Gets the connection string of a room.
+     * Gets the host of a given room.
      *
      * @param roomId the room id
      *
      * @return
      */
-    public String getRoomConnectionString(int roomId);
+    public String getRoomHost(int roomId);
 
     /**
-     * Gets the connection string of a corridor.
+     * Gets the host of a given corridor.
      *
      * @param corridorId the corridor id
      *
      * @return
      */
-    public String getCorridorConnectionString(int corridorId);
+    public String getCorridorHost(int corridorId);
+
+    /**
+     * Gets the port of a given room.
+     *
+     * @param roomId the room id
+     *
+     * @return
+     */
+    public Integer getRoomPort(int roomId);
+
+    /**
+     * Gets the port of a given corridor.
+     *
+     * @param corridorId the corridor id
+     *
+     * @return
+     */
+    public Integer getCorridorPort(int corridorId);
 
     /**
      * Gets the corridor id that is associated with a room

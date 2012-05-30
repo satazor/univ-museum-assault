@@ -8,7 +8,7 @@ import museumassault.logger.client.LoggerClient;
 
 /**
  * Room main class.
- * 
+ *
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
@@ -40,7 +40,7 @@ public class Main
         }
 
         // Initialize the logger
-        LoggerClient logger = new LoggerClient(configuration.getLoggerConnectionString());
+        LoggerClient logger = new LoggerClient(configuration.getLoggerHost(), configuration.getLoggerPort());
 
         // Initialize the room
         Room room = new Room(roomId, random.nextInt(configuration.getMaxCanvasInRoom()), configuration.getRoomCorridorId(roomId), logger);

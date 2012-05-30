@@ -1,12 +1,12 @@
 package museumassault.shared_site.client;
 
-import java.util.HashMap;
-import java.util.Random;
-import museumassault.common.ClientCom;
-import museumassault.common.Message;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
-import museumassault.shared_site.IThiefMessageConstants;
+import museumassault.shared_site.server.IChiefsControlSite;
+import museumassault.shared_site.server.IThievesConcentrationSite;
 
 /**
  * SharedSiteChiefClient class.
@@ -15,19 +15,38 @@ import museumassault.shared_site.IThiefMessageConstants;
  *
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  */
-public class SharedSiteThiefClient implements IThiefMessageConstants
+public class SharedSiteThiefClient
 {
-    protected ClientCom con;
-    protected Random random = new Random();
+    protected IThievesConcentrationSite site;
+
+    protected String host;
+    protected int port;
 
     /**
      * Constructor.
      *
-     * @param connectionString the server connection string
+     * @param host the server host
+     * @param port the server port
      */
-    public SharedSiteThiefClient(String connectionString)
+    public SharedSiteThiefClient(String host, int port)
     {
-        this.con = new ClientCom(connectionString);
+        this.host = host;
+        this.port = port;
+    }
+
+    /**
+     * Initializes the RMI connection.
+     */
+    protected void initialize() throws ComException
+    {
+        if (this.site == null) {
+            try {
+                Registry registry = LocateRegistry.getRegistry(this.host, this.port);
+                this.site = (IThievesConcentrationSite) registry.lookup(IThievesConcentrationSite.RMI_NAME_ENTRY);
+            } catch (Exception e) {
+                throw new ComException("Unable to connect to remote server: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -39,30 +58,12 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
      */
     public Integer amINeeded(int thiefId) throws ShutdownException, ComException
     {
-        while (true) {
+        this.initialize();
 
-            // TODO: the connection is kept open until the server responds..
-            //       should we keep trying instead and sleeping a bit between?
-
-            while (!this.con.open()) {                           // Try until the server responds
-                try {
-                    Thread.sleep(this.random.nextInt(500) + 500);
-                } catch (InterruptedException e) {
-                }
-            }
-
-            this.con.writeMessage(new Message(AM_I_NEEDED_TYPE, thiefId));
-
-            Message response = this.con.readMessage();
-            this.con.close();
-
-            if (response.getType() == YOUR_NEEDED_TYPE) {
-                return (Integer) response.getExtra();
-            } else {
-                //System.err.println("Unexpected message type sent by the server: " + response.getType());
-                //System.exit(1);
-                throw new ComException("Unexpected message type sent by the server: " + response.getType());
-            }
+        try {
+            return this.site.amINeeded(thiefId);
+        } catch(RemoteException e) {
+            throw new ShutdownException();
         }
     }
 
@@ -77,27 +78,12 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
      */
     public Integer prepareExcursion(int thiefId, int teamId) throws ShutdownException, ComException
     {
-        while (true) {
+        this.initialize();
 
-            while (!this.con.open()) {                           // Try until the server responds
-                try {
-                    Thread.sleep(this.random.nextInt(500) + 500);
-                } catch (InterruptedException e) {
-                }
-            }
-
-            this.con.writeMessage(new Message(PREPARE_EXCURSION_TYPE, thiefId, teamId));
-
-            Message response = this.con.readMessage();
-            this.con.close();
-
-            if (response.getType() == EXCURSION_PREPARED_TYPE) {
-                return (Integer) response.getExtra();
-            } else {
-                //System.err.println("Unexpected message type sent by the server: " + response.getType());
-                //System.exit(1);
-                throw new ComException("Unexpected message type sent by the server: " + response.getType());
-            }
+        try {
+            return this.site.prepareExcursion(thiefId, teamId);
+        } catch(RemoteException e) {
+            throw new ShutdownException();
         }
     }
 
@@ -110,30 +96,12 @@ public class SharedSiteThiefClient implements IThiefMessageConstants
      */
     public void handACanvas(int thiefId, int teamId, boolean rolledCanvas) throws ShutdownException, ComException
     {
-        while (true) {
+        this.initialize();
 
-            while (!this.con.open()) {                           // Try until the server responds
-                try {
-                    Thread.sleep(this.random.nextInt(500) + 500);
-                } catch (InterruptedException e) {
-                }
-            }
-
-            HashMap<String, Object> extra = new HashMap<String, Object>();
-            extra.put("rolledCanvas", rolledCanvas);
-            extra.put("teamId", teamId);
-            this.con.writeMessage(new Message(HAND_A_CANVAS_TYPE, thiefId, extra));
-
-            Message response = this.con.readMessage();
-            this.con.close();
-
-            if (response.getType() == GOT_CANVAS_TYPE) {
-                return;
-            } else {
-                //System.err.println("Unexpected message type sent by the server: " + response.getType());
-                //System.exit(1);
-                throw new ComException("Unexpected message type sent by the server: " + response.getType());
-            }
+        try {
+            this.site.handACanvas(thiefId, teamId, rolledCanvas);
+        } catch(RemoteException e) {
+            throw new ShutdownException();
         }
     }
 }

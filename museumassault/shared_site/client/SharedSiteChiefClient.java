@@ -1,11 +1,11 @@
 package museumassault.shared_site.client;
 
-import java.util.Random;
-import museumassault.common.ClientCom;
-import museumassault.common.Message;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
-import museumassault.shared_site.IChiefMessageConstants;
+import museumassault.shared_site.server.IChiefsControlSite;
 
 /**
  * SharedSiteChiefClient class.
@@ -14,19 +14,37 @@ import museumassault.shared_site.IChiefMessageConstants;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class SharedSiteChiefClient implements IChiefMessageConstants
+public class SharedSiteChiefClient
 {
-    protected ClientCom con;
-    protected Random random = new Random();
+    protected IChiefsControlSite site = null;
+    protected String host;
+    protected int port;
 
     /**
      * Constructor.
      *
-     * @param connectionString the server connection string
+     * @param host the server host
+     * @param port the server port
      */
-    public SharedSiteChiefClient(String connectionString)
+    public SharedSiteChiefClient(String host, int port)
     {
-        this.con = new ClientCom(connectionString);
+        this.host = host;
+        this.port = port;
+    }
+
+    /**
+     * Initializes the RMI connection.
+     */
+    protected void initialize() throws ComException
+    {
+        if (this.site == null) {
+            try {
+                Registry registry = LocateRegistry.getRegistry(this.host, this.port);
+                this.site = (IChiefsControlSite) registry.lookup(IChiefsControlSite.RMI_NAME_ENTRY);
+            } catch (Exception e) {
+                throw new ComException("Unable to connect to remote server: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -38,25 +56,12 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      */
     public Integer appraiseSit(int chiefId) throws ShutdownException, ComException
     {
-        while (!this.con.open()) {                           // Try until the server responds
-            try {
-                Thread.sleep(this.random.nextInt(500) + 500);
-            } catch (InterruptedException e) {}
-        }
+        this.initialize();
 
-        System.out.println("Sending message");
-        this.con.writeMessage(new Message(APPRAISE_SIT_TYPE, chiefId));
-
-        System.out.println("Message sent!");
-        Message response = this.con.readMessage();
-        this.con.close();
-
-        if (response.getType() == APPRAISED_SIT_TYPE) {
-            return (Integer) response.getExtra();
-        } else {
-            //System.err.println("Unexpected message type sent by the server: " + response.getType());
-            //System.exit(1);
-            throw new ComException("Unexpected message type sent by the server: " + response.getType());
+        try {
+            return this.site.appraiseSit(chiefId);
+        } catch(RemoteException e) {
+            throw new ShutdownException();
         }
     }
 
@@ -70,23 +75,12 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      */
     public Integer prepareAssaultParty(int chiefId, int roomId) throws ShutdownException, ComException
     {
-        while (!this.con.open()) {                           // Try until the server responds
-            try {
-                Thread.sleep(this.random.nextInt(500) + 500);
-            } catch (InterruptedException e) {}
-        }
+        this.initialize();
 
-        this.con.writeMessage(new Message(PREPARE_ASSAULT_PARTY_TYPE, chiefId, roomId));
-
-        Message response = this.con.readMessage();
-        this.con.close();
-
-        if (response.getType() == ASSAULT_PARTY_PREPARED_TYPE) {
-            return (Integer) response.getExtra();
-        } else {
-            //System.err.println("Unexpected message type sent by the server: " + response.getType());
-            //System.exit(1);
-            throw new ComException("Unexpected message type sent by the server: " + response.getType());
+        try {
+            return this.site.prepareAssaultParty(chiefId, roomId);
+        } catch(RemoteException e) {
+            throw new ShutdownException();
         }
     }
 
@@ -99,20 +93,12 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      */
     public void sendAssaultParty(int chiefId, int teamId) throws ShutdownException, ComException
     {
-        while (!this.con.open()) {                           // Try until the server responds
-            try {
-                Thread.sleep(this.random.nextInt(500) + 500);
-            } catch (InterruptedException e) {}
-        }
+        this.initialize();
 
-        this.con.writeMessage(new Message(SEND_ASSAULT_PARTY_TYPE, chiefId,teamId));
-
-        Message response = this.con.readMessage();
-
-        if (response.getType() != ASSAULT_PARTY_SENT_TYPE) {
-            //System.err.println("Unexpected message type sent by the server: " + response.getType());
-            //System.exit(1);
-            throw new ComException("Unexpected message type sent by the server: " + response.getType());
+        try {
+            this.site.sendAssaultParty(chiefId, teamId);
+        } catch(RemoteException e) {
+            throw new ShutdownException();
         }
     }
 
@@ -125,22 +111,47 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      */
     public Integer takeARest(int chiefId) throws ShutdownException, ComException
     {
-        while (!this.con.open()) {                           // Try until the server responds
-            try {
-                Thread.sleep(this.random.nextInt(500) + 500);
-            } catch (InterruptedException e) {}
+        this.initialize();
+
+        try {
+            return this.site.takeARest(chiefId);
+        } catch(RemoteException e) {
+            throw new ShutdownException();
         }
+    }
 
-        this.con.writeMessage(new Message(TAKE_A_REST_TYPE, chiefId));
+    /**
+     * Collects the canvas of thief that arrived.
+     *
+     * @param chiefId the id of the chief
+     * @param thiefId the id of the thief that handed the canvas
+     */
+    public void collectCanvas(int chiefId, int thiefId) throws ShutdownException, ComException
+    {
+        this.initialize();
 
-        Message response = this.con.readMessage();
+        try {
+            this.site.collectCanvas(chiefId, thiefId);
+        } catch(RemoteException e) {
+            throw new ShutdownException();
+        }
+    }
 
-        if (response.getType() == TOOK_A_REST_TYPE) {
-            return (Integer) response.getExtra();
-        } else {
-            //System.err.println("Unexpected message type sent by the server: " + response.getType());
-            //System.exit(1);
-            throw new ComException("Unexpected message type sent by the server: " + response.getType());
+    /**
+     * Sums up the total canvas stolen.
+     *
+     * @param chiefId the id of the chief
+     *
+     * @return the total number of canvas stolen
+     */
+    public Integer sumUpResults(int chiefId) throws ShutdownException, ComException
+    {
+        this.initialize();
+
+        try {
+            return this.site.sumUpResults(chiefId);
+        } catch(RemoteException e) {
+            throw new ShutdownException();
         }
     }
 
@@ -155,90 +166,12 @@ public class SharedSiteChiefClient implements IChiefMessageConstants
      */
     public boolean shutdown(String password) throws ComException
     {
+        this.initialize();
+
         try {
-            int nrAttempts = 0;
-            while (!this.con.open() && nrAttempts < 10) {                           // Try until the server responds
-                try {
-                    Thread.sleep(this.random.nextInt(100) + 100);
-                } catch (InterruptedException e) {}
-
-                nrAttempts++;
-            }
-
-            if (nrAttempts >= 10) {
-                System.out.println("Assumed that the server is shutted down.");
-                return true;
-            }
-
-            this.con.writeMessage(new Message(SHUTDOWN_TYPE, password));
-
-            Message response = this.con.readMessage();
-            this.con.close();
-
-            if (response.getType() == SHUTDOWN_COMPLETED_TYPE) {
-                return true;
-            } else if (response.getType() == WRONG_SHUTDOWN_PASSWORD_TYPE) {
-                return false;
-            } else {
-                //System.err.println("Unexpected message type sent by the server: " + response.getType());
-                //System.exit(1);
-                throw new ComException("Unexpected message type sent by the server: " + response.getType());
-            }
-        } catch (ShutdownException ex) {
+            return this.site.shutdown(password);
+        } catch(RemoteException e) {
             return true;
-        }
-    }
-
-    /**
-     * Collects the canvas of thief that arrived.
-     *
-     * @param chiefId the id of the chief
-     * @param thiefId the id of the thief that handed the canvas
-     */
-    public void collectCanvas(int chiefId, int thiefId) throws ShutdownException, ComException
-    {
-        while (!this.con.open()) {                           // Try until the server responds
-            try {
-                Thread.sleep(this.random.nextInt(500) + 500);
-            } catch (InterruptedException e) {}
-        }
-
-        this.con.writeMessage(new Message(COLLECT_CANVAS_TYPE, chiefId, thiefId));
-
-        Message response = this.con.readMessage();
-
-        if (response.getType() != COLLECTED_CANVAS_TYPE) {
-            //System.err.println("Unexpected message type sent by the server: " + response.getType());
-            //System.exit(1);
-            throw new ComException("Unexpected message type sent by the server: " + response.getType());
-        }
-    }
-
-    /**
-     * Sums up the total canvas stolen.
-     *
-     * @param chiefId the id of the chief
-     *
-     * @return the total number of canvas stolen
-     */
-    public Integer sumUpResults(int chiefId) throws ShutdownException, ComException
-    {
-        while (!this.con.open()) {                           // Try until the server responds
-            try {
-                Thread.sleep(this.random.nextInt(500) + 500);
-            } catch (InterruptedException e) {}
-        }
-
-        this.con.writeMessage(new Message(SUM_UP_RESULTS, chiefId));
-
-        Message response = this.con.readMessage();
-
-        if (response.getType() == SUMMED_UP_RESULTS) {
-            return (Integer) response.getExtra();
-        } else {
-            //System.err.println("Unexpected message type sent by the server: " + response.getType());
-            //System.exit(1);
-            throw new ComException("Unexpected message type sent by the server: " + response.getType());
         }
     }
 }

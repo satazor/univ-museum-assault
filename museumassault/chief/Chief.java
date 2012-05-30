@@ -98,10 +98,12 @@ public class Chief extends Thread
             List<Integer> ids = this.configuration.getRoomIds();
             int nrRooms = ids.size();
             for (int x = 0; x < nrRooms; x++) {
-                CorridorClient corridorClient = new CorridorClient(this.configuration.getCorridorConnectionString(this.configuration.getRoomCorridorId(ids.get(x))));
+                int roomId = ids.get(x);
+                int corridorId = this.configuration.getRoomCorridorId(roomId);
+                CorridorClient corridorClient = new CorridorClient(this.configuration.getCorridorHost(corridorId), this.configuration.getCorridorPort(corridorId));
                 corridorClient.shutdown(shutdownPassword);
 
-                RoomClient roomClient = new RoomClient(this.configuration.getRoomConnectionString(ids.get(x)));
+                RoomClient roomClient = new RoomClient(this.configuration.getRoomHost(roomId), this.configuration.getRoomPort(roomId));
                 roomClient.shutdown(shutdownPassword);
             }
 

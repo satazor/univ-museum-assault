@@ -91,8 +91,8 @@ public class Thief extends Thread
                     return;
                 }
 
-                CorridorClient corridor = new CorridorClient(this.configuration.getCorridorConnectionString(corridorId));
-                RoomClient room = new RoomClient(this.configuration.getRoomConnectionString(roomId));
+                CorridorClient corridor = new CorridorClient(this.configuration.getCorridorHost(corridorId), this.configuration.getCorridorPort(corridorId));
+                RoomClient room = new RoomClient(this.configuration.getRoomHost(roomId), this.configuration.getRoomPort(roomId));
 
                 // Crawl in
                 while (!corridor.crawlOut(this.id, this.power)) {}

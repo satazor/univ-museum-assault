@@ -7,7 +7,7 @@ import museumassault.shared_site.client.SharedSiteThiefClient;
 
 /**
  * Thief main class.
- * 
+ *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
 public class Main
@@ -33,8 +33,8 @@ public class Main
             Thief[] thieves = new Thief[nrTotalThieves];
             for (int x = 0; x < nrTotalThieves; x++) {
 
-                site = new SharedSiteThiefClient(configuration.getSharedThievesSiteConnectionString());
-                logger = new LoggerClient(configuration.getLoggerConnectionString());
+                site = new SharedSiteThiefClient(configuration.getSharedThievesSiteHost(), configuration.getSharedThievesSitePort());
+                logger = new LoggerClient(configuration.getLoggerHost(), configuration.getLoggerPort());
 
                 thief = new Thief(x + 1, random.nextInt(configuration.getMaxPowerPerThief() - 1) + 1, site, logger, configuration);
                 thieves[x] = thief;
@@ -55,8 +55,8 @@ public class Main
             }
 
             // Simulate the thief with the passed id
-            site = new SharedSiteThiefClient(configuration.getSharedThievesSiteConnectionString());
-            logger = new LoggerClient(configuration.getLoggerConnectionString());
+            site = new SharedSiteThiefClient(configuration.getSharedThievesSiteHost(), configuration.getSharedThievesSitePort());
+            logger = new LoggerClient(configuration.getLoggerHost(), configuration.getLoggerPort());
             thief = new Thief(thiefId, random.nextInt(configuration.getMaxPowerPerThief() - 1) + 1, site, logger, configuration);
 
             thief.start();

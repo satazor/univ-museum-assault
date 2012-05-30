@@ -23,11 +23,12 @@ public class CorridorClient implements ICorridorMessageConstants
     /**
      * Constructor.
      *
-     * @param connectionString the server connection string
+     * @param host the server host
+     * @param port the server port
      */
-    public CorridorClient(String connectionString)
+    public CorridorClient(String host, int port)
     {
-        this.con = new ClientCom(connectionString);
+        this.con = new ClientCom(host, port);
     }
 
     /**

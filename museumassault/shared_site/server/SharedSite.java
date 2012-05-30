@@ -6,8 +6,6 @@ import museumassault.common.Message;
 import museumassault.common.MessageRepository;
 import museumassault.logger.TeamDetails;
 import museumassault.logger.client.LoggerClient;
-import museumassault.shared_site.IChiefMessageConstants;
-import museumassault.shared_site.IThiefMessageConstants;
 
 /**
  * SharedSite class.
@@ -17,7 +15,7 @@ import museumassault.shared_site.IThiefMessageConstants;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class SharedSite implements IChiefMessageConstants, IThiefMessageConstants
+public class SharedSite
 {
     public static final int PREPARE_ASSAULT_ACTION = 1;
     public static final int SEND_ASSAULT_PARTY_ACTION = 2;
@@ -94,16 +92,6 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
         }
 
         this.logger = logger;
-    }
-
-    /**
-     * Get the total number of canvas collected.
-     *
-     * @return the number of canvas
-     */
-    public int getNrCollectedCanvas()
-    {
-        return this.nrCollectedCanvas;
     }
 
     /**
@@ -443,8 +431,9 @@ public class SharedSite implements IChiefMessageConstants, IThiefMessageConstant
     }
 
     /**
+     * Sets the team details in the logger.
      *
-     * @param team
+     * @param team the team
      */
     protected void setTeamDetails(Team team)
     {

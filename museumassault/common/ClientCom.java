@@ -26,17 +26,10 @@ public class ClientCom
      *
      * @param connectionString
      */
-    public ClientCom(String connectionString)
+    public ClientCom(String host, int port)
     {
-        String address = connectionString;
-        String[] split = address.split(":");
-        if (split.length != 2) {
-            throw new IllegalArgumentException("Invalid connection string.");
-        }
-
-        this.serverAddress = split[0];
-        this.serverPort = Integer.parseInt(split[1]);
-        this.connectionString = connectionString;
+        this.serverAddress = host;
+        this.serverPort = port;
     }
 
     /**
@@ -50,13 +43,23 @@ public class ClientCom
     }
 
     /**
-     * Gets the client connection string.
+     * Gets the server host.
      *
-     * @return The connection string
+     * @return The server host
      */
-    public String getConnectionString()
+    public String getHost()
     {
-        return this.connectionString;
+        return this.serverAddress;
+    }
+
+    /**
+     * Gets the server port.
+     *
+     * @return The server port
+     */
+    public int getPort()
+    {
+        return this.serverPort;
     }
 
     /**
