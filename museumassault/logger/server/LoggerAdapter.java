@@ -43,7 +43,7 @@ public class LoggerAdapter implements ILogger
         System.err.println("Shutdown called.");
 
         this.logger.terminateLog(totalCanvas);
-        
+
         if (this.shutdownPassword.equals(shutdownPassword)) {
             this.shutdownHandler.onShutdown();
 
@@ -81,7 +81,7 @@ public class LoggerAdapter implements ILogger
     @Override
     public void setThiefDetails(ThiefDetails details)
     {
-        System.out.println("setThiefDetails(details)");
+        System.out.println("Thief #" + details.getThiefId() + " setThiefDetails(details)");
 
         this.logger.setThiefDetails(details);
     }
@@ -92,7 +92,7 @@ public class LoggerAdapter implements ILogger
     @Override
     public void setRoomDetails(RoomDetails details)
     {
-        System.out.println("setRoomDetails(details)");
+        System.out.println("Room #" + details.getRoomId() + " setRoomDetails(details)");
 
         this.logger.setRoomDetails(details);
     }
@@ -103,7 +103,7 @@ public class LoggerAdapter implements ILogger
     @Override
     public void setCorridorDetails(CorridorDetails details)
     {
-        System.out.println("setCorridorDetails(details)");
+        System.out.println("Corridor #" + details.getCorridorId() + " setCorridorDetails(details)");
 
         this.logger.setCorridorDetails(details);
     }
@@ -114,7 +114,7 @@ public class LoggerAdapter implements ILogger
     @Override
     public void setTeamDetails(TeamDetails details)
     {
-        System.out.println("setTeamDetails(details)");
+        System.out.println("Team #" + details.getTeamId() + " setTeamDetails(details)");
 
         this.logger.setTeamDetails(details);
     }
