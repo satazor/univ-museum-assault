@@ -16,7 +16,7 @@ import museumassault.logger.client.LoggerClient;
  */
 public class Main
 {
-    protected static Registry registry;    // Registry must be static so it won't get GC'ed
+    protected static Registry registry;
     protected static boolean shutdown = false;
 
     /**
@@ -102,11 +102,10 @@ public class Main
         } while (!shutdown);
 
         System.out.println("Exiting..");
-        
+
         // Gracefully stop RMI.
         try {
             registry.unbind(ICorridor.RMI_NAME_ENTRY);
-
             UnicastRemoteObject.unexportObject(corridorAdapter, true);
         } catch (Exception e) {
             System.err.println(e.getMessage());

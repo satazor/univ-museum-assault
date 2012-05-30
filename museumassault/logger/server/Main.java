@@ -1,8 +1,12 @@
 package museumassault.logger.server;
 
+import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import museumassault.common.Configuration;
-import museumassault.common.ServerCom;
-import museumassault.common.exception.ComException;
+import museumassault.common.IShutdownHandler;
 
 /**
  * Logger main class.
@@ -11,6 +15,9 @@ import museumassault.common.exception.ComException;
  */
 public class Main
 {
+    protected static Registry registry;
+    protected static boolean shutdown = false;
+
     /**
      * Program entry point.
      *
@@ -19,44 +26,65 @@ public class Main
     public static void main(String[] args)
     {
         Configuration configuration = new Configuration();
+        final Object object = new Object();
 
         // Initialize the loggerList<Integer> chiefIds, List<Integer> thiefIds,
         Logger logger = new Logger(configuration.getLogFileName(), configuration.getChiefIds(),
                 configuration.getThiefIds(), configuration.getTeamIds(), configuration.getRoomIds(), configuration.getCorridorIds(), configuration.getNrThievesPerTeam());
+        LoggerAdapter loggerAdapter = new LoggerAdapter(logger, configuration.getShutdownPassword(), new IShutdownHandler() {
+            @Override
+            public void onShutdown() {
+                shutdown = true;
+                synchronized (object) {
+                    object.notify();
+                }
+            }
+        });
 
-        // Initialize the server connection
-        ServerCom con = new ServerCom(configuration.getLoggerPort());
+        // Initialize the security manager.
+        if (System.getSecurityManager () == null) {
+            System.setSecurityManager(new RMISecurityManager());
+        }
+
+        // Initialize the remote objects.
+        ILogger loggerAdapterInt = null;
         try {
-            con.start();
-        } catch (ComException ex) {
-            System.err.println(ex.getMessage());
+            loggerAdapterInt = (ILogger) UnicastRemoteObject.exportObject(loggerAdapter, 0);
+        } catch (RemoteException e) {
+            System.err.println("Unable to initialize remote object: " + e.getMessage());
             System.exit(1);
         }
 
-        System.out.println("Logger");
-        System.out.println("Now listening for requests in port " + configuration.getLoggerPort() + "..");
-
-        // Accept connections
-        while (true) {
-            ServerCom newCon;
-
-            try {
-                 newCon = con.accept();
-            } catch (ComException ex) {
-                if (con.isEnded()) {
-                    break;
-                }
-
-                System.err.println(ex.getMessage());
-                continue;
-            }
-
-            System.out.println("New connection accepted from a client, creating thread to handle it..");
-
-            RequestHandler handler = new RequestHandler(newCon, logger, configuration.getShutdownPassword());
-            handler.start();
+        // Get the RMI registry for the given host & ports and start to listen.
+        try {
+            registry = LocateRegistry.createRegistry(configuration.getLoggerPort());
+            registry.bind(ILogger.RMI_NAME_ENTRY, loggerAdapterInt);
+        } catch (Exception e) {
+            System.err.println("Error while attempting to initialize the server: " + e.getMessage());
+            System.exit(1);
         }
 
-        System.exit(0);
+        System.out.println("Now listening for requests in port " + configuration.getLoggerPort() + "..");
+
+        // Wait until we receive the shutdown.
+        do {
+            synchronized (object) {
+                try {
+                    object.wait();
+                } catch (InterruptedException ex) {}
+            }
+        } while (!shutdown);
+
+        System.out.println("Exiting..");
+
+        // Gracefully stop RMI.
+        try {
+            registry.unbind(ILogger.RMI_NAME_ENTRY);
+            UnicastRemoteObject.unexportObject(loggerAdapter, true);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        System.exit(1);
     }
 }

@@ -16,8 +16,8 @@ import museumassault.logger.client.LoggerClient;
  */
 public class Main
 {
-    protected static Registry thievesRegistry;    // Registry must be static so it won't get GC'ed
-    protected static Registry chiefsRegistry;    // Registry must be static so it won't get GC'ed
+    protected static Registry thievesRegistry;
+    protected static Registry chiefsRegistry;
     protected static boolean shutdown = false;
 
     /**

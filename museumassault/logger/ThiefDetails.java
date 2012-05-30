@@ -30,7 +30,7 @@ public class ThiefDetails implements Serializable
     /**
      * Get the thief id.
      *
-     * @return
+     * @return the thief id
      */
     public int getThiefId()
     {
@@ -40,7 +40,7 @@ public class ThiefDetails implements Serializable
     /**
      * Get the thief power.
      *
-     * @return
+     * @return the thief power
      */
     public Integer getPower()
     {

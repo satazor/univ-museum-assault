@@ -3,7 +3,7 @@ package museumassault.room.server;
 import museumassault.common.IShutdownHandler;
 
 /**
- * SharedSiteChiefsAdapter class.
+ * RoomAdapter class.
  *
  * This class servers as facade to the Room, decoupling it from the
  * network protocol.

@@ -52,7 +52,7 @@ public class TeamDetails implements Serializable
     /**
      * Get the team id.
      *
-     * @return
+     * @return the team id
      */
     public int getTeamId()
     {
@@ -62,7 +62,7 @@ public class TeamDetails implements Serializable
     /**
      * Get the team capacity.
      *
-     * @return
+     * @return the team capacity
      */
     public int getCapacity()
     {
@@ -72,7 +72,7 @@ public class TeamDetails implements Serializable
     /**
      * Get the current assigned room.
      *
-     * @return
+     * @return the assigned room id
      */
     public Integer getAssignedRoomId()
     {
@@ -82,7 +82,7 @@ public class TeamDetails implements Serializable
     /**
      * Get the thief ids currently in the team.
      *
-     * @return
+     * @return the list of thiefs
      */
     public List<Integer> getThiefIds()
     {

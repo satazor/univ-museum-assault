@@ -46,7 +46,7 @@ public class CorridorDetails implements Serializable
     /**
      * Get the corridor id.
      *
-     * @return
+     * @return the corridor id
      */
     public int getCorridorId()
     {
@@ -58,7 +58,7 @@ public class CorridorDetails implements Serializable
      *
      * @param thiefId the thief id
      *
-     * @return
+     * @return the current thief position
      */
     public Integer getThiefPosition(int thiefId)
     {
@@ -72,8 +72,8 @@ public class CorridorDetails implements Serializable
 
     /**
      * Get the total number of positions.
-     * 
-     * @return
+     *
+     * @return the total number of positions within the corridor
      */
     public Integer getTotalPositions()
     {

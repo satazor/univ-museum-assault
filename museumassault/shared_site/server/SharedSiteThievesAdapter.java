@@ -1,7 +1,5 @@
 package museumassault.shared_site.server;
 
-import java.rmi.RemoteException;
-
 /**
  * SharedSiteThievesAdapter class.
  *

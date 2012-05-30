@@ -14,7 +14,7 @@ public interface IThievesConfiguration
      *
      * @param roomId the room id
      *
-     * @return
+     * @return the room host
      */
     public String getRoomHost(int roomId);
 
@@ -23,7 +23,7 @@ public interface IThievesConfiguration
      *
      * @param corridorId the corridor id
      *
-     * @return
+     * @return the corridor host
      */
     public String getCorridorHost(int corridorId);
 
@@ -32,7 +32,7 @@ public interface IThievesConfiguration
      *
      * @param roomId the room id
      *
-     * @return
+     * @return the room port
      */
     public Integer getRoomPort(int roomId);
 
@@ -41,7 +41,7 @@ public interface IThievesConfiguration
      *
      * @param corridorId the corridor id
      *
-     * @return
+     * @return the corridor port
      */
     public Integer getCorridorPort(int corridorId);
 
@@ -50,7 +50,7 @@ public interface IThievesConfiguration
      *
      * @param roomId the room id
      *
-     * @return
+     * @return the corridor id of the room
      */
     public Integer getRoomCorridorId(int roomId);
 }

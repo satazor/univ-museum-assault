@@ -3,7 +3,7 @@ package museumassault.corridor.server;
 import museumassault.common.IShutdownHandler;
 
 /**
- * SharedSiteChiefsAdapter class.
+ * CorridorAdapter class.
  *
  * This class servers as facade to the Corridor, decoupling it from the
  * network protocol.

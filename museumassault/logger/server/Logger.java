@@ -127,8 +127,9 @@ public class Logger implements ILoggerStatusConstants
     }
 
     /**
+     * Sets a thief details.
      *
-     * @param details
+     * @param details the details
      */
     public synchronized void setThiefDetails(ThiefDetails details)
     {
@@ -140,8 +141,9 @@ public class Logger implements ILoggerStatusConstants
     }
 
     /**
+     * Sets a room details.
      *
-     * @param details
+     * @param details the details
      */
     public synchronized void setRoomDetails(RoomDetails details)
     {
@@ -153,8 +155,9 @@ public class Logger implements ILoggerStatusConstants
     }
 
     /**
+     * Sets a corridor details.
      *
-     * @param details
+     * @param details the details
      */
     public synchronized void setCorridorDetails(CorridorDetails details)
     {
@@ -166,8 +169,9 @@ public class Logger implements ILoggerStatusConstants
     }
 
     /**
+     * Sets a team details.
      *
-     * @param details
+     * @param details the details
      */
     public synchronized void setTeamDetails(TeamDetails details)
     {

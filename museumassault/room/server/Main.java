@@ -6,8 +6,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import museumassault.common.Configuration;
 import museumassault.common.IShutdownHandler;
 import museumassault.logger.client.LoggerClient;
@@ -20,7 +18,7 @@ import museumassault.logger.client.LoggerClient;
  */
 public class Main
 {
-    protected static Registry registry;    // Registry must be static so it won't get GC'ed
+    protected static Registry registry;
     protected static boolean shutdown = false;
 
     /**
@@ -104,7 +102,6 @@ public class Main
         // Gracefully stop RMI.
         try {
             registry.unbind(IRoom.RMI_NAME_ENTRY);
-
             UnicastRemoteObject.unexportObject(roomAdapter, true);
         } catch (Exception e) {
             System.err.println(e.getMessage());

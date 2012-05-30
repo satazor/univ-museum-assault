@@ -1,12 +1,13 @@
 package museumassault.logger.client;
 
-import java.util.HashMap;
+import java.rmi.AccessException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Random;
-import museumassault.common.ClientCom;
-import museumassault.common.Message;
 import museumassault.common.exception.ComException;
-import museumassault.common.exception.ShutdownException;
 import museumassault.logger.*;
+import museumassault.logger.server.ILogger;
 
 /**
  * LoggerClient class.
@@ -17,9 +18,11 @@ import museumassault.logger.*;
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConstants
+public class LoggerClient implements ILoggerStatusConstants
 {
-    protected ClientCom con;
+    protected ILogger logger = null;
+    protected String host;
+    protected int port;
     protected Random random = new Random();
 
     /**
@@ -30,122 +33,130 @@ public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConst
      */
     public LoggerClient(String host, int port)
     {
-        this.con = new ClientCom(host, port);
+        this.host = host;
+        this.port = port;
     }
 
     /**
-     *
-     * @param chiefId
-     * @param status
+     * Initializes the RMI connection.
      */
-    public void setChiefStatus(int chiefId, CHIEF_STATUS status)
+    protected void initialize() /*throws ComException*/
     {
-        this.setStatus(new Message(SET_CHIEF_STATUS_TYPE, chiefId, status));
-    }
-
-    /**
-     *
-     * @param thiefId
-     * @param status
-     */
-    public void setThiefStatus(int thiefId, THIEF_STATUS status)
-    {
-        this.setStatus(new Message(SET_THIEF_STATUS_TYPE, thiefId, status));
-    }
-
-    /**
-     *
-     * @param details
-     */
-    public void setThiefDetails(ThiefDetails details)
-    {
-        this.setDetails(new Message(SET_THIEF_DETAILS_TYPE, details));
-    }
-
-    /**
-     *
-     * @param details
-     */
-    public void setTeamDetails(TeamDetails details)
-    {
-        this.setDetails(new Message(SET_TEAM_DETAILS_TYPE, details));
-    }
-
-    /**
-     *
-     * @param details
-     */
-    public void setRoomDetails(RoomDetails details)
-    {
-        this.setDetails(new Message(SET_ROOM_DETAILS_TYPE, details));
-    }
-
-    /**
-     *
-     * @param details
-     */
-    public void setCorridorDetails(CorridorDetails details)
-    {
-        this.setDetails(new Message(SET_CORRIDOR_DETAILS_TYPE, details));
-    }
-
-    /**
-     *
-     * @param message
-     */
-    protected void setStatus(Message message)
-    {
-        try {
-            while (!this.con.open()) {                           // Try until the server responds
+        if (this.logger == null) {
+            do {
                 try {
-                    Thread.sleep(this.random.nextInt(500) + 500);
-                } catch (InterruptedException e) {}
-            }
+                    Registry registry = LocateRegistry.getRegistry(this.host, this.port);
+                    this.logger = (ILogger) registry.lookup(ILogger.RMI_NAME_ENTRY);
+                } catch (AccessException e) {
+                    //throw new ComException("Server refused connection: " + e.getMessage());
+                    break;
+                } catch (Exception e) {
+                    System.err.println("Server seems to be down, retrying in a while.. (" + e.getMessage() + ")");
 
-            this.con.writeMessage(message);
+                    try {
+                        Thread.sleep(this.random.nextInt(100) + 100);
+                    } catch (InterruptedException ex) {}
+                }
 
-            Message response = this.con.readMessage();
-            this.con.close();
-
-            if (response.getType() != STATUS_UPDATED_TYPE) {
-                //System.err.println("Unexpected message type sent by the server: " + response.getType());
-                //System.exit(1);
-                throw new ComException("Unexpected message type sent by the server: " + response.getType());
-            }
-        } catch (ShutdownException ex) {
-            System.err.println("Logger server is shutdown.");
-        } catch (ComException e) {
-            System.err.println(e.getMessage());
+            } while (this.logger == null);
         }
     }
 
     /**
+     * Logs a change of a chief status.
      *
-     * @param message
+     * @param chiefId the chief id
+     * @param status the status to be logged
      */
-    protected void setDetails(Message message)
+    public void setChiefStatus(int chiefId, CHIEF_STATUS status) /*throws ComException, ShutdownException*/
     {
+        this.initialize();
+
         try {
-            while (!this.con.open()) {                           // Try until the server responds
-                try {
-                    Thread.sleep(this.random.nextInt(500) + 500);
-                } catch (InterruptedException e) {}
-            }
+            this.logger.setChiefStatus(chiefId, status);
+        } catch (RemoteException e) {
+            //throw new ShutdownException();
+        }
+    }
 
-            this.con.writeMessage(message);
+    /**
+     * Logs a change of a thief status.
+     *
+     * @param thiefId the thief id
+     * @param status the status to be logged
+     */
+    public void setThiefStatus(int thiefId, THIEF_STATUS status) /*throws ComException, ShutdownException*/
+    {
+        this.initialize();
 
-            Message response = this.con.readMessage();
-            this.con.close();
+        try {
+            this.logger.setThiefStatus(thiefId, status);
+        } catch (RemoteException e) {
+            //throw new ShutdownException();
+        }
+    }
 
-            if (response.getType() != DETAILS_UPDATED_TYPE) {
-                //System.err.println("Unexpected message type sent by the server: " + response.getType());
-                //System.exit(1);
-                throw new ComException("Unexpected message type sent by the server: " + response.getType());
-            }
-        } catch (ShutdownException ex) {
-            System.err.println("Logger server is shutdown.");
-        } catch (ComException e) {
-            System.err.println(e.getMessage());
+    /**
+     * Sets a thief details.
+     *
+     * @param details the details
+     */
+    public void setThiefDetails(ThiefDetails details) /*throws ComException, ShutdownException*/
+    {
+        this.initialize();
+
+        try {
+            this.logger.setThiefDetails(details);
+        } catch (RemoteException e) {
+            //throw new ShutdownException();
+        }
+    }
+
+    /**
+     * Sets a team details.
+     *
+     * @param details the details
+     */
+    public void setTeamDetails(TeamDetails details) /*throws ComException, ShutdownException*/
+    {
+        this.initialize();
+
+        try {
+            this.logger.setTeamDetails(details);
+        } catch (RemoteException e) {
+            //throw new ShutdownException();
+        }
+    }
+
+    /**
+     * Sets a room details.
+     *
+     * @param details the details
+     */
+    public void setRoomDetails(RoomDetails details) /*throws ComException, ShutdownException*/
+    {
+        this.initialize();
+
+        try {
+            this.logger.setRoomDetails(details);
+        } catch (RemoteException e) {
+            //throw new ShutdownException();
+        }
+    }
+
+    /**
+     * Sets a corridor details.
+     *
+     * @param details the details
+     */
+    public void setCorridorDetails(CorridorDetails details) /*throws ComException, ShutdownException*/
+    {
+        this.initialize();
+
+        try {
+            this.logger.setCorridorDetails(details);
+        } catch (RemoteException e) {
+            //throw new ShutdownException();
         }
     }
 
@@ -161,39 +172,11 @@ public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConst
      */
     public boolean shutdown(String password, int totalCanvas) throws ComException
     {
+        this.initialize();
+
         try {
-            int nrAttempts = 0;
-            while (!this.con.open() && nrAttempts < 10) {                           // Try until the server responds
-                try {
-                    Thread.sleep(this.random.nextInt(100) + 100);
-                } catch (InterruptedException e) {}
-
-                nrAttempts++;
-            }
-
-            if (nrAttempts >= 10) {
-                System.out.println("Assumed that the server is shutted down.");
-                return true;
-            }
-
-            HashMap<String, Object> extra = new HashMap<String, Object>();
-            extra.put("password", password);
-            extra.put("total_canvas", totalCanvas);
-
-            this.con.writeMessage(new Message(SHUTDOWN_TYPE, extra));
-
-            Message response = this.con.readMessage();
-
-            if (response.getType() == SHUTDOWN_COMPLETED_TYPE) {
-                return true;
-            } else if (response.getType() == WRONG_SHUTDOWN_PASSWORD_TYPE) {
-                return false;
-            } else {
-                //System.err.println("Unexpected message type sent by the server: " + response.getType());
-                //System.exit(1);
-                throw new ComException("Unexpected message type sent by the server: " + response.getType());
-            }
-        } catch (ShutdownException ex) {
+            return this.logger.shutdown(password, totalCanvas);
+        } catch(RemoteException e) {
             return true;
         }
     }

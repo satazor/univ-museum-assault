@@ -33,7 +33,7 @@ public class RoomDetails implements Serializable
     /**
      * Get the room id.
      *
-     * @return
+     * @return the room id
      */
     public int getRoomId()
     {
@@ -43,7 +43,7 @@ public class RoomDetails implements Serializable
     /**
      * Get the corridor id associated with this room.
      *
-     * @return
+     * @return the corridor id
      */
     public int getCorridorId()
     {
@@ -52,8 +52,8 @@ public class RoomDetails implements Serializable
 
     /**
      * Get the number of canvas the room still has.
-     * 
-     * @return
+     *
+     * @return the current number of canvas
      */
     public Integer getNrCanvas()
     {

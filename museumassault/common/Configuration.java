@@ -98,7 +98,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the maximum number of canvas in a room.
      *
-     * @return
+     * @return the maxium number of canvas
      */
     public int getMaxCanvasInRoom()
     {
@@ -108,7 +108,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the maximum distance between the room and the exterior.
      *
-     * @return
+     * @return the max distance
      */
     public int getMaxDistanceBetweenRoomAndOutside()
     {
@@ -118,7 +118,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the maximum distance between two thieves in a corridor.
      *
-     * @return
+     * @return the max distance
      */
     public int getMaxDistanceBetweenThieves()
     {
@@ -127,7 +127,8 @@ public class Configuration implements IThievesConfiguration
 
     /**
      * Get the maximum thief power.
-     * @return
+     *
+     * @return the max power
      */
     public int getMaxPowerPerThief()
     {
@@ -137,7 +138,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the number of chiefs.
      *
-     * @return
+     * @return the number of chiefs
      */
     public int getNrChiefs()
     {
@@ -147,7 +148,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the chief ids.
      *
-     * @return
+     * @return the chief ids
      */
     public List<Integer> getChiefIds()
     {
@@ -157,7 +158,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the number of thieves.
      *
-     * @return
+     * @return the number of thieves
      */
     public int getNrThieves()
     {
@@ -167,7 +168,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the thief ids.
      *
-     * @return
+     * @return the thieves ids
      */
     public List<Integer> getThiefIds()
     {
@@ -177,7 +178,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Ge the number of rooms.
      *
-     * @return
+     * @return the number of rooms
      */
     public int getNrRooms()
     {
@@ -187,7 +188,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the room ids.
      *
-     * @return
+     * @return the room ids
      */
     public List<Integer> getRoomIds()
     {
@@ -197,7 +198,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the corridor ids.
      *
-     * @return
+     * @return the corridor ids
      */
     public List<Integer> getCorridorIds()
     {
@@ -207,7 +208,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the number of teams.
      *
-     * @return
+     * @return the number of teams
      */
     public int getNrTeams()
     {
@@ -217,7 +218,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the team ids.
      *
-     * @return
+     * @return the team ids
      */
     public List<Integer> getTeamIds()
     {
@@ -227,7 +228,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the number of thieves per team.
      *
-     * @return
+     * @return the total thieves per team
      */
     public int getNrThievesPerTeam()
     {
@@ -237,7 +238,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the host of the shared site for chiefs.
      *
-     * @return
+     * @return the host of the shared site (chief)
      */
     public String getSharedChiefsSiteHost()
     {
@@ -247,7 +248,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the host of the shared site for thieves.
      *
-     * @return
+     * @return the host of the shared site (thief)
      */
     public String getSharedThievesSiteHost()
     {
@@ -257,7 +258,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the port number of the shared site for chiefs.
      *
-     * @return
+     * @return the port of the shared site (chief)
      */
     public int getSharedChiefsSitePort()
     {
@@ -267,7 +268,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Get the port number of the shared site for thieves.
      *
-     * @return
+     * @return the port of the shared site (thief)
      */
     public int getSharedThievesSitePort()
     {
@@ -279,7 +280,7 @@ public class Configuration implements IThievesConfiguration
      *
      * @param roomId the room id
      *
-     * @return
+     * @return the room host
      */
     @Override
     public String getRoomHost(int roomId)
@@ -297,7 +298,7 @@ public class Configuration implements IThievesConfiguration
      *
      * @param roomId the room id
      *
-     * @return
+     * @return the room port
      */
     @Override
     public Integer getRoomPort(int roomId)
@@ -316,7 +317,7 @@ public class Configuration implements IThievesConfiguration
      *
      * @param corridorId the corridor id
      *
-     * @return
+     * @return the corridor host
      */
     @Override
     public String getCorridorHost(int corridorId)
@@ -334,7 +335,7 @@ public class Configuration implements IThievesConfiguration
      *
      * @param corridorId the corridor id
      *
-     * @return
+     * @return the corridor port
      */
     @Override
     public Integer getCorridorPort(int corridorId)
@@ -352,7 +353,7 @@ public class Configuration implements IThievesConfiguration
      *
      * @param roomId the room id
      *
-     * @return
+     * @return the corridor id of the room
      */
     @Override
     public Integer getRoomCorridorId(int roomId)
@@ -363,7 +364,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Gets the logger host.
      *
-     * @return
+     * @return the logger host
      */
     public String getLoggerHost()
     {
@@ -373,7 +374,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Gets the logger port number.
      *
-     * @return
+     * @return the logger port
      */
     public int getLoggerPort()
     {
@@ -384,7 +385,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Gets the password that allows the shutdown of the various servers.
      *
-     * @return
+     * @return the shutdown password
      */
     public String getShutdownPassword()
     {
@@ -394,7 +395,7 @@ public class Configuration implements IThievesConfiguration
     /**
      * Gets the log file name.
      *
-     * @return
+     * @return the path to the log file
      */
     public String getLogFileName() {
         return this.logFileName;
