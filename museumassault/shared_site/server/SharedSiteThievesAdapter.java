@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 /**
  * SharedSiteThievesAdapter class.
  *
- * This class servers as facade to the SharedSite, decoupling SharedSite from the
+ * This class servers as facade to the SharedSite, decoupling it from the
  * network protocol.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>

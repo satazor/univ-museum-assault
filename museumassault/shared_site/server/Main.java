@@ -16,6 +16,9 @@ import museumassault.logger.client.LoggerClient;
  */
 public class Main
 {
+    public static Registry thievesRegistry;    // Registry must be static so it won't get GC'ed
+    public static Registry chiefsRegistry;    // Registry must be static so it won't get GC'ed
+
     /**
      * Program entry point.
      *
@@ -40,6 +43,7 @@ public class Main
         SharedSiteChiefsAdapter chiefsSharedSiteAdapter = new SharedSiteChiefsAdapter(site, configuration.getShutdownPassword(), new IShutdownHandler() {
             @Override
             public void onShutdown() {
+                System.out.println("Exiting..");
                 System.exit(1);
             }
         });
@@ -62,11 +66,14 @@ public class Main
         }
 
         // Get the RMI registry for the given host & ports and start to listen.
-        Registry registry;
-
         try {
-            registry = LocateRegistry.createRegistry(configuration.getSharedThievesSitePort());
-            registry.bind(IThievesConcentrationSite.RMI_NAME_ENTRY, thievesConcentrationSite);
+            chiefsRegistry = LocateRegistry.createRegistry(configuration.getSharedThievesSitePort());
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {}
+
+            chiefsRegistry.bind(IThievesConcentrationSite.RMI_NAME_ENTRY, thievesConcentrationSite);
         } catch (Exception e) {
             System.err.println("Error while attempting to initialize the server: " + e.getMessage());
             System.exit(1);
@@ -75,13 +82,18 @@ public class Main
         System.out.println("Now listening for thieves requests in " + configuration.getSharedThievesSitePort() + "..");
 
         try {
-            registry = LocateRegistry.createRegistry(configuration.getSharedChiefsSitePort());
-            registry.bind(IChiefsControlSite.RMI_NAME_ENTRY, chiefsSharedSite);
+            thievesRegistry = LocateRegistry.createRegistry(configuration.getSharedChiefsSitePort());
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {}
+
+            thievesRegistry.bind(IChiefsControlSite.RMI_NAME_ENTRY, chiefsSharedSite);
         } catch (Exception e) {
             System.err.println("Error while attempting to initialize the server: " + e.getMessage());
             System.exit(1);
         }
-
+        
         System.out.println("Now listening for chiefs requests in port " + configuration.getSharedChiefsSitePort() + "..");
     }
 }

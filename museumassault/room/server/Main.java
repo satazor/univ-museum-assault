@@ -18,6 +18,8 @@ import museumassault.logger.client.LoggerClient;
  */
 public class Main
 {
+    public static Registry registry;    // Registry must be static so it won't get GC'ed
+
     /**
      * Program entry point.
      *
@@ -38,7 +40,7 @@ public class Main
 
         System.out.println("Room #" + roomId);
 
-        // Initialize the server connection.
+        // Get the port.
         Integer port = configuration.getRoomPort(roomId);
         if (port == null) {
             System.err.println("Unknown room id: " + roomId + ".");
@@ -48,11 +50,12 @@ public class Main
         // Initialize the logger.
         LoggerClient logger = new LoggerClient(configuration.getLoggerHost(), configuration.getLoggerPort());
 
-        // Initialize the room & room adapter
+        // Initialize the room & room adapter.
         Room room = new Room(roomId, random.nextInt(configuration.getMaxCanvasInRoom()), configuration.getRoomCorridorId(roomId), logger);
         RoomAdapter roomAdapter = new RoomAdapter(room, configuration.getShutdownPassword(), new IShutdownHandler() {
             @Override
             public void onShutdown() {
+                System.out.println("Exiting..");
                 System.exit(1);
             }
         });
@@ -72,16 +75,19 @@ public class Main
         }
 
         // Get the RMI registry for the given host & ports and start to listen.
-        Registry registry;
-
         try {
-            registry = LocateRegistry.createRegistry(configuration.getRoomPort(roomId));
+            registry = LocateRegistry.createRegistry(port);
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {}
+
             registry.bind(IRoom.RMI_NAME_ENTRY, roomAdapterInt);
         } catch (Exception e) {
             System.err.println("Error while attempting to initialize the server: " + e.getMessage());
             System.exit(1);
         }
 
-        System.out.println("Now listening for requests in " + configuration.getSharedThievesSitePort() + "..");
+        System.out.println("Now listening for requests in port " + port + "..");
     }
 }

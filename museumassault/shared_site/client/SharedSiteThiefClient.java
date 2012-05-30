@@ -3,6 +3,7 @@ package museumassault.shared_site.client;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Random;
 import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
 import museumassault.shared_site.server.IChiefsControlSite;
@@ -18,9 +19,9 @@ import museumassault.shared_site.server.IThievesConcentrationSite;
 public class SharedSiteThiefClient
 {
     protected IThievesConcentrationSite site;
-
     protected String host;
     protected int port;
+    protected Random random = new Random();
 
     /**
      * Constructor.
@@ -40,12 +41,17 @@ public class SharedSiteThiefClient
     protected void initialize() throws ComException
     {
         if (this.site == null) {
-            try {
-                Registry registry = LocateRegistry.getRegistry(this.host, this.port);
-                this.site = (IThievesConcentrationSite) registry.lookup(IThievesConcentrationSite.RMI_NAME_ENTRY);
-            } catch (Exception e) {
-                throw new ComException("Unable to connect to remote server: " + e.getMessage());
-            }
+            do {
+                try {
+                    Registry registry = LocateRegistry.getRegistry(this.host, this.port);
+                    this.site = (IThievesConcentrationSite) registry.lookup(IThievesConcentrationSite.RMI_NAME_ENTRY);
+                } catch (Exception e) {}
+
+                try {
+                    Thread.sleep(this.random.nextInt(100) + 100);
+                } catch (InterruptedException e) {}
+
+            } while (this.site == null);
         }
     }
 

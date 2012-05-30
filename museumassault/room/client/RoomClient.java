@@ -3,6 +3,7 @@ package museumassault.room.client;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Random;
 import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
 import museumassault.room.server.IRoom;
@@ -19,6 +20,7 @@ public class RoomClient
     protected IRoom room = null;
     protected String host;
     protected int port;
+    protected Random random = new Random();
 
     /**
      * Constructor.
@@ -38,12 +40,17 @@ public class RoomClient
     protected void initialize() throws ComException
     {
         if (this.room == null) {
-            try {
-                Registry registry = LocateRegistry.getRegistry(this.host, this.port);
-                this.room = (IRoom) registry.lookup(IRoom.RMI_NAME_ENTRY);
-            } catch (Exception e) {
-                throw new ComException("Unable to connect to remote server: " + e.getMessage());
-            }
+            do {
+                try {
+                    Registry registry = LocateRegistry.getRegistry(this.host, this.port);
+                    this.room = (IRoom) registry.lookup(IRoom.RMI_NAME_ENTRY);
+                } catch (Exception e) {}
+
+                try {
+                    Thread.sleep(this.random.nextInt(100) + 100);
+                } catch (InterruptedException e) {}
+
+            } while (this.room == null);
         }
     }
 

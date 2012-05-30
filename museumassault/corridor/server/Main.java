@@ -1,9 +1,13 @@
 package museumassault.corridor.server;
 
+import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Random;
 import museumassault.common.Configuration;
-import museumassault.common.ServerCom;
-import museumassault.common.exception.ComException;
+import museumassault.common.IShutdownHandler;
 import museumassault.logger.client.LoggerClient;
 
 /**
@@ -12,6 +16,8 @@ import museumassault.logger.client.LoggerClient;
  */
 public class Main
 {
+    public static Registry registry;    // Registry must be static so it won't get GC'ed
+
     /**
      * Program entry point.
      *
@@ -30,51 +36,56 @@ public class Main
 
         int corridorId = Integer.parseInt(args[0]);
 
-        // Initialize the server connection
+        System.out.println("Corridor #" + corridorId);
+
+        // Get the port.
         Integer port = configuration.getCorridorPort(corridorId);
         if (port == null) {
             System.err.println("Unknown corridor id: " + corridorId + ".");
             System.exit(1);
         }
 
-        ServerCom con = new ServerCom(port);
+        // Initialize the logger.
+        LoggerClient logger = new LoggerClient(configuration.getLoggerHost(), configuration.getLoggerPort());
 
+        // Initialize the corridor & corridor adapter.
+        Corridor corridor = new Corridor(corridorId, (random.nextInt(configuration.getMaxDistanceBetweenRoomAndOutside() - 1) + 1), configuration.getMaxDistanceBetweenThieves(), logger);
+        CorridorAdapter corridorAdapter = new CorridorAdapter(corridor, configuration.getShutdownPassword(), new IShutdownHandler() {
+            @Override
+            public void onShutdown() {
+                System.out.println("Exiting..");
+                System.exit(1);
+            }
+        });
+
+        // Initialize the security manager.
+        if (System.getSecurityManager () == null) {
+            System.setSecurityManager(new RMISecurityManager());
+        }
+
+        // Initialize the remote objects.
+        ICorridor corridordAdapterInt = null;
         try {
-            con.start();
-        } catch (ComException e) {
-            System.err.println(e.getMessage());
+            corridordAdapterInt = (ICorridor) UnicastRemoteObject.exportObject(corridorAdapter, 0);
+        } catch (RemoteException e) {
+            System.err.println("Unable to initialize remote object: " + e.getMessage());
             System.exit(1);
         }
 
-        // Initialize the logger
-        LoggerClient logger = new LoggerClient(configuration.getLoggerHost(), configuration.getLoggerPort());
-
-        // Initialize the corridor
-        Corridor corridor = new Corridor(corridorId, (random.nextInt(configuration.getMaxDistanceBetweenRoomAndOutside() - 1) + 1), configuration.getMaxDistanceBetweenThieves(), logger);
-
-        System.out.println("Corridor #" + corridorId);
-        System.out.println("Now listening for thieves requests in port " + con.getServerPort() + "..");
-
-        // Accept connections
-        while (true) {
-            ServerCom newCon;
+        // Get the RMI registry for the given host & ports and start to listen.
+        try {
+            registry = LocateRegistry.createRegistry(port);
 
             try {
-                newCon = con.accept();
-            } catch (ComException e) {
-                if (con.isEnded()) {
-                    break;
-                }
-                System.err.println(e.getMessage());
-                continue;
-            }
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {}
 
-            System.out.println("New connection accepted from a thief, creating thread to handle it..");
-
-            RequestHandler handler = new RequestHandler(newCon, corridor, configuration.getShutdownPassword());
-            handler.start();
+            registry.bind(ICorridor.RMI_NAME_ENTRY, corridordAdapterInt);
+        } catch (Exception e) {
+            System.err.println("Error while attempting to initialize the server: " + e.getMessage());
+            System.exit(1);
         }
 
-        System.exit(0);
+        System.out.println("Now listening for requests in port " + port + "..");
     }
 }

@@ -1,31 +1,31 @@
-package museumassault.room.server;
+package museumassault.corridor.server;
 
 import museumassault.common.IShutdownHandler;
 
 /**
  * SharedSiteChiefsAdapter class.
  *
- * This class servers as facade to the Room, decoupling it from the
+ * This class servers as facade to the Corridor, decoupling it from the
  * network protocol.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class RoomAdapter implements IRoom
+public class CorridorAdapter implements ICorridor
 {
-    protected Room room;
+    protected Corridor corridor;
     protected IShutdownHandler shutdownHandler;
     protected String shutdownPassword;
 
     /**
      * Constructor.
      *
-     * @param room             the room
+     * @param corridor         the corridor
      * @param shutdownPassword the shutdown password
      * @param shutdownHandler  the shutdown handler
      */
-    public RoomAdapter(Room room, String shutdownPassword, IShutdownHandler shutdownHandler)
+    public CorridorAdapter(Corridor corridor, String shutdownPassword, IShutdownHandler shutdownHandler)
     {
-        this.room = room;
+        this.corridor = corridor;
         this.shutdownPassword = shutdownPassword;
         this.shutdownHandler = shutdownHandler;
     }
@@ -34,12 +34,22 @@ public class RoomAdapter implements IRoom
      * {@inheritDoc}
      */
     @Override
-    public boolean rollACanvas(int thiefId)
+    public boolean crawlOut(int thiefId, int increment)
     {
-        System.out.println("Thief #" + thiefId + " rollACanvas(" + thiefId + ")");
-        System.out.println("Canvas remaining: " + this.room.getNrCanvas());
+        System.out.println("Thief #" + thiefId + " crawlOut(" + thiefId + ", " + increment + ")");
 
-        return this.room.rollACanvas(thiefId);
+        return this.corridor.crawlOut(thiefId, increment);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean crawlIn(int thiefId, int increment)
+    {
+        System.out.println("Thief #" + thiefId + " crawlIn(" + thiefId + ", " + increment + ")");
+
+        return this.corridor.crawlIn(thiefId, increment);
     }
 
     /**

@@ -5,7 +5,7 @@ import museumassault.common.IShutdownHandler;
 /**
  * SharedSiteChiefsAdapter class.
  *
- * This class servers as facade to the SharedSite, decoupling SharedSite from the
+ * This class servers as facade to the SharedSite, decoupling it from the
  * network protocol.
  *
  * @author Andre Cruz <andremiguelcruz@ua.pt>
@@ -20,6 +20,8 @@ public class SharedSiteChiefsAdapter implements IChiefsControlSite
      * Constructor.
      *
      * @param site The shared site
+     * @param shutdownPassword the shutdown password
+     * @param shutdownHandler  the shutdown handler
      */
     public SharedSiteChiefsAdapter(SharedSite site, String shutdownPassword, IShutdownHandler shutdownHandler)
     {

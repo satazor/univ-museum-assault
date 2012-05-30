@@ -1,11 +1,12 @@
 package museumassault.corridor.client;
 
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Random;
-import museumassault.common.ClientCom;
-import museumassault.common.Message;
 import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
-import museumassault.corridor.ICorridorMessageConstants;
+import museumassault.corridor.server.ICorridor;
 
 /**
  * CorridorClient class.
@@ -15,9 +16,11 @@ import museumassault.corridor.ICorridorMessageConstants;
  * @author Hugo Oliveira <hugo.oliveira@ua.pt>
  * @author Andre Cruz <andremiguelcruz@ua.pt>
  */
-public class CorridorClient implements ICorridorMessageConstants
+public class CorridorClient
 {
-    protected ClientCom con;
+    protected ICorridor corridor = null;
+    protected String host;
+    protected int port;
     protected Random random = new Random();
 
     /**
@@ -28,7 +31,28 @@ public class CorridorClient implements ICorridorMessageConstants
      */
     public CorridorClient(String host, int port)
     {
-        this.con = new ClientCom(host, port);
+        this.host = host;
+        this.port = port;
+    }
+
+    /**
+     * Initializes the RMI connection.
+     */
+    protected void initialize()
+    {
+        if (this.corridor == null) {
+            do {
+                try {
+                    Registry registry = LocateRegistry.getRegistry(this.host, this.port);
+                    this.corridor = (ICorridor) registry.lookup(ICorridor.RMI_NAME_ENTRY);
+                } catch (Exception e) {}
+
+                try {
+                    Thread.sleep(this.random.nextInt(100) + 100);
+                } catch (InterruptedException e) {}
+
+            } while (this.corridor == null);
+        }
     }
 
     /**
@@ -41,26 +65,13 @@ public class CorridorClient implements ICorridorMessageConstants
      */
     public boolean crawlOut(int thiefId, int increment) throws ShutdownException, ComException
     {
-        while (!this.con.open()) {                           // Try until the server responds
-            try {
-                Thread.sleep(this.random.nextInt(500) + 500);
-            } catch (InterruptedException e) {
-            }
+        this.initialize();
+
+        try {
+            return this.corridor.crawlOut(thiefId, increment);
+        } catch (RemoteException e) {
+            throw new ShutdownException();
         }
-
-        this.con.writeMessage(new Message(CRAWL_OUT_TYPE, thiefId, (Integer) increment));
-
-        Message response = this.con.readMessage();
-        this.con.close();
-
-        if (response.getType() == CRAWLED_OUT_TYPE) {
-            return (Boolean) response.getExtra();
-        } else {
-            //System.err.println("Unexpected message type sent by the server: " + response.getType());
-            //System.exit(1);
-            throw new ComException("Unexpected message type sent by the server: " + response.getType());
-        }
-
     }
 
     /**
@@ -73,24 +84,12 @@ public class CorridorClient implements ICorridorMessageConstants
      */
     public boolean crawlIn(int thiefId, int increment) throws ShutdownException, ComException
     {
-        while (!this.con.open()) {                           // Try until the server responds
-            try {
-                Thread.sleep(this.random.nextInt(500) + 500);
-            } catch (InterruptedException e) {
-            }
-        }
+        this.initialize();
 
-        this.con.writeMessage(new Message(CRAWL_IN_TYPE, thiefId, (Integer) increment));
-
-        Message response = this.con.readMessage();
-        this.con.close();
-
-        if (response.getType() == CRAWLED_IN_TYPE) {
-            return (Boolean) response.getExtra();
-        } else {
-            //System.err.println("Unexpected message type sent by the server: " + response.getType());
-            //System.exit(1);
-            throw new ComException("Unexpected message type sent by the server: " + response.getType());
+        try {
+            return this.corridor.crawlIn(thiefId, increment);
+        } catch (RemoteException e) {
+            throw new ShutdownException();
         }
     }
 
@@ -105,36 +104,11 @@ public class CorridorClient implements ICorridorMessageConstants
      */
     public boolean shutdown(String password) throws ComException
     {
+        this.initialize();
+
         try {
-            int nrAttempts = 0;
-            while (!this.con.open() && nrAttempts < 10) {                           // Try until the server responds
-                try {
-                    Thread.sleep(this.random.nextInt(100) + 100);
-                } catch (InterruptedException e) {}
-
-                nrAttempts++;
-            }
-
-            if (nrAttempts >= 10) {
-                System.out.println("Assumed that the server is shutted down.");
-                return true;
-            }
-
-            this.con.writeMessage(new Message(SHUTDOWN_TYPE, password));
-
-            Message response = this.con.readMessage();
-            this.con.close();
-
-            if (response.getType() == SHUTDOWN_COMPLETED_TYPE) {
-                return true;
-            } else if (response.getType() == WRONG_SHUTDOWN_PASSWORD_TYPE) {
-                return false;
-            } else {
-                //System.err.println("Unexpected message type sent by the server: " + response.getType());
-                //System.exit(1);
-                throw new ComException("Unexpected message type sent by the server: " + response.getType());
-            }
-        } catch (ShutdownException ex) {
+            return this.corridor.shutdown(password);
+        } catch(RemoteException e) {
             return true;
         }
     }
