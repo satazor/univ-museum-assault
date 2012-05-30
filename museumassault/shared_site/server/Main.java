@@ -69,6 +69,7 @@ public class Main
         try {
             chiefsRegistry = LocateRegistry.createRegistry(configuration.getSharedThievesSitePort());
 
+            // Wait until the registry is created.. (this is ugly but works).
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {}
@@ -84,6 +85,7 @@ public class Main
         try {
             thievesRegistry = LocateRegistry.createRegistry(configuration.getSharedChiefsSitePort());
 
+            // Wait until the registry is created.. (this is ugly but works).
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {}
@@ -93,7 +95,7 @@ public class Main
             System.err.println("Error while attempting to initialize the server: " + e.getMessage());
             System.exit(1);
         }
-        
+
         System.out.println("Now listening for chiefs requests in port " + configuration.getSharedChiefsSitePort() + "..");
     }
 }

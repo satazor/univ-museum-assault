@@ -99,8 +99,7 @@ public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConst
             while (!this.con.open()) {                           // Try until the server responds
                 try {
                     Thread.sleep(this.random.nextInt(500) + 500);
-                } catch (InterruptedException e) {
-                }
+                } catch (InterruptedException e) {}
             }
 
             this.con.writeMessage(message);
@@ -130,8 +129,7 @@ public class LoggerClient implements ILoggerMessageConstants, ILoggerStatusConst
             while (!this.con.open()) {                           // Try until the server responds
                 try {
                     Thread.sleep(this.random.nextInt(500) + 500);
-                } catch (InterruptedException e) {
-                }
+                } catch (InterruptedException e) {}
             }
 
             this.con.writeMessage(message);

@@ -77,7 +77,8 @@ public class Main
         // Get the RMI registry for the given host & ports and start to listen.
         try {
             registry = LocateRegistry.createRegistry(port);
-
+            
+            // Wait until the registry is created.. (this is ugly but works).
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {}

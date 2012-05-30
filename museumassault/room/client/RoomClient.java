@@ -1,5 +1,6 @@
 package museumassault.room.client;
 
+import java.rmi.AccessException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -44,11 +45,15 @@ public class RoomClient
                 try {
                     Registry registry = LocateRegistry.getRegistry(this.host, this.port);
                     this.room = (IRoom) registry.lookup(IRoom.RMI_NAME_ENTRY);
-                } catch (Exception e) {}
+                } catch (AccessException e) {
+                    throw new ComException("Server refused connection: " + e.getMessage());
+                } catch (Exception e) {
+                    System.err.println("Server seems to be down, retrying in a while.. (" + e.getMessage() + ")");
 
-                try {
-                    Thread.sleep(this.random.nextInt(100) + 100);
-                } catch (InterruptedException e) {}
+                    try {
+                        Thread.sleep(this.random.nextInt(100) + 100);
+                    } catch (InterruptedException ex) {}
+                }
 
             } while (this.room == null);
         }

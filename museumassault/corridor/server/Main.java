@@ -76,6 +76,7 @@ public class Main
         try {
             registry = LocateRegistry.createRegistry(port);
 
+            // Wait until the registry is created.. (this is ugly but works).
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {}

@@ -1,12 +1,12 @@
 package museumassault.shared_site.client;
 
+import java.rmi.AccessException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Random;
 import museumassault.common.exception.ComException;
 import museumassault.common.exception.ShutdownException;
-import museumassault.shared_site.server.IChiefsControlSite;
 import museumassault.shared_site.server.IThievesConcentrationSite;
 
 /**
@@ -45,11 +45,15 @@ public class SharedSiteThiefClient
                 try {
                     Registry registry = LocateRegistry.getRegistry(this.host, this.port);
                     this.site = (IThievesConcentrationSite) registry.lookup(IThievesConcentrationSite.RMI_NAME_ENTRY);
-                } catch (Exception e) {}
+                } catch (AccessException e) {
+                    throw new ComException("Server refused connection: " + e.getMessage());
+                } catch (Exception e) {
+                    System.err.println("Server seems to be down, retrying in a while.. (" + e.getMessage() + ")");
 
-                try {
-                    Thread.sleep(this.random.nextInt(100) + 100);
-                } catch (InterruptedException e) {}
+                    try {
+                        Thread.sleep(this.random.nextInt(100) + 100);
+                    } catch (InterruptedException ex) {}
+                }
 
             } while (this.site == null);
         }
