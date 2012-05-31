@@ -37,9 +37,10 @@ public class RoomAdapter implements IRoom
     public boolean rollACanvas(int thiefId)
     {
         System.out.println("Thief #" + thiefId + " rollACanvas(" + thiefId + ")");
+        boolean rolled = this.room.rollACanvas(thiefId);
         System.out.println("Canvas remaining: " + this.room.getNrCanvas());
 
-        return this.room.rollACanvas(thiefId);
+        return rolled;
     }
 
     /**

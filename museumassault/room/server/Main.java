@@ -63,6 +63,8 @@ public class Main
             }
         });
 
+        System.out.println("Total canvas: " + room.getNrCanvas());
+        
         // Initialize the security manager.
         if (System.getSecurityManager () == null) {
             System.setSecurityManager(new RMISecurityManager());

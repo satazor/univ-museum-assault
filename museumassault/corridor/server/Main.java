@@ -61,6 +61,8 @@ public class Main
             }
         });
 
+        System.out.println("Total positions: " + corridor.getTotalPositions());
+
         // Initialize the security manager.
         if (System.getSecurityManager () == null) {
             System.setSecurityManager(new RMISecurityManager());
