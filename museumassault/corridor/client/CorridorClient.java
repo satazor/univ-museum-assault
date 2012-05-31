@@ -49,7 +49,7 @@ public class CorridorClient
                 } catch (AccessException e) {
                     throw new ComException("Server refused connection: " + e.getMessage());
                 } catch (Exception e) {
-                    System.err.println("Server seems to be down, retrying in a while.. (" + e.getMessage() + ")");
+                    System.err.println("Server seems to be down, retrying in a while.. ");
 
                     try {
                         Thread.sleep(this.random.nextInt(100) + 100);

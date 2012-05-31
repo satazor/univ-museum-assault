@@ -49,7 +49,7 @@ public class Main
         // Initialize the remote objects.
         ILogger loggerAdapterInt = null;
         try {
-            loggerAdapterInt = (ILogger) UnicastRemoteObject.exportObject(loggerAdapter, 0);
+            loggerAdapterInt = (ILogger) UnicastRemoteObject.exportObject(loggerAdapter, configuration.getLoggerPort() + 1);
         } catch (RemoteException e) {
             System.err.println("Unable to initialize remote object: " + e.getMessage());
             System.exit(1);
@@ -57,8 +57,9 @@ public class Main
 
         // Get the RMI registry for the given host & ports and start to listen.
         try {
-            registry = LocateRegistry.createRegistry(configuration.getLoggerPort());
-            registry.bind(ILogger.RMI_NAME_ENTRY, loggerAdapterInt);
+            LocateRegistry.createRegistry(configuration.getLoggerPort());
+            registry = LocateRegistry.getRegistry(configuration.getLoggerHost(), configuration.getLoggerPort());
+            registry.rebind(ILogger.RMI_NAME_ENTRY, loggerAdapterInt);
         } catch (Exception e) {
             System.err.println("Error while attempting to initialize the server: " + e.getMessage());
             System.exit(1);

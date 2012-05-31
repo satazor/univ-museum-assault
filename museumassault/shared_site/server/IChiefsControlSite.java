@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
  */
 public interface IChiefsControlSite extends Remote
 {
-    public final String RMI_NAME_ENTRY = "SharedSiteChiefs";
+    public final String RMI_NAME_ENTRY = "SharedSiteChiefsSD0201";
 
     /**
      * Decide if the chief should sit or rob a room.

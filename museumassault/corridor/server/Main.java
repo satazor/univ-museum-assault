@@ -71,7 +71,7 @@ public class Main
         // Initialize the remote objects.
         ICorridor corridordAdapterInt = null;
         try {
-            corridordAdapterInt = (ICorridor) UnicastRemoteObject.exportObject(corridorAdapter, 0);
+            corridordAdapterInt = (ICorridor) UnicastRemoteObject.exportObject(corridorAdapter, port + 1);
         } catch (RemoteException e) {
             System.err.println("Unable to initialize remote object: " + e.getMessage());
             System.exit(1);
@@ -79,14 +79,9 @@ public class Main
 
         // Get the RMI registry for the given host & ports and start to listen.
         try {
-            registry = LocateRegistry.createRegistry(port);
-
-            // Wait until the registry is created.. (this is ugly but works).
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {}
-
-            registry.bind(ICorridor.RMI_NAME_ENTRY, corridordAdapterInt);
+            LocateRegistry.createRegistry(port);
+            registry = LocateRegistry.getRegistry(port);
+            registry.rebind(ICorridor.RMI_NAME_ENTRY, corridordAdapterInt);
         } catch (Exception e) {
             System.err.println("Error while attempting to initialize the server: " + e.getMessage());
             System.exit(1);

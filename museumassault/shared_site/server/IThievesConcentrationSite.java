@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
  */
 public interface IThievesConcentrationSite extends Remote
 {
-    public final String RMI_NAME_ENTRY = "SharedSiteThieves";
+    public final String RMI_NAME_ENTRY = "SharedSiteThievesSD0201";
 
     /**
      * Waits until the thief is needed.

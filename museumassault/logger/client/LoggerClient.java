@@ -49,9 +49,10 @@ public class LoggerClient implements ILoggerStatusConstants
                     this.logger = (ILogger) registry.lookup(ILogger.RMI_NAME_ENTRY);
                 } catch (AccessException e) {
                     //throw new ComException("Server refused connection: " + e.getMessage());
+                    System.err.println("Access denied to the logger.. (" + e.getMessage() + ")");
                     break;
                 } catch (Exception e) {
-                    System.err.println("Server seems to be down, retrying in a while.. (" + e.getMessage() + ")");
+                    System.err.println("Server seems to be down, retrying in a while..");
 
                     try {
                         Thread.sleep(this.random.nextInt(100) + 100);
@@ -75,6 +76,7 @@ public class LoggerClient implements ILoggerStatusConstants
         try {
             this.logger.setChiefStatus(chiefId, status);
         } catch (RemoteException e) {
+            System.err.println("Unable to write to log: " + e.getMessage());
             //throw new ShutdownException();
         }
     }
@@ -92,6 +94,7 @@ public class LoggerClient implements ILoggerStatusConstants
         try {
             this.logger.setThiefStatus(thiefId, status);
         } catch (RemoteException e) {
+            System.err.println("Unable to write to log: " + e.getMessage());
             //throw new ShutdownException();
         }
     }
@@ -108,6 +111,7 @@ public class LoggerClient implements ILoggerStatusConstants
         try {
             this.logger.setThiefDetails(details);
         } catch (RemoteException e) {
+            System.err.println("Unable to write to log: " + e.getMessage());
             //throw new ShutdownException();
         }
     }
@@ -124,6 +128,7 @@ public class LoggerClient implements ILoggerStatusConstants
         try {
             this.logger.setTeamDetails(details);
         } catch (RemoteException e) {
+            System.err.println("Unable to write to log: " + e.getMessage());
             //throw new ShutdownException();
         }
     }
@@ -140,6 +145,7 @@ public class LoggerClient implements ILoggerStatusConstants
         try {
             this.logger.setRoomDetails(details);
         } catch (RemoteException e) {
+            System.out.println("Unable to write to log: " + e.getMessage());
             //throw new ShutdownException();
         }
     }
@@ -156,6 +162,7 @@ public class LoggerClient implements ILoggerStatusConstants
         try {
             this.logger.setCorridorDetails(details);
         } catch (RemoteException e) {
+            System.out.println("Unable to write to log: " + e.getMessage());
             //throw new ShutdownException();
         }
     }
@@ -177,6 +184,7 @@ public class LoggerClient implements ILoggerStatusConstants
         try {
             return this.logger.shutdown(password, totalCanvas);
         } catch(RemoteException e) {
+            System.err.println("Unable to write to log: " + e.getMessage());
             return true;
         }
     }

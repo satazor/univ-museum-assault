@@ -64,7 +64,7 @@ public class Main
         });
 
         System.out.println("Total canvas: " + room.getNrCanvas());
-        
+
         // Initialize the security manager.
         if (System.getSecurityManager () == null) {
             System.setSecurityManager(new RMISecurityManager());
@@ -73,7 +73,7 @@ public class Main
         // Initialize the remote objects.
         IRoom roomAdapterInt = null;
         try {
-            roomAdapterInt = (IRoom) UnicastRemoteObject.exportObject(roomAdapter, 0);
+            roomAdapterInt = (IRoom) UnicastRemoteObject.exportObject(roomAdapter, port + 1);
         } catch (RemoteException e) {
             System.err.println("Unable to initialize remote object: " + e.getMessage());
             System.exit(1);
@@ -81,8 +81,9 @@ public class Main
 
         // Get the RMI registry for the given host & ports and start to listen.
         try {
-            registry = LocateRegistry.createRegistry(port);
-            registry.bind(IRoom.RMI_NAME_ENTRY, roomAdapterInt);
+            LocateRegistry.createRegistry(port);
+            registry = LocateRegistry.getRegistry(port);
+            registry.rebind(IRoom.RMI_NAME_ENTRY, roomAdapterInt);
         } catch (Exception e) {
             System.err.println("Error while attempting to initialize the server: " + e.getMessage());
             System.exit(1);

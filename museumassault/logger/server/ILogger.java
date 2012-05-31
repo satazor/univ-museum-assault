@@ -11,7 +11,7 @@ import museumassault.logger.*;
  */
 public interface ILogger extends Remote, ILoggerStatusConstants
 {
-    public final String RMI_NAME_ENTRY = "Logger";
+    public final String RMI_NAME_ENTRY = "LoggerSD0201";
 
     /**
      * Logs a change of a chief status.
@@ -62,7 +62,7 @@ public interface ILogger extends Remote, ILoggerStatusConstants
      *
      * @param shutdownPassword the password
      * @param totalCanvas      the total number of canvas stolen
-     * 
+     *
      * @return true if successfully, false otherwise
      */
     public boolean shutdown(String shutdownPassword, int totalCanvas) throws RemoteException;

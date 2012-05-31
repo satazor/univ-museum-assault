@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
  */
 public interface IRoom extends Remote
 {
-    public final String RMI_NAME_ENTRY = "Room";
+    public final String RMI_NAME_ENTRY = "RoomSD0201";
 
     /**
      * Attempts to roll a canvas from the room.

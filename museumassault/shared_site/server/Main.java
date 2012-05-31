@@ -62,8 +62,8 @@ public class Main
         IChiefsControlSite chiefsSharedSite = null;
         IThievesConcentrationSite thievesSharedSiteS = null;
         try {
-            chiefsSharedSite = (IChiefsControlSite) UnicastRemoteObject.exportObject(chiefsSharedSiteAdapter, 0);
-            thievesSharedSiteS = (IThievesConcentrationSite) UnicastRemoteObject.exportObject(thievesSharedSiteAdapter, 0);
+            chiefsSharedSite = (IChiefsControlSite) UnicastRemoteObject.exportObject(chiefsSharedSiteAdapter, configuration.getSharedChiefsSitePort() + 1);
+            thievesSharedSiteS = (IThievesConcentrationSite) UnicastRemoteObject.exportObject(thievesSharedSiteAdapter, configuration.getSharedThievesSitePort() + 1);
         } catch (RemoteException e) {
             System.err.println("Unable to initialize remote objects: " + e.getMessage());
             System.exit(1);
@@ -71,8 +71,9 @@ public class Main
 
         // Get the RMI registry for the given host & ports and start to listen.
         try {
-            chiefsRegistry = LocateRegistry.createRegistry(configuration.getSharedChiefsSitePort());
-            chiefsRegistry.bind(IChiefsControlSite.RMI_NAME_ENTRY, chiefsSharedSite);
+            LocateRegistry.createRegistry(configuration.getSharedChiefsSitePort());
+            chiefsRegistry = LocateRegistry.getRegistry(configuration.getSharedChiefsSitePort());
+            chiefsRegistry.rebind(IChiefsControlSite.RMI_NAME_ENTRY, chiefsSharedSite);
         } catch (Exception e) {
             System.err.println("Error while attempting to initialize the server: " + e.getMessage());
             System.exit(1);
@@ -82,8 +83,9 @@ public class Main
 
 
         try {
-            thievesRegistry = LocateRegistry.createRegistry(configuration.getSharedThievesSitePort());
-            thievesRegistry.bind(IThievesConcentrationSite.RMI_NAME_ENTRY, thievesSharedSiteS);
+            LocateRegistry.createRegistry(configuration.getSharedThievesSitePort());
+            thievesRegistry = LocateRegistry.getRegistry(configuration.getSharedThievesSitePort());
+            thievesRegistry.rebind(IThievesConcentrationSite.RMI_NAME_ENTRY, thievesSharedSiteS);
         } catch (Exception e) {
             System.err.println("Error while attempting to initialize the server: " + e.getMessage());
             System.exit(1);

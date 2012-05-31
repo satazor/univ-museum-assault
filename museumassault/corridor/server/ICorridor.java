@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
  */
 public interface ICorridor extends Remote
 {
-    public final String RMI_NAME_ENTRY = "Corridor";
+    public final String RMI_NAME_ENTRY = "CorridorSD0201";
 
     /**
      * Moves the thief towards the room.

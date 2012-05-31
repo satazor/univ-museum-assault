@@ -1,0 +1,2 @@
+java -Djava.security.policy=java.policy -jar SD_P3_T2G01.jar room 3 &
+java -Djava.security.policy=java.policy -jar SD_P3_T2G01.jar corridor 3
