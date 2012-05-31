@@ -30,8 +30,8 @@ public class Configuration implements IThievesConfiguration
     protected ArrayList<Integer> corridorIds;
     protected ArrayList<Integer> teamIds;
 
-    protected String sharedSiteThievesConnectionString = "192.168.8.171:22210";  // The server address must be equal to the line bellow
-    protected String sharedSiteChiefsConnectionString = "192.168.8.171:22211";   // The server address must be equal to the line above
+    protected String sharedSiteThievesConnectionString = "192.168.8.174:22210";  // The server address must be equal to the line bellow
+    protected String sharedSiteChiefsConnectionString = "192.168.8.174:22211";   // The server address must be equal to the line above
     protected String loggerConnectionString = "192.168.8.180:22210";
 
     protected HashMap<Integer, String> roomConnections;
